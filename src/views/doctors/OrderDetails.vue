@@ -1,0 +1,678 @@
+<template>
+  <section class="dtc-main-section">
+    <div class="close-dlg">
+      <i class="fas fa-times-circle"></i>
+    </div>
+    <header class="ask-header print-hide">
+      報告撰寫作業
+      <div class="center-vgh-btn">
+        <toggle-button
+          class="mt-1"
+          :width="162"
+          :height="25"
+          :font-size="16"
+          v-model="showAll"
+          :labels="{
+            checked: '顯示病患詳情(F1)',
+            unchecked: '顯示病患詳情(F1)',
+          }"
+        />
+      </div>
+    </header>
+    <div class="dtc-search pl-2 print-hide" v-if="showAll">
+      <b-input-group prepend="檢查日期">
+        <b-input readonly v-model="checkTime"></b-input>
+      </b-input-group>
+      <b-input-group prepend="病患姓名">
+        <b-input readonly v-model="personName"></b-input>
+      </b-input-group>
+      <b-input-group prepend="病患性別">
+        <b-input readonly v-model="gender"></b-input>
+      </b-input-group>
+      <b-input-group prepend="病患身高">
+        <b-input readonly v-model="personHeight"></b-input>
+      </b-input-group>
+      <b-input-group prepend="病患年齡">
+        <b-input readonly v-model="age"></b-input>
+      </b-input-group>
+      <b-input-group prepend="檢查單號">
+        <b-input readonly v-model="item.ReqNo"></b-input>
+      </b-input-group>
+      <b-input-group prepend="身份證號">
+        <b-input readonly v-model="id"></b-input>
+      </b-input-group>
+      <b-input-group prepend="出生日期">
+        <b-input readonly v-model="birthday"></b-input>
+      </b-input-group>
+      <b-input-group prepend="病患體重">
+        <b-input readonly v-model="personWeight"></b-input>
+      </b-input-group>
+    </div>
+    <main class="main-sec">
+      <nav class="nav-opts mb-1 mx-2 mt-2 py-2 ml-4 print-hide">
+        <b-check switch size="large" button-variant="primary" style="color:black;" class="mt-2 mr-2" v-model="continuousBtn"
+          >連續報告({{ item.number }}/{{ totalCount }})</b-check
+        >
+        <div
+          class="bar-icon mt-2 mr-2 go-prev"
+          style="color: black;font-size: 18px;"
+          @click="goPreReport"
+          :style="item.number == 1 ? 'cursor: not-allowed;color:(--dark)' : ''"
+        >
+          <i class="fas fa-caret-left"></i>
+        </div>
+        <div class="bar-icon mt-2 mr-3 go-next" style="color: black;font-size: 18px;" @click="goNextReport">
+          <i class="fas fa-caret-right"></i>
+        </div>
+
+        <b-button variant="warning"
+          ><span class="pr-1"><i class="far fa-images"></i></span>呼叫PACS(F2)</b-button
+        >
+        <b-button variant="primary" @click="temporarySave"
+          ><span class="pr-1"><i class="fas fa-save"></i></span>暫存報告(F5)</b-button
+        >
+        <b-button variant="success" @click="officalSave"
+          ><span class="pr-1"><i class="fas fa-check"></i></span>正式報告(F6)</b-button
+        >
+
+        <b-button @click="$router.push('paidlist')"
+          ><span class="pr-1"><i class="fas fa-arrow-left"></i></span>返回清單(F4)</b-button
+        >
+        <div></div>
+        <!-- <b-button variant="primary" style="float:right;" @click="printImage"
+          ><span class="pr-1"><i class="fas fa-print"></i></span>列印(F9)</b-button
+        > -->
+      </nav>
+      <section class="nav-left-right mx-2" :class="item.ProcedureCode == 'fv' ? 'dtc-fv' : 'dtc-ios'">
+        <div ref="reportLeft" class="left"></div>
+        <div ref="reportRight" class="right"></div>
+      </section>
+    </main>
+    <div id="dtc-print-it" class="show-while-print"></div>
+  </section>
+</template>
+
+<script>
+import queryString from "query-string";
+import moment from "moment";
+import { store, actions } from "@/store/global.js";
+
+const vghOpts1 = ["chronic airyway disease", "asthma", "permaturity", "transplantation chemotherapy", "pompe disease", "other disease"].map((s) => s.toUpperCase());
+const vghOpts2 = ["forced spirometry", "bronchodilator TEST:100 mcq sblbutamol", "bronchodilator test", "spontaneour tidal breathing", "ios", "other"].map((s) =>
+  s.toUpperCase().replace("MCQ", "mcq")
+);
+const vghOpts3 = ["acceptable", "suboptiomal", "poor"].map((s) => s.toUpperCase());
+const vghOpts4 = [
+  "normal for body weight",
+  "this pft shows obstructive lung disease",
+  "this pft shows restrictive lung disease",
+  "this pft shows_impairment of small airways",
+  "bronchodilator test showed significant response to bronchodilators",
+  "bronchodilator test showed no significant response to bronchodilators",
+  "other",
+].map((s) => s.toUpperCase());
+
+const zero = "T00:00:00Z";
+export default {
+  name: "childdetail",
+  data() {
+    return {
+      findOne: "",
+      vghAns1BH1: "",
+      vghAns1SAPN: "",
+      vghAns1BH2: "",
+      vghAns1LENGTH: "",
+      findTwo: "",
+      obj: {},
+      vghOpts1,
+      vghOpts2,
+      numPages: 0,
+      pdfSrc: null,
+      itemsHolderList: [],
+      itemsAllList: [],
+      item: { ...store.editItem },
+      showAll: true,
+      checkTime: "",
+      personName: "",
+      gender: "",
+      personHeight: "",
+      age: "",
+      id: "",
+      birthday: "",
+      personWeight: "",
+      continuousBtn: false,
+      nowPage: "",
+      textFieldKeys: [],
+      reportDetail: {},
+      graph: null,
+      vghOpt1: "",
+      vghOpt2: "",
+      vghOpt1Text: "",
+      vghOpt2Text: "",
+      vghOpts1,
+      vghOpts2,
+      vghOpts3,
+      vghOpts4,
+      vghOpt4Text: "",
+      // text1: "predicted lung function values are adjusted by corrected body height:".toUpperCase(),
+      vghAns1: "",
+      vghFind: "",
+      vghOpt3: "",
+      vghOpt4: "",
+    };
+  },
+  components: {},
+  computed: {
+    showPhraseDlg() {
+      return store.showPhraseDlg;
+    },
+    totalCount() {
+      return this.itemsHolderList.length + 1;
+    },
+    isOfficalReport() {
+      return this.reportDetail.Status == 30;
+    },
+  },
+  methods: {
+    printImage() {
+      window.print();
+    },
+    focusActive() {
+      this.editing = true;
+    },
+    packComments() {
+      this.obj = {};
+      this.obj.vghOpt1 = this.vghOpt1;
+      this.obj.vghOpt2 = this.vghOpt2;
+      this.obj.vghOpt1Text = this.vghOpt1Text;
+      this.obj.vghOpt2Text = this.vghOpt2Text;
+      this.obj.vghOpt4Text = this.vghOpt4Text;
+      this.obj.vghAns1 = this.vghAns1;
+      this.obj.vghFind = this.vghFind;
+      this.obj.vghOpt3 = this.vghOpt3;
+      this.obj.vghOpt4 = this.vghOpt4;
+      return this.obj;
+    },
+    async temporarySave() {
+      if (!this.continuousBtn) {
+        if (this.item.ProcedureCode == "fv") {
+          await this.$refs.reportOne.tempSave({ comments: this.packComments() });
+          await this.getData();
+          this.$root.$emit("get-NewestReportOne-Formdata");
+        } else {
+          await this.$refs.reportTwo.tempSave({ comments: this.packComments() });
+          await this.getData();
+          this.$root.$emit("get-NewestReportTwo-Formdata");
+        }
+      } else {
+        if (store.editItem.number <= this.itemsHolderList.length + 1) {
+          if (this.item.ProcedureCode == "fv") {
+            await this.$refs.reportOne.tempSave({ comments: this.packComments() });
+          } else {
+            await this.$refs.reportTwo.tempSave({ comments: this.packComments() });
+          }
+          if (this.item.number == this.totalCount) {
+            this.$router.push("waitlist");
+          }
+
+          this.item = this.itemsHolderList[store.editItem.number - 1];
+          store.editItem.number = store.editItem.number + 1;
+          this.item.number = store.editItem.number;
+
+          if (this.item.ProcedureCode == "fv") {
+            store.editItem.showFv = true;
+            this.item.showFv = true;
+            await this.getData();
+            this.$root.$emit("get-NewestReportOne-Formdata");
+          } else {
+            store.editItem.showFv = false;
+            this.item.showFv = false;
+            await this.getData();
+            this.$root.$emit("get-NewestReportTwo-Formdata");
+          }
+        } else {
+          this.$router.push("waitlist");
+        }
+      }
+    },
+    async officalSave() {
+      if (!this.continuousBtn) {
+        if (this.item.ProcedureCode == "fv") {
+          await this.$refs.reportOne.officalSave({ comments: this.packComments() });
+          await this.getData();
+          this.$root.$emit("get-NewestReportOne-Formdata");
+        } else {
+          await this.$refs.reportTwo.officalSave({ comments: this.packComments() });
+          await this.getData();
+          this.$root.$emit("get-NewestReportTwo-Formdata");
+        }
+      } else {
+        if (store.editItem.number <= this.itemsHolderList.length + 1) {
+          if (this.item.ProcedureCode == "fv") {
+            await this.$refs.reportOne.officalSave({ comments: this.packComments() });
+          } else {
+            await this.$refs.reportTwo.officalSave({ comments: this.packComments() });
+          }
+          if (this.item.number == this.totalCount) {
+            this.$router.push("waitlist");
+          }
+
+          this.item = this.itemsHolderList[store.editItem.number - 1];
+          store.editItem.number = store.editItem.number + 1;
+          this.item.number = store.editItem.number;
+
+          if (this.item.ProcedureCode == "fv") {
+            store.editItem.showFv = true;
+            this.item.showFv = true;
+            await this.getData();
+            this.$root.$emit("get-NewestReportOne-Formdata");
+          } else {
+            store.editItem.showFv = false;
+            this.item.showFv = false;
+            await this.getData();
+            this.$root.$emit("get-NewestReportTwo-Formdata");
+          }
+        } else {
+          this.$router.push("waitlist");
+        }
+      }
+    },
+    async goNextReport() {
+      if (this.item.number == this.totalCount) {
+        this.$router.push("waitlist");
+      }
+      if (store.editItem.number <= this.itemsHolderList.length + 1) {
+        this.item = this.itemsHolderList[store.editItem.number - 1];
+        store.editItem.number = store.editItem.number + 1;
+        this.item.number = store.editItem.number;
+
+        if (this.item.ProcedureCode == "fv") {
+          store.editItem.showFv = true;
+          this.item.showFv = true;
+          await this.getData();
+          this.$root.$emit("get-NewestReportOne-Formdata");
+        } else {
+          store.editItem.showFv = false;
+          this.item.showFv = false;
+          await this.getData();
+          this.$root.$emit("get-NewestReportTwo-Formdata");
+        }
+      } else {
+        this.$router.push("waitlist");
+      }
+    },
+    async goPreReport() {
+      // store.editItem.number = store.editItem.number - 1;
+      if (store.editItem.number > 1) {
+        this.item = this.itemsAllList[store.editItem.number - 2];
+        store.editItem.number = store.editItem.number - 1;
+        this.item.number = store.editItem.number;
+
+        if (this.item.ProcedureCode == "fv") {
+          store.editItem.showFv = true;
+          this.item.showFv = true;
+          await this.getData();
+          this.$root.$emit("get-NewestReportOne-Formdata");
+        } else {
+          store.editItem.showFv = false;
+          this.item.showFv = false;
+          await this.getData();
+          this.$root.$emit("get-NewestReportTwo-Formdata");
+        }
+      } else {
+        return;
+      }
+    },
+    setPersonInfo() {
+      this.checkTime = this.item.StudyTime ? this.item.StudyTime.split("T")[0] : "暫無資料";
+      this.personName = this.item.Patient.Name ? this.item.Patient.Name : "暫無資料";
+      this.gender = this.item.Patient.Sex == "M" ? "男" : this.gender == "F" ? "女" : "暫無資料";
+      this.personHeight = this.item.Height ? this.item.Height : "暫無資料";
+      this.age = this.item.Patient.Birthday ? this.getAge(this.item.Patient.Birthday) : "暫無資料";
+      this.id = "暫無資料";
+      this.birthday = this.item.Patient.Birthday ? this.item.Patient.Birthday.split("T")[0] : "暫無資料";
+      this.personWeight = this.item.Weight ? this.item.Weight : "暫無資料";
+    },
+    doShowPhraseDlg() {
+      store.showPhraseDlg = true;
+      this.textFieldKeys = this.$refs.reportOne ? this.$refs.reportOne.getInputSelector() : [];
+    },
+    insertPhrase(phrase) {
+      if (!this.$refs.reportOne) retutn;
+      this.$refs.reportOne.insertPhrase(phrase);
+    },
+    getAge(date) {
+      let ret = date ? moment().diff(date, "years") : "";
+      if (!ret && date) {
+        ret = 1;
+      }
+      return ret;
+    },
+    async fillForm() {
+      let content = Boolean(this.reportDetail.ReportTemplateData) ? JSON.parse(this.reportDetail.ReportTemplateData) : {};
+      content = { ...(content.comments ? content.comments : {}) };
+      this.vghOpt1 = content.vghOpt1;
+      this.vghOpt2 = content.vghOpt2;
+      this.vghOpt1Text = content.vghOpt1Text;
+      this.vghOpt2Text = content.vghOpt2Text;
+      this.vghOpt4Text = content.vghOpt4Text;
+      this.vghAns1 = content.vghAns1;
+      this.vghFind = content.vghFind;
+      this.vghOpt3 = content.vghOpt3;
+      this.vghOpt4 = content.vghOpt4;
+    },
+    async getData() {},
+    callPACS() {
+      alert("callPACS, need API");
+    },
+  },
+  async mounted() {
+    this.$mousetrap.bind("f1", () => {
+      this.showAll = !this.showAll;
+      return false;
+    });
+    this.$mousetrap.bind("f2", () => {
+      this.callPACS();
+    });
+    this.$mousetrap.bind("f3", () => {
+      this.doShowPhraseDlg();
+      return false;
+    });
+    this.$mousetrap.bind("f4", () => {
+      this.$router.push("waitlist");
+    });
+    this.$mousetrap.bind("f5", () => {
+      this.temporarySave();
+      return false;
+    });
+    this.$mousetrap.bind("f6", () => {
+      this.officalSave();
+      return false;
+    });
+    this.$mousetrap.bind("f7", () => {
+      this.goPreReport();
+      return false;
+    });
+    this.$mousetrap.bind("f8", () => {
+      this.goNextReport();
+      return false;
+    });
+    this.$mousetrap.bind("f9", () => {
+      this.printImage();
+      return false;
+    });
+    try {
+      await this.getData();
+      await this.setPersonInfo();
+    } catch (e) {
+      alert(e);
+    }
+  },
+  async created() {
+    this.itemsHolderList = (await this.$vlf.getItem("childItems")).filter((s) => s.ReqNo != this.item.ReqNo);
+    const qs = await this.$vlf.getItem("oDataQs");
+    const { Items, Count } = await axios.get("/examine/List" + qs);
+    let arr = Items.filter((s) => !this.itemsHolderList.find((key) => key.ReqNo == s.ReqNo));
+    arr = arr.filter((s) => s.ReqNo != this.item.ReqNo);
+    // indexdb items + ajax items
+    this.itemsHolderList = [...this.itemsHolderList, ...arr];
+    this.itemsAllList = [...this.itemsHolderList, ...arr];
+    this.itemsAllList.unshift(this.item);
+  },
+
+  watch: {},
+};
+</script>
+
+<!-- Add "scoped" attribute to limit CSS to this component only -->
+<style scoped lang="scss">
+.dtc-main-section {
+  color: black;
+  overflow-x: auto;
+  position: relative;
+  min-height: calc(100vh - 75px);
+  background: white;
+}
+.dtc-grid-header {
+  display: grid;
+  grid-template-columns: 80px 1fr 160px 180px 180px; //repeat(4, 1fr);
+  grid-auto-flow: column;
+  text-align: center;
+  padding-right: 0px;
+  border: 1px solid white;
+
+  > div {
+    border-right: 1px solid white;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    -webkit-line-clamp: 1;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    font-size: 14px;
+    padding: 4px 0;
+  }
+  > div:last-child {
+    border-right: none;
+  }
+}
+.my-dark {
+  > div {
+    background: var(--gray);
+    color: white;
+  }
+}
+.dtc-link {
+  color: var(--primary);
+  cursor: pointer;
+}
+.dtc-search {
+  position: relative;
+  display: grid;
+  margin-bottom: 12px;
+  grid-template-columns: repeat(5, max-content);
+  grid-gap: 1rem;
+}
+.search-btns {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  > button:not(:first-child) {
+    margin-top: 1rem;
+  }
+  right: 2px;
+  top: 0px;
+}
+.dtx-footer {
+  display: grid;
+  grid-template-columns: max-content max-content max-content;
+  justify-content: center;
+  grid-gap: 12px;
+}
+.container-dtx {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(#000, 0.8);
+  display: grid;
+  place-items: center;
+  z-index: 999;
+}
+.dtx-form {
+  width: 800px;
+  height: 300px;
+  padding: 12px;
+  border-radius: 5px;
+  background: var(--light);
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+
+  grid-gap: 12px;
+  > div {
+    max-height: 40px;
+  }
+  button {
+    justify-self: center;
+    max-height: 40px;
+  }
+}
+.main-dtc-body {
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.075);
+  }
+  > div {
+    line-height: 24px;
+  }
+}
+.input-group-text {
+  color: white;
+  background: #757575;
+}
+
+.close-phrase-icon {
+  cursor: pointer;
+  float: right;
+  font-size: 30px;
+  color: var(--success);
+  transform: translate(-20px, -20px);
+}
+.edit-row-dtc {
+  display: grid;
+  grid-template-columns: max-content max-content;
+  grid-gap: 4px;
+}
+.close-dlg {
+  float: right;
+  color: var(--light);
+  font-size: 24px;
+  cursor: pointer;
+  margin-top: 0px;
+  margin-right: 10px;
+}
+.ask-header {
+  background: #646b74;
+  height: 42px;
+  color: white;
+  font-size: 20px;
+  padding-left: 10px;
+  line-height: 42px;
+  margin-bottom: 12px;
+  position: relative;
+}
+
+.main-sec {
+  background: #e5e5e5;
+  box-shadow: 200px 0 0 #e5e5e5, -200px 0 0 #e5e5e5;
+}
+.nav-opts {
+  display: grid;
+  grid-template-columns: repeat(8, max-content) 1fr max-content;
+  gap: 0.6rem;
+}
+.nav-left-right {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 0.6rem;
+  box-shadow: 0 100vh 0 #e5e5e5;
+  .left,
+  .right {
+    border-radius: 12px;
+    background: white;
+    min-height: calc(100vh - 200px);
+    margin-bottom: 30px;
+    border-color: #a5d9ec !important;
+  }
+  .right {
+    padding: 1rem;
+    img {
+      width: 100%;
+      object-fit: cover;
+    }
+  }
+}
+
+.dtx-phrase {
+  position: fixed;
+  top: 0px;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background: rgba(#000, 0.95);
+  z-index: 8;
+  .main-phrase {
+    width: 80%;
+    max-width: 1440px;
+  }
+}
+.center-vgh-btn {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  display: grid;
+  place-items: center;
+}
+.bar-icon {
+  border-radius: 50%;
+  background: var(--light);
+  width: 20px;
+  height: 20px;
+  text-align: center;
+  line-height: 20px;
+  cursor: pointer;
+  position: relative;
+}
+.go-prev::after,
+.go-next::after {
+  position: absolute;
+  bottom: -20px;
+  left: -2px;
+  font-size: 12px;
+  content: "(F7)";
+}
+.go-next::after {
+  content: "(F8)";
+}
+
+.vghOptText {
+  width: 300px;
+  height: 100px;
+  margin-left: 3rem;
+}
+.my-opts {
+  margin-left: 30px;
+  display: grid;
+  grid-template-columns: repeat(22, max-content);
+}
+.vghOpt4Text {
+  width: 300px;
+  height: 100px;
+  margin-left: 19px;
+}
+@media print {
+  .dtc-main-section {
+    min-height: 0px;
+  }
+  .print-hide {
+    display: none;
+  }
+
+  .nav-left-right {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: max-content;
+  }
+  .dtc-fv {
+    .right {
+      margin-top: 20px;
+    }
+  }
+  .dtc-ios {
+    .right {
+      margin-top: 20px;
+    }
+  }
+}
+</style>

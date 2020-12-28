@@ -30,6 +30,8 @@ export default {
     const { access_token } = queryString.parse(location.search);
     try {
       this.loginInfo = await axios.get(`auth/${provider}/callback?access_token=` + access_token);
+      const { jwt, user } = this.loginInfo;
+      sessionStorage.token = jwt;
     } catch (e) {
       this.loginInfo = JSON.stringify(e, null, 2);
     }

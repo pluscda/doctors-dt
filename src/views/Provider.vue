@@ -31,7 +31,7 @@ export default {
     try {
       this.loginInfo = await axios.get(`auth/${provider}/callback?access_token=` + access_token);
     } catch (e) {
-      this.loginInfo = JSON.stringify(e, 0, 2);
+      this.loginInfo = JSON.stringify(e, null, 2);
     }
   },
   watch: {},

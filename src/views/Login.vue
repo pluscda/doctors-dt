@@ -1,8 +1,10 @@
 <template>
   <section class="dtc-login" :style="isLogin ? '' : 'justify-content: center;'">
     <PhoneLogin></PhoneLogin>
-
-    <b-button class="fb-btn" @click="toGithub" variant="warning">Github Login</b-button>
+    <footer class="provides-login">
+      <b-button @click="toGithub" variant="warning">Github Login</b-button>
+      <b-button @click="toGithub" variant="success">Facebook Login</b-button>
+    </footer>
   </section>
 </template>
 
@@ -101,9 +103,12 @@ export default {
     margin-top: 1rem;
   }
 }
-.fb-btn {
+.provides-login {
   position: fixed;
-  top: 10px;
+  bottom: 10px;
   left: 10px;
+  display: grid;
+  grid-template-columns: repeat(13, max-content);
+  gap: 1rem;
 }
 </style>

@@ -1,6 +1,6 @@
 <template>
   <section class="dtc-login">
-    <h3>abc</h3>
+    <h3>github</h3>
     {{ loginInfo }}
   </section>
 </template>

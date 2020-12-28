@@ -26,7 +26,7 @@ const routes = [
     component: () => import("../views/Facebook.vue"),
   },
   {
-    path: '/github',
+    path: '/connect/github/redirect',
     name: 'github',
     component: () => import("../views/Github.vue"),
   },

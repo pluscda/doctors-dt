@@ -1,5 +1,8 @@
 <template>
-  <section class="dtc-login" :style="isLogin ? '' : 'justify-content: center;'"></section>
+  <section class="dtc-login">
+    <h3>abc</h3>
+    {{ loginInfo }}
+  </section>
 </template>
 
 <script>
@@ -14,10 +17,7 @@ export default {
   name: "loginHome",
   data() {
     return {
-      titles,
-      labels,
-      phone: sessionStorage.phone,
-      idDoc: location.href.includes("isdoc=true"),
+      loginInfo: "",
     };
   },
   computed: {
@@ -26,17 +26,13 @@ export default {
     },
   },
   components: {},
-  methods: {
-    toFacebook() {
-      location.href = "https://dtchealth.datacom.com.tw/connect/facebook";
-    },
-  },
+  methods: {},
   async mounted() {
     alert(location.href);
     const qs = location.href.split("?")[1];
     const { access_token } = queryString.parse(qs);
     alert(access_token);
-    await axios.get("auth/github/callback?access_token=" + access_token);
+    this.loginInfo = await axios.get("auth/github/callback?access_token=" + access_token);
   },
   watch: {},
 };

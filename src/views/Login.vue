@@ -2,7 +2,7 @@
   <section class="dtc-login" :style="isLogin ? '' : 'justify-content: center;'">
     <PhoneLogin></PhoneLogin>
 
-    <b-button class="fb-btn" @click="toFacebook" variant="warning">Faccebook Login</b-button>
+    <b-button class="fb-btn" @click="toGithub" variant="warning">Github Login</b-button>
   </section>
 </template>
 
@@ -37,8 +37,8 @@ export default {
     PhoneLogin,
   },
   methods: {
-    toFacebook() {
-      location.href = "https://dtchealth.datacom.com.tw/connect/facebook";
+    toGithub() {
+      location.href = "https://dtchealth.datacom.com.tw/connect/github";
     },
     open(item, i) {
       if (i == 0) {

@@ -25,6 +25,11 @@ const routes = [
     name: 'facebook',
     component: () => import("../views/Facebook.vue"),
   },
+  {
+    path: '/github',
+    name: 'github',
+    component: () => import("../views/Github.vue"),
+  },
  
   {
     path: '/dtc/login',

@@ -30,6 +30,11 @@ const routes = [
     name: 'github',
     component: () => import("../views/Github.vue"),
   },
+  {
+    path: '/connect/:provider/redirect',
+    name: 'github',
+    component: () => import("../views/Provider.vue"),
+  },
  
   {
     path: '/dtc/login',

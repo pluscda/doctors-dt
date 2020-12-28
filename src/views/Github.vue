@@ -14,7 +14,7 @@ const titles = ["預約紀錄(6)", "提問(5)", "意見反饋(1)", "我的收藏
 const labels = ["共有6筆記錄", "你有一則已答覆", "廠商有兩則反饋", "你有兩個收藏", "客製化個人設定"];
 
 export default {
-  name: "loginHome",
+  name: "loginHomeGihub",
   data() {
     return {
       loginInfo: "",
@@ -28,7 +28,6 @@ export default {
   components: {},
   methods: {},
   async mounted() {
-    alert(location.href);
     const qs = location.href.split("?")[1];
     const { access_token } = queryString.parse(qs);
     alert(access_token);
@@ -79,10 +78,5 @@ export default {
     margin-bottom: 1rem;
     margin-top: 1rem;
   }
-}
-.fb-btn {
-  position: fixed;
-  top: 10px;
-  left: 10px;
 }
 </style>

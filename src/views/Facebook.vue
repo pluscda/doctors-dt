@@ -14,7 +14,7 @@ const titles = ["預約紀錄(6)", "提問(5)", "意見反饋(1)", "我的收藏
 const labels = ["共有6筆記錄", "你有一則已答覆", "廠商有兩則反饋", "你有兩個收藏", "客製化個人設定"];
 
 export default {
-  name: "loginHome",
+  name: "loginHomeFb",
   data() {
     return {
       loginInfo: "",
@@ -28,11 +28,10 @@ export default {
   components: {},
   methods: {},
   async mounted() {
-    alert(location.href);
     const qs = location.href.split("?")[1];
     const { access_token } = queryString.parse(qs);
     alert(access_token);
-    this.loginInfo = await axios.get("auth/github/callback?access_token=" + access_token);
+    this.loginInfo = await axios.get("auth/facebook/callback?access_token=" + access_token);
   },
   watch: {},
 };

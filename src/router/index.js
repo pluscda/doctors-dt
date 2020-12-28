@@ -21,12 +21,12 @@ const routes = [
     component: () => import("../views/Login.vue"),
   },
   {
-    path: '/auth/facebook/callback',
+    path: '/connect/facebook/redirect',
     name: 'facebook',
     component: () => import("../views/Facebook.vue"),
   },
   {
-    path: '/auth/github/callback',
+    path: '/connect/github/redirect',
     name: 'github',
     component: () => import("../views/Github.vue"),
   },

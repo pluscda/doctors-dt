@@ -1,14 +1,10 @@
 <template>
-  <section class="dtc-login" :style="isLogin ? '' : 'justify-content: center;'">
-    <PhoneLogin></PhoneLogin>
-
-    <b-button class="fb-btn" @click="toFacebook" variant="warning">Faccebook Login</b-button>
-  </section>
+  <section class="dtc-login" :style="isLogin ? '' : 'justify-content: center;'"></section>
 </template>
 
 <script>
 import { store, mutations, actions } from "@/store/global.js";
-import PhoneLogin from "@/components/auth/PhoneLogin.vue";
+import queryString from "query-string";
 
 const titles = ["預約紀錄(6)", "提問(5)", "意見反饋(1)", "我的收藏(2)", "系統設置"];
 
@@ -28,14 +24,8 @@ export default {
     isLogin() {
       return sessionStorage.isLogin || store.isLogin;
     },
-    myPhone() {
-      const phone = sessionStorage.phone ? sessionStorage.phone.slice(0, 6) : "";
-      return phone;
-    },
   },
-  components: {
-    PhoneLogin,
-  },
+  components: {},
   methods: {
     toFacebook() {
       location.href = "https://dtchealth.datacom.com.tw/connect/facebook";
@@ -53,7 +43,9 @@ export default {
     },
   },
   mounted() {
-    store.activeTab = 3;
+    const qs = location.href.split("?")[1];
+    const { access_token } = queryString.parse(qs);
+    alert(access_token);
   },
   watch: {},
 };

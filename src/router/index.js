@@ -20,6 +20,11 @@ const routes = [
     name: 'login',
     component: () => import("../views/Login.vue"),
   },
+  {
+    path: '/facebook',
+    name: 'facebook',
+    component: () => import("../views/Facebook.vue"),
+  },
  
   {
     path: '/dtc/login',

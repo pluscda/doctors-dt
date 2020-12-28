@@ -30,7 +30,7 @@ export default {
   async mounted() {
     const qs = location.href.split("?")[1];
     const { access_token } = queryString.parse(qs);
-    //alert(access_token);
+    alert(access_token);
     this.loginInfo = await axios.get("auth/facebook/callback?access_token=" + access_token);
   },
   watch: {},

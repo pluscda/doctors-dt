@@ -20,19 +20,19 @@ const routes = [
     name: 'login',
     component: () => import("../views/Login.vue"),
   },
-  {
-    path: '/connect/facebook/redirect',
-    name: 'facebook',
-    component: () => import("../views/Facebook.vue"),
-  },
-  {
-    path: '/connect/github/redirect',
-    name: 'github',
-    component: () => import("../views/Github.vue"),
-  },
+  // {
+  //   path: '/connect/facebook/redirect',
+  //   name: 'facebook',
+  //   component: () => import("../views/Facebook.vue"),
+  // },
+  // {
+  //   path: '/connect/github/redirect',
+  //   name: 'github',
+  //   component: () => import("../views/Github.vue"),
+  // },
   {
     path: '/connect/:provider/redirect',
-    name: 'github',
+    name: 'provides',
     component: () => import("../views/Provider.vue"),
   },
  

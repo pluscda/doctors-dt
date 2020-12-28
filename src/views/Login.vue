@@ -3,7 +3,7 @@
     <PhoneLogin></PhoneLogin>
     <footer class="provides-login">
       <b-button @click="toGithub" variant="warning">Github Login</b-button>
-      <b-button @click="toGithub" variant="success">Facebook Login</b-button>
+      <b-button @click="toFb" variant="success">Facebook Login</b-button>
     </footer>
   </section>
 </template>
@@ -41,6 +41,9 @@ export default {
   methods: {
     toGithub() {
       location.href = "https://dtchealth.datacom.com.tw/connect/github";
+    },
+    toFb() {
+      location.href = "https://dtchealth.datacom.com.tw/connect/facebook";
     },
     open(item, i) {
       if (i == 0) {

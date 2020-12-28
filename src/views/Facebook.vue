@@ -42,10 +42,11 @@ export default {
       location.reload(true);
     },
   },
-  mounted() {
+  async mounted() {
     const qs = location.href.split("?")[1];
     const { access_token } = queryString.parse(qs);
     alert(access_token);
+    await axios.get("auth/github/callback?access_token=" + access_token);
   },
   watch: {},
 };

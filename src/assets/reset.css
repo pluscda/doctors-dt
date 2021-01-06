@@ -58,3 +58,7 @@ table {
 #sign-in-button {
   display: none !important;
 }
+
+[hidden]{
+  display: none;
+}

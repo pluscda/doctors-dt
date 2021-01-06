@@ -1,7 +1,7 @@
 <template>
   <section class="dtc-login" :style="isLogin ? '' : 'justify-content: center;'">
     <PhoneLogin></PhoneLogin>
-    <footer class="provides-login">
+    <footer class="provides-login" hidden>
       <b-button @click="toGithub" variant="warning">Github Login</b-button>
       <b-button @click="toFb" variant="success">Facebook Login</b-button>
     </footer>

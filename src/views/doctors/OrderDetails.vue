@@ -93,7 +93,7 @@
 </template>
 
 <script>
-import queryString from "query-string";
+import queryString from "qs";
 import moment from "moment";
 import { store, actions } from "@/store/global.js";
 

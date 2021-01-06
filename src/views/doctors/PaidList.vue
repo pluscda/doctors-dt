@@ -98,7 +98,7 @@
 </template>
 
 <script>
-import queryString from "query-string";
+import queryString from "qs";
 import buildQuery from "odata-query";
 import { store, actions } from "@/store/global.js";
 import moment from "moment";

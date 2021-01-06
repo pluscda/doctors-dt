@@ -7,7 +7,7 @@
 
 <script>
 import { store, mutations, actions } from "@/store/global.js";
-import queryString from "query-string";
+import queryString from "qs";
 
 export default {
   name: "loginHomeProvider",

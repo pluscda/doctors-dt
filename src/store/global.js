@@ -35,7 +35,7 @@ const init = {
   PASSWORD,
   activeTab: 0,
   cancers:[],
-  imgPrefix: process.env.NODE_ENV === 'production'? '' : `http://${location.hostname}:1337`,
+  imgPrefix: process.env.NODE_ENV === 'production'? 'https://dtchealth.datacom.com.tw' : `http://${location.hostname}:1337`,
   isDoctor: false,
 };
 export let store = Vue.observable({

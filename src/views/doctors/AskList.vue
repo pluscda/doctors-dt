@@ -1,6 +1,6 @@
 <template>
   <section class="dtc-main-section">
-    <header class="ask-header">線上問診</header>
+    <header class="ask-header">線上諮詢</header>
     <div class="dtc-search pl-2">
       <b-input-group prepend="關鍵字">
         <b-input v-model.trim="Code" placeholder="搜尋關鍵字" @keydown.enter="searchDb"></b-input>

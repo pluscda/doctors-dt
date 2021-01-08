@@ -4,10 +4,10 @@
       <b-navbar-brand style="max-width:200px;"><i class="fas fa-sign-in-alt mr-2"></i> DTC HEALTH</b-navbar-brand>
       <b-collapse id="nav-collapse" is-nav>
         <b-navbar-nav>
-          <b-nav-item>首頁</b-nav-item>
-          <b-nav-item>歷史報告</b-nav-item>
-          <b-nav-item>診斷報告</b-nav-item>
-          <b-nav-item>線上問診</b-nav-item>
+          <b-nav-item @click="$router.push('home')">首頁</b-nav-item>
+          <b-nav-item @click="$router.push('historylist')">歷史報告</b-nav-item>
+          <b-nav-item @click="$router.push('waitlist')">診斷報告</b-nav-item>
+          <b-nav-item @click="$router.push('asklist')">線上問診</b-nav-item>
         </b-navbar-nav>
       </b-collapse>
       <b-navbar-nav class="ml-auto" v-show="isLogin">

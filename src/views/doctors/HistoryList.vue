@@ -43,6 +43,7 @@
         >
       </div>
       <div @click="addComment(item)" style="cursor:pointer;">{{ item.comment.length }} <i class="fas fa-plus-circle"></i></div>
+      <div></div>
       <div>NT{{ $formatPrice(item.paidAmount) }}</div>
       <div>{{ $formatStatus(item.status) }}</div>
       <div>{{ $twDate(item.orderDate) }}</div>
@@ -103,6 +104,7 @@ import moment from "moment";
 
 const headers = [
   { name: "留言數量", key: "comment", sortDesc: null },
+  { name: "未讀留言", key: "unread", sortDesc: null },
   { name: "支付金額", key: "paidAmount", sortDesc: null },
   { name: "處理狀態", key: "status", sortDesc: null },
   { name: "下單日期", key: "orderDate", sortDesc: null },
@@ -294,7 +296,7 @@ export default {
 }
 .dtc-grid-header {
   display: grid;
-  grid-template-columns: 200px repeat(3, 120px) 180px repeat(4, 120px) 1fr;
+  grid-template-columns: 200px repeat(3, 100px) 120px 180px repeat(4, 120px) 1fr;
 
   text-align: center;
   padding-right: 0px;

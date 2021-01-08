@@ -290,7 +290,6 @@ export default {
 .dtc-grid-header {
   display: grid;
   grid-template-columns: 120px 100px 100px repeat(4, 150px) 1fr;
-
   text-align: center;
   padding-right: 0px;
   border: 1px solid white;

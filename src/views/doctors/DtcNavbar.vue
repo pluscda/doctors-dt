@@ -2,7 +2,14 @@
   <div style="position:sticky;top:0;z-index:3;">
     <b-navbar toggleable="lg" type="dark" class="dtc-bg">
       <b-navbar-brand style="max-width:200px;"><i class="fas fa-sign-in-alt mr-2"></i> DTC HEALTH</b-navbar-brand>
-
+      <b-collapse id="nav-collapse" is-nav>
+        <b-navbar-nav>
+          <b-nav-item>首頁</b-nav-item>
+          <b-nav-item>歷史報告</b-nav-item>
+          <b-nav-item>診斷報告</b-nav-item>
+          <b-nav-item>線上問診</b-nav-item>
+        </b-navbar-nav>
+      </b-collapse>
       <b-navbar-nav class="ml-auto" v-show="isLogin">
         <div class="bar-icon" id="popover-9" style="color:black;">
           <i class="fas fa-user-alt"></i>
@@ -53,5 +60,8 @@ export default {
   line-height: 30px;
   cursor: pointer;
   display: inline-block;
+}
+/deep/ .nav-item .nav-link {
+  color: white !important;
 }
 </style>

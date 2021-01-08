@@ -10,7 +10,7 @@
     <main>
       <aside>
         <b-select v-model="row1_2" :options="years"></b-select>
-        <h6 class="mt-2 ml-3">線上件數</h6>
+        <h6 class="mt-2 ml-3">線上諮詢</h6>
       </aside>
       <ImgDtc :time="row1_2"></ImgDtc>
     </main>
@@ -24,21 +24,21 @@
     <main>
       <aside>
         <b-select v-model="row2_1" :options="years"></b-select>
-        <h6 class="mt-2 ml-3">線上問診累計金額</h6>
+        <h6 class="mt-2 ml-3">線上諮詢累計金額</h6>
       </aside>
       <Finish :time="row2_1"></Finish>
     </main>
     <main>
       <aside>
         <b-select v-model="row2_2" :options="years"></b-select>
-        <h6 class="mt-2 ml-3">役男現場體檢平均作業時間 (報到-完成收件)</h6>
+        <h6 class="mt-2 ml-3">診斷作業完成率 (報到-完成收件)</h6>
       </aside>
       <Workload :time="row2_2"></Workload>
     </main>
     <main>
       <aside>
         <b-select v-model="row2_3" :options="years"></b-select>
-        <h6 class="mt-2 ml-3">體檢後製平均作業時間 (檢核完成-完成總評)</h6>
+        <h6 class="mt-2 ml-3">線上諮詢完成率 (報到-完成總評)</h6>
       </aside>
       <Delay :time="row2_3"></Delay>
     </main>

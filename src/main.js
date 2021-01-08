@@ -3,17 +3,16 @@ import './plugins/bootstrap-vue'
 import './plugins/axios'
 import "./assets/reset.css"
 import moment from "moment"
-// import "@fortawesome/fontawesome-free/css/all.css";
-// import "@fortawesome/fontawesome-free/js/all.js";
 import App from './App.vue'
 import router from './router'
 import i18n from './i18n'
 import './plugins/vant.js'
-// /import './registerServiceWorker'
+import ChartDataLabels from "chartjs-plugin-datalabels";
+import './registerServiceWorker'
 import VueToast from "vue-toast-notification";
 // Import one of available themes
 import "vue-toast-notification/dist/theme-default.css";
-//import 'vue-toast-notification/dist/theme-sugar.css';
+
 
 Vue.use(VueToast, { position: "top" });
 

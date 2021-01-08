@@ -49,28 +49,8 @@ export default {
   },
 };
 </script>
-<i18n>
-{
-  "zh-tw": {
-    "醫療首頁":"醫療首頁",
-    "我的":"我的",
-    "找醫師":"找醫師",
-    "標籤":"標籤"
-   
-  },
-  "zh-cn": {
-    "醫療首頁":"医疗首页",
-    "我的":"我的",
-    "找醫師":"找医师",
-    "標籤":"标签"
-  }
-}
-</i18n>
 
 <style>
-iframe {
-  background: transparent !important;
-}
 #app {
   margin: 0px;
   padding: 0px;
@@ -78,7 +58,7 @@ iframe {
   -webkit-font-smoothing: antialiased;
   box-sizing: border-box;
   color: var(--dark);
-  background: var(--snap-blue) !important;
+  background: var(--light) !important;
   overflow-x: hidden !important;
 }
 html,

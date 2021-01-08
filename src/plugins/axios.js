@@ -17,7 +17,6 @@ const _axios = axios.create(config);
 
 _axios.interceptors.request.use(
   function (config) {
-    //sessionStorage.token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVmZDQxZTk0MzZjMDY2MGMzMDI1ZmZiNiIsImlhdCI6MTYwODQyNjM5MSwiZXhwIjoxNjExMDE4MzkxfQ.P4OHib8d_5QkdIq8JsIaYydbh_QR8PZ_cksY2vQD1Lk";
     if(sessionStorage.token)
        config.headers.Authorization = "Bearer " + sessionStorage.token
     return config;

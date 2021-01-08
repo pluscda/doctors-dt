@@ -88,7 +88,7 @@ export default {
         this.user = user;
         store.isDoctor = user.isDoctor ? "true" : "";
         this.jwt = jwt;
-        this.$router.push("paidList?isdoc=true");
+        this.$router.push("home");
       }
     },
     async loginStrapi() {
@@ -98,7 +98,7 @@ export default {
           this.user = user;
           store.isDoctor = user.isDoctor ? "true" : "";
           this.jwt = jwt;
-          this.$router.push("paidList?isdoc=true");
+          this.$router.push("home");
         }
         return { jwt };
       } catch (e) {

@@ -99,7 +99,7 @@
 
 <script>
 import { store, actions } from "@/store/global.js";
-import moment from "moment";
+import moment from "dayjs";
 
 const headers = [
   { name: "留言數量", key: "comment", sortDesc: null },

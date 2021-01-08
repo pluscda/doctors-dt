@@ -6,15 +6,14 @@
 //import VueCharts from "vue-chartjs";
 ///device/Workload?startDate=2018-11-26T16:00:00.000Z&endDate=2020-02-04T16:00:00.000Z&$inlinecount=allpages&$skip=10&$top=10
 import { Radar, mixins } from "vue-chartjs";
-import moment from "moment";
+import moment from "dayjs";
 const { reactiveData } = mixins;
 
 let labels = `一般、皮膚、頭部、鼻喉、口腔、胸部、心臟血管、腹部、新陳代謝、血液、腎臟、泌尿生殖器、性病、四肢及軀幹、聽力及聽器、視力及視器、神經系統`;
 labels = labels.split("、");
 
 //#5
-const PRE_URL =
-  "/device/Workload?startDate={%0}&endDate={%1}&$inlinecount=allpages&$skip=0&$top=440";
+const PRE_URL = "/device/Workload?startDate={%0}&endDate={%1}&$inlinecount=allpages&$skip=0&$top=440";
 export default {
   extends: Radar,
   mixins: [reactiveData],
@@ -26,8 +25,8 @@ export default {
       chartdata: {},
       options: {
         responsive: true,
-        maintainAspectRatio: false
-      }
+        maintainAspectRatio: false,
+      },
     };
   },
   methods: {
@@ -40,7 +39,7 @@ export default {
       const url = PRE_URL.replace(/{%0}/, start).replace(/{%1}/, today);
       try {
         const map = await window.axios.get(url);
-        map.Items.forEach(s => {
+        map.Items.forEach((s) => {
           labels.push(s.Name);
           data.push(s.TotalCount);
         });
@@ -65,14 +64,14 @@ export default {
             pointHoverBackgroundColor: "#fff",
             pointHoverBorderColor: "rgba(255,99,132,1)",
             // backgroundColor: ["#41B883", "#E46651", "#343a40", "#20c997", "#17a2b8", "#e83e8c", "#ffc107"],
-            data
-          }
-        ]
+            data,
+          },
+        ],
       };
     },
     getRandomInt() {
       return Math.floor(Math.random() * (50 - 5 + 1)) + 5;
-    }
+    },
   },
   async mounted() {
     //await this.getData();
@@ -93,15 +92,15 @@ export default {
       this.getRandomInt(),
       this.getRandomInt(),
       this.getRandomInt(),
-      this.getRandomInt()
+      this.getRandomInt(),
     ];
     this.drawReport(data);
   },
   watch: {
     time(val) {
       this.getData(val);
-    }
-  }
+    },
+  },
 };
 </script>
 

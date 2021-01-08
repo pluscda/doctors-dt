@@ -10,7 +10,7 @@
           <b-nav-item @click="$router.push('asklist')">線上諮詢</b-nav-item>
         </b-navbar-nav>
       </b-collapse>
-      <b-navbar-nav class="ml-auto" v-show="isLogin">
+      <b-navbar-nav class="ml-auto">
         <div class="bar-icon" id="popover-9" style="color:black;">
           <i class="fas fa-user-alt"></i>
         </div>

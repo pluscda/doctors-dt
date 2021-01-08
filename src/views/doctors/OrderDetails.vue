@@ -94,7 +94,7 @@
 
 <script>
 import queryString from "qs";
-import moment from "moment";
+import moment from "dayjs";
 import { store, actions } from "@/store/global.js";
 
 const vghOpts1 = ["chronic airyway disease", "asthma", "permaturity", "transplantation chemotherapy", "pompe disease", "other disease"].map((s) => s.toUpperCase());

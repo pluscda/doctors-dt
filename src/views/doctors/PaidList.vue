@@ -98,7 +98,6 @@
 </template>
 
 <script>
-import queryString from "query-string";
 import { store, actions } from "@/store/global.js";
 import moment from "moment";
 

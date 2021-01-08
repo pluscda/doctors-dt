@@ -118,7 +118,7 @@ const headers = [
 const zero = "T00:00:00";
 const rows = [10, 20, 50];
 export default {
-  name: "totalSpendPhraseBlackList",
+  name: "historyList",
   data() {
     return {
       orderBy: [],

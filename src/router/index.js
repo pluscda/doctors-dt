@@ -1,71 +1,50 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Home from '../views/Home.vue'
+
 
 Vue.use(VueRouter)
 
 const routes = [
   {
     path: '/',
-    name: 'Home',
-    component: Home
+    name: 'dochome',
+    component: () => import("../views/doctors/DocHome.vue")
   },
   {
     path: '/home',
-    name: 'Home',
-    component: Home
+    name: 'dochome',
+    component: () => import("../views/doctors/DocHome.vue")
   },
   {
     path: '/login',
     name: 'login',
     component: () => import("../views/Login.vue"),
   },
-  // {
-  //   path: '/connect/facebook/redirect',
-  //   name: 'facebook',
-  //   component: () => import("../views/Facebook.vue"),
-  // },
-  // {
-  //   path: '/connect/github/redirect',
-  //   name: 'github',
-  //   component: () => import("../views/Github.vue"),
-  // },
   {
     path: '/connect/:provider/redirect',
     name: 'provides',
     component: () => import("../views/Provider.vue"),
   },
- 
   {
-    path: '/dtc/login',
-    name: 'login',
-    component: () => import("../views/Login.vue"),
+    path: '/waitlist',
+    name: 'waitlist',
+    component: () => import("../views/doctors/WaitList.vue")
   },
   {
-    path: '/doclist',
-    name: 'doclist',
-    component: () => import("../views/DocList.vue"),
+    path: '/asklist',
+    name: 'asklist',
+    component: () => import("../views/doctors/AskList.vue")
   },
   {
-    path: '/paidlist',
-    name: 'paidlist',
-    component: () => import("../views/doctors/PaidList.vue")
-  },
-   {
-    path: '/orderdetail',
-    name: 'orderdetail',
-    component: () => import("../views/doctors/OrderDetails.vue")
-  },
-  {
-    path: '/file',
-    name: 'file',
-    component: () => import("../views/FileList.vue"),
+    path: '/historylist',
+    name: 'historylist',
+    component: () => import("../views/doctors/HistoryList.vue")
   },
 
 ]
 
 const router = new VueRouter({
-  mode: 'history',
+  mode: 'hash',
   base: process.env.BASE_URL,
   routes,
   scrollBehavior (to, from, savedPosition) {

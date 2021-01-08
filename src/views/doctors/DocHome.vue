@@ -10,7 +10,7 @@
     <main>
       <aside>
         <b-select v-model="row1_2" :options="years"></b-select>
-        <h6 class="mt-2 ml-3">線上諮詢</h6>
+        <h6 class="mt-2 ml-3">線上諮詢數量</h6>
       </aside>
       <ImgDtc :time="row1_2"></ImgDtc>
     </main>

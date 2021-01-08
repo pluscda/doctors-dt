@@ -1,3 +1,4 @@
+const moment = require('dayjs');
 module.exports = {
   pluginOptions: {
     i18n: {

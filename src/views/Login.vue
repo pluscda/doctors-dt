@@ -1,6 +1,7 @@
 <template>
   <section class="dtc-login" :style="isLogin ? '' : 'justify-content: center;'">
     <PhoneLogin></PhoneLogin>
+    <div class="version">軟體版本號: {{ versionTime }}</div>
     <footer class="provides-login" hidden>
       <b-button @click="toGithub" variant="warning">Github Login</b-button>
       <b-button @click="toFb" variant="success">Facebook Login</b-button>
@@ -20,6 +21,7 @@ export default {
   name: "loginHome",
   data() {
     return {
+      versionTime: window.versionTime,
       titles,
       labels,
       phone: sessionStorage.phone,
@@ -113,5 +115,10 @@ export default {
   display: grid;
   grid-template-columns: repeat(13, max-content);
   gap: 1rem;
+}
+.version {
+  position: fixed;
+  top: 20px;
+  left: 35px;
 }
 </style>

@@ -42,14 +42,12 @@
         >
       </div>
       <div @click="addComment(item)" style="cursor:pointer;">{{ item.comment.length }} <i class="fas fa-plus-circle"></i></div>
+      <div></div>
       <div>NT{{ $formatPrice(item.paidAmount) }}</div>
       <div>{{ $formatStatus(item.status) }}</div>
       <div>{{ $twDate(item.orderDate) }}</div>
       <div>{{ item.orderPhoneNum }}</div>
-      <div :style="item.isCancer ? 'color:red;' : ''">{{ item.isCancer ? "是" : "否" }}</div>
-      <div>{{ item.hardCopyReceived ? "是" : "否" }}</div>
-      <div>{{ item.copySendBack ? "是" : "否" }}</div>
-      <div>{{ item.docHasCopy ? "是" : "否" }}</div>
+      <div></div>
 
       <nav v-if="item.addNewComment" class="mb-2 add-comment">
         <b-textarea v-model="item.addedComment" placeholder="請在此輸入留言..." no-resize spellcheck="false" rows="4" style="width:99vw;"> </b-textarea>
@@ -102,14 +100,12 @@ import moment from "moment";
 
 const headers = [
   { name: "留言數量", key: "comment", sortDesc: null },
+  { name: "未讀留言", key: "unread", sortDesc: null },
   { name: "支付金額", key: "paidAmount", sortDesc: null },
   { name: "處理狀態", key: "status", sortDesc: null },
   { name: "下單日期", key: "orderDate", sortDesc: null },
   { name: "客戶電話", key: "orderPhoneNum", sortDesc: null },
-  { name: "癌症", key: "isCancer", sortDesc: null },
-  { name: "收到快遞", key: "hardCopyReceived", sortDesc: null },
-  { name: "寄回快遞", key: "copySendBack", sortDesc: null },
-  { name: "醫生收到快遞", key: "docHasCopy", sortDesc: null },
+  { name: "諮詢項目", key: "type", sortDesc: null },
 ];
 
 const zero = "T00:00:00";
@@ -293,7 +289,7 @@ export default {
 }
 .dtc-grid-header {
   display: grid;
-  grid-template-columns: 120px repeat(3, 120px) 180px repeat(4, 120px) 1fr;
+  grid-template-columns: 120px 100px 100px repeat(4, 150px) 1fr;
 
   text-align: center;
   padding-right: 0px;

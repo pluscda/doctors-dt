@@ -114,7 +114,7 @@ const headers = [
   { name: "醫生未讀留言", key: "docUnreadMsg", sortDesc: null },
   { name: "客戶未讀留言", key: "cusUnreadMsg", sortDesc: null },
   { name: "支付金額", key: "paidAmount", sortDesc: null },
-  { name: "處理狀態", key: "status", sortDesc: null },
+  { name: "處理狀態", key: "orderStatus", sortDesc: null },
   { name: "下單日期", key: "orderDate", sortDesc: null },
   { name: "客戶病狀", key: "cid", sortDesc: null },
   { name: "客戶電話", key: "orderPhoneNum", sortDesc: null },

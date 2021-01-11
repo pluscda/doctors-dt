@@ -58,7 +58,7 @@ export let actions = {
      return await axios.get(url);
   },
   async updateOrder(item){
-     return axios.put('orders/' + item.id, item);
+     return axios.put('dtc-orders/' + item.id, item);
   },
   async getDoctors(qs){
     const url = "doctors?" + qs;
@@ -74,14 +74,14 @@ export let actions = {
   },
  
   async getOrders(qs){
-    const url = "orders?" + qs;
-    const url2 = "orders/count?" + qs;
+    const url = "dtc-orders?" + qs;
+    const url2 = "dtc-orders/count?" + qs;
     const count = await actions.getCount(url2);
     const items = await axios.get(url);
     return {count, items};
   },
   async addOrder(item){
-      return await axios.post('orders', item);
+      return await axios.post('dtc-orders', item);
   },
   async getCancerTypes(){
 

@@ -8,6 +8,9 @@
       <b-input-group prepend="客戶病狀">
         <b-select :options="cancerCates" v-model="cate" @change="getData"></b-select>
       </b-input-group>
+      <b-input-group prepend="客戶電話">
+        <b-input v-model="phone"></b-input>
+      </b-input-group>
       <b-button class="mr-1" variant="light" @click="searchDb" size="sm"> <i class="fas fa-search"></i>進行查詢 </b-button>
       <b-button variant="info" @click="clearSearch" size="sm"> <i class="fas fa-eraser"></i>清除條件 </b-button>
     </div>
@@ -144,6 +147,7 @@ export default {
       toggleComment: false,
       cate: 0,
       status: 0,
+      phone: "",
     };
   },
   components: {},
@@ -274,7 +278,9 @@ export default {
       this.getData();
     },
     async clearSearch() {
-      this.Code = "";
+      this.status = 0;
+      this.cate = 0;
+      this.phone = "";
       this.search = false;
       this.getData();
     },
@@ -292,6 +298,10 @@ export default {
 
       if (this.cate) {
         qs += "&inqueryCate=" + this.cate;
+      }
+
+      if (this.phone) {
+        qs += "&orderPhoneNum=" + this.phone;
       }
 
       const { items, count } = await actions.getOrders(qs);

@@ -2,8 +2,14 @@
   <section class="dtc-main-section">
     <header class="ask-header">歷史報告</header>
     <div class="dtc-search pl-2">
-      <b-input-group prepend="關鍵字">
-        <b-input v-model.trim="Code" placeholder="搜尋關鍵字" @keydown.enter="searchDb"></b-input>
+      <b-input-group prepend="處理狀態">
+        <b-select :options="orderStatus" v-model="status" @change="getData"></b-select>
+      </b-input-group>
+      <b-input-group prepend="客戶病狀">
+        <b-select :options="cancerCates" v-model="cate" @change="getData"></b-select>
+      </b-input-group>
+      <b-input-group prepend="客戶電話">
+        <b-input v-model="phone"></b-input>
       </b-input-group>
       <b-button class="mr-1" variant="light" @click="searchDb" size="sm"> <i class="fas fa-search"></i>進行查詢 </b-button>
       <b-button variant="info" @click="clearSearch" size="sm"> <i class="fas fa-eraser"></i>清除條件 </b-button>
@@ -37,18 +43,29 @@
       :style="i % 2 == 0 ? 'background-color: #F5F5F5;' : 'background-color: #E0E0E0;'"
     >
       <div style="display:grid; grid-template-columns: max-content max-content">
-        <b-button size="sm" variant="info" class="mx-2" @click="$router.push('orderdetail')">查詢報告</b-button>
+        <b-button size="sm" variant="info" class="mx-2" @click="wirteReport(item)">報告撰寫</b-button>
         <b-form-checkbox v-model="item.viewItemComment" :disabled="!item.message.length" style="margin-top:2px;" class="ml-1" @change="viewComment(item)" switch
           >查看留言</b-form-checkbox
         >
       </div>
-      <div @click="addComment(item)" style="cursor:pointer;">{{ item.message.length }} <i class="fas fa-plus-circle"></i></div>
-      <div></div>
-      <div>NT{{ $formatPrice(item.paidAmount) }}</div>
+      <div v-if="!item.viewComment" @click="addComment(item)" style="cursor:pointer;">{{ item.message.length }} <i class="fas fa-plus-circle"></i></div>
+      <div
+        v-else
+        @click="
+          item.viewComment = false;
+          hideTextarea(item);
+        "
+        style="cursor:pointer;"
+      >
+        {{ item.message.length }}<i class="fas fa-minus-circle"></i>
+      </div>
+      <div>{{ item.docUnreadMsg || 0 }}</div>
+      <div>{{ item.cusUnreadMsg || 0 }}</div>
+      <div>{{ $formatPrice(item.paidAmount) }}</div>
       <div>{{ $formatStatus(item.orderStatus) }}</div>
       <div>{{ $twDate(item.orderDate) }}</div>
+      <div>{{ item.inqueryCate && cancerCates.find((s) => s.value == item.inqueryCate).text }}</div>
       <div>{{ item.orderPhoneNum }}</div>
-      <div :style="item.isCancer ? 'color:red;' : ''">{{ item.isCancer ? "是" : "否" }}</div>
       <div>{{ item.hardCopyReceived ? "是" : "否" }}</div>
       <div>{{ item.copySendBack ? "是" : "否" }}</div>
       <div>{{ item.docHasCopy ? "是" : "否" }}</div>
@@ -103,13 +120,14 @@ import { store, actions } from "@/store/global.js";
 import moment from "dayjs";
 
 const headers = [
-  { name: "留言數量", key: "comment", sortDesc: null },
-  { name: "未讀留言", key: "unread", sortDesc: null },
+  { name: "留言數量", key: "totalMsg", sortDesc: null },
+  { name: "醫生未讀留言", key: "docUnreadMsg", sortDesc: null },
+  { name: "客戶未讀留言", key: "cusUnreadMsg", sortDesc: null },
   { name: "支付金額", key: "paidAmount", sortDesc: null },
-  { name: "處理狀態", key: "status", sortDesc: null },
+  { name: "處理狀態", key: "orderStatus", sortDesc: null },
   { name: "下單日期", key: "orderDate", sortDesc: null },
+  { name: "客戶病狀", key: "inqueryCate", sortDesc: null },
   { name: "客戶電話", key: "orderPhoneNum", sortDesc: null },
-  { name: "癌症", key: "isCancer", sortDesc: null },
   { name: "收到快遞", key: "hardCopyReceived", sortDesc: null },
   { name: "寄回快遞", key: "copySendBack", sortDesc: null },
   { name: "醫生收到快遞", key: "docHasCopy", sortDesc: null },
@@ -118,7 +136,7 @@ const headers = [
 const zero = "T00:00:00";
 const rows = [10, 20, 50];
 export default {
-  name: "historyList",
+  name: "waitList",
   data() {
     return {
       orderBy: [],
@@ -133,12 +151,15 @@ export default {
       items: [],
       currentPageNum: 1,
       rowCount: 0,
-      pagingRowPerPage: 20,
+      pagingRowPerPage: 10,
       search: false,
       rows,
       totalCountStr: "",
       editItem: "",
       toggleComment: false,
+      cate: 0,
+      status: 0,
+      phone: "",
     };
   },
   components: {},
@@ -146,8 +167,27 @@ export default {
     myEditItem() {
       return store.editItem;
     },
+    cancerCates() {
+      let arr = store.cates
+        .filter((s) => +s.cid < 34)
+        .map((s) => ({
+          value: s.cid,
+          text: s.name,
+        }));
+      arr.unshift({ value: 0, text: "全部" });
+      return arr;
+    },
+    orderStatus() {
+      let arr = [...store.orderStatus];
+      arr.unshift({ value: 0, text: "全部" });
+      return arr;
+    },
   },
   methods: {
+    wirteReport(item) {
+      store.editItem = { ...item };
+      this.$router.push("orderdetail");
+    },
     hideTextarea(item) {
       item.addNewComment = item.addNewDoctorComment = "";
       this.items = [...this.items];
@@ -159,6 +199,7 @@ export default {
       obj.commentAt = new Date().toISOString();
       obj.rating = 0;
       obj.userComment = "";
+      obj.read = false;
       item.message.unshift(obj);
       try {
         await actions.updateOrder(item);
@@ -170,8 +211,9 @@ export default {
           autoHideDelay: 5000,
           variant: "success",
         });
+        setTimeout(this.getData(), 200);
       } catch (e) {
-        alert(e);
+        alert("client :" + e);
       }
     },
     addComment(item) {
@@ -197,71 +239,46 @@ export default {
       this.orderBy = [];
       this.headers.forEach((s) => {
         if (s.sortDesc !== null) {
-          this.orderBy.push(s.sortDesc ? `${s.key} desc` : `${s.key}`);
+          this.orderBy.push(s.sortDesc ? `${s.key}:desc` : `${s.key}:asc`);
         }
       });
       this.getData();
-    },
-    addNewBlackPhrase() {
-      this.$bvModal.show("dtcAddBlacklist");
-    },
-    async del(item) {
-      try {
-        await actions.deleteBlackWord(item.Id);
-        this.getData();
-      } catch (e) {
-        alert(e);
-      }
-    },
-    async editMyItem(item) {
-      store.editItem = { ...item };
-      this.$bvModal.show("dtcEditBlackWord");
-    },
-
-    closePhraseUi() {
-      store.showPhraseDlg = false;
-    },
-    async edit(item) {
-      // get personal info
-      store.editItem = await actions.getInfoById(item.Id);
-      this.$router.push("details");
-    },
-    async updateStatus(item) {
-      const obj = {
-        Id: item.Id,
-        Word: item.Word,
-        IsActivated: !item.IsActivated,
-        CreateTime: item.CreateTime,
-        CreateAccountNo: item.CreateAccountNo,
-      };
-      try {
-        await actions.editBlackWord(obj);
-        this.$bvToast.toast(`啟用狀態更新成功`, {
-          title: "黑名單管理",
-          autoHideDelay: 5000,
-          variant: "success",
-        });
-      } catch (e) {
-        this.$bvToast.toast(`啟用狀態更新失敗 ` + e, {
-          title: "黑名單管理",
-          autoHideDelay: 5000,
-          variant: "danger",
-        });
-      }
     },
     searchDb() {
       this.search = true;
       this.getData();
     },
     async clearSearch() {
-      this.Code = "";
+      this.status = 0;
+      this.cate = 0;
+      this.phone = "";
       this.search = false;
       this.getData();
     },
     async getData() {
-      let qs = "doctorPhone_eq=" + sessionStorage.phone;
-      const { items, count } = await actions.getOrders(qs);
+      let qs = "doctorPhone=" + sessionStorage.phone;
+      qs += "&inqueryCate_lt=" + 34;
+      qs += "&_limit=" + this.pagingRowPerPage;
+      if (this.orderBy.length) {
+        qs += "&_sort=" + this.orderBy.join(",");
+      }
+      if (this.currentPageNum > 1) {
+        qs += `&_start=` + (this.currentPageNum - 1) * this.pagingRowPerPage;
+      }
+      // filters by user
+      if (this.status) {
+        qs += "&orderStatus=" + this.status;
+      }
 
+      if (this.cate) {
+        qs += "&inqueryCate=" + this.cate;
+      }
+
+      if (this.phone) {
+        qs += "&orderPhoneNum=" + this.phone;
+      }
+
+      const { items, count } = await actions.getOrders(qs);
       this.items = items;
       this.rowCount = count;
       this.totalCountStr = `共${count} 筆`;
@@ -296,7 +313,7 @@ export default {
 }
 .dtc-grid-header {
   display: grid;
-  grid-template-columns: 200px repeat(3, 100px) 120px 180px repeat(4, 120px) 1fr;
+  grid-template-columns: 200px repeat(4, 100px) 120px 180px repeat(4, 120px) 1fr;
 
   text-align: center;
   padding-right: 0px;

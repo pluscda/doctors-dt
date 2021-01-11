@@ -48,8 +48,8 @@
           >查看留言</b-form-checkbox
         >
       </div>
-      <div @click="addComment(item)" style="cursor:pointer;">{{ item.message.length }} <i class="fas fa-plus-circle"></i></div>
-      <div>{{ item.message.length ? "" : 0 }}</div>
+      <div @click="addComment(item)" style="cursor:pointer;">{{ item.totalMsg }} <i class="fas fa-plus-circle"></i></div>
+      <div>{{ item.unreadMsg }}</div>
       <div>NT{{ $formatPrice(item.paidAmount) }}</div>
       <div>{{ $formatStatus(item.orderStatus) }}</div>
       <div>{{ $twDate(item.orderDate) }}</div>
@@ -109,8 +109,8 @@ import { store, actions } from "@/store/global.js";
 import moment from "dayjs";
 
 const headers = [
-  { name: "留言數量", key: "comment", sortDesc: null },
-  { name: "未讀留言", key: "unread", sortDesc: null },
+  { name: "留言數量", key: "totalMsg", sortDesc: null },
+  { name: "未讀留言", key: "unreadMsg", sortDesc: null },
   { name: "支付金額", key: "paidAmount", sortDesc: null },
   { name: "處理狀態", key: "status", sortDesc: null },
   { name: "下單日期", key: "orderDate", sortDesc: null },

@@ -115,33 +115,17 @@ export default {
     setPersonInfo() {},
   },
   async mounted() {
-    // this.$mousetrap.bind("f1", () => {
-    //   this.showAll = !this.showAll;
-    //   return false;
-    // });
-    // this.$mousetrap.bind("f3", () => {
-    //   this.doShowPhraseDlg();
-    //   return false;
-    // });
-    // this.$mousetrap.bind("f4", () => {
-    //   this.$router.push("waitlist");
-    // });
-    // this.$mousetrap.bind("f5", () => {
-    //   this.temporarySave();
-    //   return false;
-    // });
-    // this.$mousetrap.bind("f6", () => {
-    //   this.officalSave();
-    //   return false;
-    // });
-    // this.$mousetrap.bind("f7", () => {
-    //   this.goPreReport();
-    //   return false;
-    // });
-    // this.$mousetrap.bind("f8", () => {
-    //   this.goNextReport();
-    //   return false;
-    // });
+    this.$mousetrap.bind("f5", () => {
+      this.save(false);
+      return false;
+    });
+    this.$mousetrap.bind("f6", () => {
+      this.save(true);
+      return false;
+    });
+    this.$mousetrap.bind("f4", () => {
+      this.$router.go(-1);
+    });
   },
   async created() {},
 

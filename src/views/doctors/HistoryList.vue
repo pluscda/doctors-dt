@@ -38,11 +38,11 @@
     >
       <div style="display:grid; grid-template-columns: max-content max-content">
         <b-button size="sm" variant="info" class="mx-2" @click="$router.push('orderdetail')">查詢報告</b-button>
-        <b-form-checkbox v-model="item.viewItemComment" :disabled="!item.comment.length" style="margin-top:2px;" class="ml-1" @change="viewComment(item)" switch
+        <b-form-checkbox v-model="item.viewItemComment" :disabled="!item.message.length" style="margin-top:2px;" class="ml-1" @change="viewComment(item)" switch
           >查看留言</b-form-checkbox
         >
       </div>
-      <div @click="addComment(item)" style="cursor:pointer;">{{ item.comment.length }} <i class="fas fa-plus-circle"></i></div>
+      <div @click="addComment(item)" style="cursor:pointer;">{{ item.message.length }} <i class="fas fa-plus-circle"></i></div>
       <div></div>
       <div>NT{{ $formatPrice(item.paidAmount) }}</div>
       <div>{{ $formatStatus(item.status) }}</div>
@@ -59,7 +59,7 @@
         <b-button class="mt-1" size="sm" style="float:left" @click="hideTextarea(item)">取消</b-button>
       </nav>
       <footer v-if="item.viewComment">
-        <main v-for="(note, k) in item.comment" :key="k">
+        <main v-for="(note, k) in item.message" :key="k">
           <section class="mb-1" style="color:white;" :style="note.docComment ? 'background:#1f7cd3;' : 'background:#0f579b;'">
             <div>
               <span class="mr-2" v-if="note.docComment"><i class="fas fa-hospital-user"></i></span>
@@ -159,7 +159,7 @@ export default {
       obj.commentAt = new Date().toISOString();
       obj.rating = 0;
       obj.userComment = "";
-      item.comment.unshift(obj);
+      item.message.unshift(obj);
       try {
         await actions.updateOrder(item);
         item.addedComment = "";

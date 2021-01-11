@@ -65,14 +65,14 @@
           <i class="fas fa-caret-right"></i>
         </div>
 
-        <b-button variant="primary" @click="temporarySave" :disabled="!item.judge"
+        <b-button variant="primary" @click="save" :disabled="!item.judge"
           ><span class="pr-1"><i class="fas fa-save"></i></span>暫存報告(F5)</b-button
         >
-        <b-button variant="success" @click="officalSave" :disabled="!item.judge"
+        <b-button variant="success" @click="save(true)" :disabled="!item.judge"
           ><span class="pr-1"><i class="fas fa-check"></i></span>正式報告(F6)</b-button
         >
 
-        <b-button @click="$router.push('waitlist')"
+        <b-button @click="$router.push('/waitlist')"
           ><span class="pr-1"><i class="fas fa-arrow-left"></i></span>返回清單(F4)</b-button
         >
         <div></div>
@@ -123,6 +123,19 @@ export default {
     },
   },
   methods: {
+    async save(offical) {
+      const str = offical ? "正式報告" : "暫存報告";
+      try {
+        await actions.updateOrder(item);
+        this.$bvToast.toast(`儲存${str}成功`, {
+          title: "系統資訊",
+          autoHideDelay: 5000,
+          variant: "success",
+        });
+      } catch (e) {
+        alert("client :" + e);
+      }
+    },
     setPersonInfo() {},
   },
   async mounted() {

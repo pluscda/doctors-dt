@@ -45,7 +45,7 @@
       <div @click="addComment(item)" style="cursor:pointer;">{{ item.message.length }} <i class="fas fa-plus-circle"></i></div>
       <div></div>
       <div>NT{{ $formatPrice(item.paidAmount) }}</div>
-      <div>{{ $formatStatus(item.status) }}</div>
+      <div>{{ $formatStatus(item.orderStatus) }}</div>
       <div>{{ $twDate(item.orderDate) }}</div>
       <div>{{ item.orderPhoneNum }}</div>
       <div :style="item.isCancer ? 'color:red;' : ''">{{ item.isCancer ? "是" : "否" }}</div>

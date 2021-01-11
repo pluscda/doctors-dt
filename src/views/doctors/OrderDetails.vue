@@ -72,7 +72,7 @@
           ><span class="pr-1"><i class="fas fa-check"></i></span>正式報告(F6)</b-button
         >
 
-        <b-button @click="$router.push('paidlist')"
+        <b-button @click="$router.push('waitlist')"
           ><span class="pr-1"><i class="fas fa-arrow-left"></i></span>返回清單(F4)</b-button
         >
         <div></div>

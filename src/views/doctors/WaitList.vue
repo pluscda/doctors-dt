@@ -50,6 +50,7 @@
       </div>
       <div @click="addComment(item)" style="cursor:pointer;">{{ item.totalMsg }} <i class="fas fa-plus-circle"></i></div>
       <div>{{ item.docUnreadMsg }}</div>
+      <div>{{ item.cusUnreadMsg }}</div>
       <div>NT{{ $formatPrice(item.paidAmount) }}</div>
       <div>{{ $formatStatus(item.orderStatus) }}</div>
       <div>{{ $twDate(item.orderDate) }}</div>
@@ -334,7 +335,7 @@ export default {
 }
 .dtc-grid-header {
   display: grid;
-  grid-template-columns: 200px repeat(3, 100px) 120px 180px repeat(4, 120px) 1fr;
+  grid-template-columns: 200px repeat(4, 100px) 120px 180px repeat(4, 120px) 1fr;
 
   text-align: center;
   padding-right: 0px;

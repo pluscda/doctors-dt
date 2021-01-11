@@ -121,7 +121,7 @@ export let mutations = {
   login(phone) {
     store.isLogin = true;
     sessionStorage.isLogin = "true";
-    sessionStorage.phone = phone;
+    sessionStorage.phone = phone.slice(1);
   },
   async logout() {
     await firebase.auth().signOut();

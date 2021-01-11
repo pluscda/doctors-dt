@@ -257,9 +257,11 @@ export default {
       this.getData();
     },
     async getData() {
-      let qs = "doctorPhone_eq=" + sessionStorage.phone;
-      qs += `&_limit=` + this.pagingRowPerPage;
-      qs += `&_skip=` + this.currentPageNum > 1 ? (this.currentPageNum - 1) * this.pagingRowPerPage : 0;
+      let qs = "doctorPhone=" + sessionStorage.phone;
+      // qs += "&_limit=" + this.pagingRowPerPage;
+      // if (this.currentPageNum > 1) {
+      //   qs += `&_skip=` + (this.currentPageNum - 1) * this.pagingRowPerPage;
+      // }
       const { items, count } = await actions.getOrders(qs);
       this.items = items;
       this.rowCount = count;

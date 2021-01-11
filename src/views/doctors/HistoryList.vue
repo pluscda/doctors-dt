@@ -6,7 +6,7 @@
         <b-select :options="orderStatus" v-model="status" @change="getData"></b-select>
       </b-input-group>
       <b-input-group prepend="客戶病狀">
-        <b-select :options="cancerCates" v-model="cate" @change="getData"></b-select>
+        <b-select :options="allCates" v-model="cate" @change="getData"></b-select>
       </b-input-group>
       <b-input-group prepend="客戶電話">
         <b-input v-model="phone"></b-input>
@@ -64,7 +64,7 @@
       <div>{{ $formatPrice(item.paidAmount) }}</div>
       <div>{{ $formatStatus(item.orderStatus) }}</div>
       <div>{{ $twDate(item.orderDate) }}</div>
-      <div>{{ item.inqueryCate && cancerCates.find((s) => s.value == item.inqueryCate).text }}</div>
+      <div>{{ item.inqueryCate && allCates.find((s) => s.value == item.inqueryCate).text }}</div>
       <div>{{ item.orderPhoneNum }}</div>
       <div>{{ item.hardCopyReceived ? "是" : "否" }}</div>
       <div>{{ item.copySendBack ? "是" : "否" }}</div>
@@ -136,7 +136,7 @@ const headers = [
 const zero = "T00:00:00";
 const rows = [10, 20, 50];
 export default {
-  name: "waitList",
+  name: "historylist",
   data() {
     return {
       orderBy: [],
@@ -167,13 +167,11 @@ export default {
     myEditItem() {
       return store.editItem;
     },
-    cancerCates() {
-      let arr = store.cates
-        .filter((s) => +s.cid < 34)
-        .map((s) => ({
-          value: s.cid,
-          text: s.name,
-        }));
+    allCates() {
+      let arr = store.cates.map((s) => ({
+        value: s.cid,
+        text: s.name,
+      }));
       arr.unshift({ value: 0, text: "全部" });
       return arr;
     },
@@ -257,7 +255,6 @@ export default {
     },
     async getData() {
       let qs = "doctorPhone=" + sessionStorage.phone;
-      qs += "&inqueryCate_lt=" + 34;
       qs += "&_limit=" + this.pagingRowPerPage;
       if (this.orderBy.length) {
         qs += "&_sort=" + this.orderBy.join(",");
@@ -279,7 +276,7 @@ export default {
       }
 
       const { items, count } = await actions.getOrders(qs);
-      this.items = items;
+      this.items = [...items];
       this.rowCount = count;
       this.totalCountStr = `共${count} 筆`;
     },

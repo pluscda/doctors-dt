@@ -116,7 +116,7 @@ const headers = [
   { name: "支付金額", key: "paidAmount", sortDesc: null },
   { name: "處理狀態", key: "orderStatus", sortDesc: null },
   { name: "下單日期", key: "orderDate", sortDesc: null },
-  { name: "客戶病狀", key: "cid", sortDesc: null },
+  { name: "客戶病狀", key: "inqueryCate", sortDesc: null },
   { name: "客戶電話", key: "orderPhoneNum", sortDesc: null },
   { name: "收到快遞", key: "hardCopyReceived", sortDesc: null },
   { name: "寄回快遞", key: "copySendBack", sortDesc: null },

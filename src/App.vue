@@ -33,8 +33,8 @@ export default {
   components: {
     DtcNavBar,
   },
-  mounted() {
-    //actions.recaptch("sign-in-button");
+  async mounted() {
+    store.cates = await actions.getCancerTypes();
   },
   watch: {
     $route(to, from) {

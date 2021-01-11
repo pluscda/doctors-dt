@@ -5,6 +5,9 @@
       <b-input-group prepend="關鍵字">
         <b-input v-model.trim="Code" placeholder="搜尋關鍵字" @keydown.enter="searchDb"></b-input>
       </b-input-group>
+      <b-input-group prepend="客戶病狀">
+        <b-select :options="cancerCates" v-model="cate"></b-select>
+      </b-input-group>
       <b-button class="mr-1" variant="light" @click="searchDb" size="sm"> <i class="fas fa-search"></i>進行查詢 </b-button>
       <b-button variant="info" @click="clearSearch" size="sm"> <i class="fas fa-eraser"></i>清除條件 </b-button>
     </div>
@@ -137,12 +140,23 @@ export default {
       totalCountStr: "",
       editItem: "",
       toggleComment: false,
+      cate: 0,
     };
   },
   components: {},
   computed: {
     myEditItem() {
       return store.editItem;
+    },
+    cancerCates() {
+      let arr = store.cates
+        .filter((s) => +s.cid < 34)
+        .map((s) => ({
+          value: s.cid,
+          text: s.name,
+        }));
+      arr.unshift({ value: 0, text: "全部" });
+      return arr;
     },
   },
   methods: {

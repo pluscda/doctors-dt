@@ -81,7 +81,9 @@
         > -->
       </nav>
       <section class="nav-left-right mx-2" :class="item.ProcedureCode == 'fv' ? 'dtc-fv' : 'dtc-ios'">
-        <div ref="reportLeft" class="left"></div>
+        <div ref="reportLeft" class="left">
+          <b-textarea placeholder="請在此輸入報告..." spellcheck="false" no-resize class="input-area-dtc"></b-textarea>
+        </div>
         <div ref="reportRight" class="right"></div>
       </section>
     </main>
@@ -671,5 +673,10 @@ export default {
       margin-top: 20px;
     }
   }
+}
+
+.input-area-dtc {
+  width: 100%;
+  height: 100%;
 }
 </style>

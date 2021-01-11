@@ -43,7 +43,7 @@
       :style="i % 2 == 0 ? 'background-color: #F5F5F5;' : 'background-color: #E0E0E0;'"
     >
       <div style="display:grid; grid-template-columns: max-content max-content">
-        <b-button size="sm" variant="info" class="mx-2" @click="$router.push('orderdetail')">報告撰寫</b-button>
+        <b-button size="sm" variant="info" class="mx-2" @click="wirteReport(item)">報告撰寫</b-button>
         <b-form-checkbox v-model="item.viewItemComment" :disabled="!item.message.length" style="margin-top:2px;" class="ml-1" @change="viewComment(item)" switch
           >查看留言</b-form-checkbox
         >
@@ -164,6 +164,10 @@ export default {
   },
   components: {},
   computed: {
+    wirteReport(item) {
+      store.editItem = item;
+      this.$router.push("orderdetail");
+    },
     myEditItem() {
       return store.editItem;
     },

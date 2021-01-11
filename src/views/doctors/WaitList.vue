@@ -261,7 +261,7 @@ export default {
       qs += "&inqueryCate_lt=" + 34;
       qs += "&_limit=" + this.pagingRowPerPage;
       if (this.currentPageNum > 1) {
-        qs += `&_skip=` + (this.currentPageNum - 1) * this.pagingRowPerPage;
+        qs += `&_start=` + (this.currentPageNum - 1) * this.pagingRowPerPage;
       }
       const { items, count } = await actions.getOrders(qs);
       this.items = items;

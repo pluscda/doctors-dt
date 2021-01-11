@@ -65,9 +65,6 @@
           <i class="fas fa-caret-right"></i>
         </div>
 
-        <b-button variant="warning"
-          ><span class="pr-1"><i class="far fa-images"></i></span>呼叫PACS(F2)</b-button
-        >
         <b-button variant="primary" @click="temporarySave"
           ><span class="pr-1"><i class="fas fa-save"></i></span>暫存報告(F5)</b-button
         >

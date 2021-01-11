@@ -64,7 +64,9 @@
       <div>{{ $formatPrice(item.paidAmount) }}</div>
       <div>{{ $formatStatus(item.orderStatus) }}</div>
       <div>{{ $twDate(item.orderDate) }}</div>
-      <div>{{ item.inqueryCate && allCates.find((s) => s.value == item.inqueryCate).text }}</div>
+      <div>
+        {{ (item.inqueryCate && allCates.find((s) => s.value == item.inqueryCate) && allCates.find((s) => s.value == item.inqueryCate).text) || item.inqueryCate }}
+      </div>
       <div>{{ item.orderPhoneNum }}</div>
       <div>{{ item.hardCopyReceived ? "是" : "否" }}</div>
       <div>{{ item.copySendBack ? "是" : "否" }}</div>

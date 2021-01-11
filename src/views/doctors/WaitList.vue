@@ -49,7 +49,7 @@
         >
       </div>
       <div @click="addComment(item)" style="cursor:pointer;">{{ item.totalMsg }} <i class="fas fa-plus-circle"></i></div>
-      <div>{{ item.unreadMsg }}</div>
+      <div>{{ item.docUnreadMsg }}</div>
       <div>NT{{ $formatPrice(item.paidAmount) }}</div>
       <div>{{ $formatStatus(item.orderStatus) }}</div>
       <div>{{ $twDate(item.orderDate) }}</div>
@@ -110,7 +110,7 @@ import moment from "dayjs";
 
 const headers = [
   { name: "留言數量", key: "totalMsg", sortDesc: null },
-  { name: "未讀留言", key: "unreadMsg", sortDesc: null },
+  { name: "醫生未讀留言", key: "unreadMsg", sortDesc: null },
   { name: "支付金額", key: "paidAmount", sortDesc: null },
   { name: "處理狀態", key: "status", sortDesc: null },
   { name: "下單日期", key: "orderDate", sortDesc: null },
@@ -226,9 +226,7 @@ export default {
       });
       this.getData();
     },
-    addNewBlackPhrase() {
-      this.$bvModal.show("dtcAddBlacklist");
-    },
+
     async del(item) {
       try {
         await actions.deleteBlackWord(item.Id);
@@ -236,10 +234,6 @@ export default {
       } catch (e) {
         alert(e);
       }
-    },
-    async editMyItem(item) {
-      store.editItem = { ...item };
-      this.$bvModal.show("dtcEditBlackWord");
     },
 
     closePhraseUi() {

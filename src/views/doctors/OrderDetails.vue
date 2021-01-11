@@ -4,7 +4,7 @@
       <i class="fas fa-times-circle"></i>
     </div>
     <header class="ask-header print-hide">
-      診斷報告撰寫作業
+      診斷報告: 撰寫作業
     </header>
     <div class="dtc-search pl-2 print-hide">
       <b-input-group prepend="檢查日期">

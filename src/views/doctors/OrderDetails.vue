@@ -35,14 +35,14 @@
     <main class="main-sec">
       <nav class="nav-opts mb-1 mx-2 mt-2 py-2 ml-4 print-hide">
         <b-button variant="primary" @click="save(false)" :disabled="!item.judge"
-          ><span class="pr-1"><i class="fas fa-save"></i></span>暫存報告(F5)</b-button
+          ><span class="pr-1"><i class="fas fa-save"></i></span>暫存報告</b-button
         >
         <b-button variant="success" @click="save(true)" :disabled="!item.judge"
-          ><span class="pr-1"><i class="fas fa-check"></i></span>正式報告(F6)</b-button
+          ><span class="pr-1"><i class="fas fa-check"></i></span>正式報告</b-button
         >
 
         <b-button @click="$router.go(-1)"
-          ><span class="pr-1"><i class="fas fa-arrow-left"></i></span>返回清單(F4)</b-button
+          ><span class="pr-1"><i class="fas fa-arrow-left"></i></span>返回清單</b-button
         >
         <div></div>
       </nav>

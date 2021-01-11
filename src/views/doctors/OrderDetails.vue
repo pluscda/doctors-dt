@@ -100,7 +100,6 @@ export default {
       }
       try {
         await actions.updateOrder(this.item);
-        // Vue.$toast.success(str);
         this.$bvToast.toast(`${str}成功`, {
           title: "系統資訊",
           autoHideDelay: 5000,

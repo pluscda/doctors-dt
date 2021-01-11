@@ -49,8 +49,8 @@
         >
       </div>
       <div @click="addComment(item)" style="cursor:pointer;">{{ item.totalMsg }} <i class="fas fa-plus-circle"></i></div>
-      <div>{{ item.docUnreadMsg }}</div>
-      <div>{{ item.cusUnreadMsg }}</div>
+      <div>{{ item.docUnreadMsg || 0 }}</div>
+      <div>{{ item.cusUnreadMsg || 0 }}</div>
       <div>NT{{ $formatPrice(item.paidAmount) }}</div>
       <div>{{ $formatStatus(item.orderStatus) }}</div>
       <div>{{ $twDate(item.orderDate) }}</div>

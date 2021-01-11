@@ -164,10 +164,6 @@ export default {
   },
   components: {},
   computed: {
-    wirteReport(item) {
-      store.editItem = item;
-      this.$router.push("orderdetail");
-    },
     myEditItem() {
       return store.editItem;
     },
@@ -188,6 +184,10 @@ export default {
     },
   },
   methods: {
+    wirteReport(item) {
+      store.editItem = { ...item };
+      this.$router.push("orderdetail");
+    },
     hideTextarea(item) {
       item.addNewComment = item.addNewDoctorComment = "";
       this.items = [...this.items];

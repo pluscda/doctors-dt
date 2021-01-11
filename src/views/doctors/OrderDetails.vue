@@ -65,10 +65,10 @@
           <i class="fas fa-caret-right"></i>
         </div>
 
-        <b-button variant="primary" @click="temporarySave"
+        <b-button variant="primary" @click="temporarySave" :disabled="!item.judge"
           ><span class="pr-1"><i class="fas fa-save"></i></span>暫存報告(F5)</b-button
         >
-        <b-button variant="success" @click="officalSave"
+        <b-button variant="success" @click="officalSave" :disabled="!item.judge"
           ><span class="pr-1"><i class="fas fa-check"></i></span>正式報告(F6)</b-button
         >
 
@@ -76,13 +76,10 @@
           ><span class="pr-1"><i class="fas fa-arrow-left"></i></span>返回清單(F4)</b-button
         >
         <div></div>
-        <!-- <b-button variant="primary" style="float:right;" @click="printImage"
-          ><span class="pr-1"><i class="fas fa-print"></i></span>列印(F9)</b-button
-        > -->
       </nav>
       <section class="nav-left-right mx-2" :class="item.ProcedureCode == 'fv' ? 'dtc-fv' : 'dtc-ios'">
         <div ref="reportLeft" class="left">
-          <b-textarea autofocus placeholder="請在此輸入報告..." spellcheck="false" no-resize class="input-area-dtc"></b-textarea>
+          <b-textarea v-model="item.judge" autofocus placeholder="請在此輸入報告..." spellcheck="false" no-resize class="input-area-dtc"></b-textarea>
         </div>
         <div ref="reportRight" class="right"></div>
       </section>
@@ -126,22 +123,7 @@ export default {
     },
   },
   methods: {
-    printImage() {
-      window.print();
-    },
-    focusActive() {
-      this.editing = true;
-    },
-    setPersonInfo() {
-      this.checkTime = this.item.StudyTime ? this.item.StudyTime.split("T")[0] : "暫無資料";
-      this.personName = this.item.Patient.Name ? this.item.Patient.Name : "暫無資料";
-      this.gender = this.item.Patient.Sex == "M" ? "男" : this.gender == "F" ? "女" : "暫無資料";
-      this.personHeight = this.item.Height ? this.item.Height : "暫無資料";
-      this.age = this.item.Patient.Birthday ? this.getAge(this.item.Patient.Birthday) : "暫無資料";
-      this.id = "暫無資料";
-      this.birthday = this.item.Patient.Birthday ? this.item.Patient.Birthday.split("T")[0] : "暫無資料";
-      this.personWeight = this.item.Weight ? this.item.Weight : "暫無資料";
-    },
+    setPersonInfo() {},
   },
   async mounted() {
     this.$mousetrap.bind("f1", () => {

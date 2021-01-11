@@ -17,7 +17,8 @@ import "vue-toast-notification/dist/theme-default.css";
 Vue.use(VueToast, { position: "top" });
 
 Vue.config.productionTip = false
-
+import VueMousetrap from 'vue-mousetrap'
+Vue.use(VueMousetrap)
 new Vue({
   router,
   i18n,

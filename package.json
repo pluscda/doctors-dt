@@ -17,6 +17,7 @@
     "faker": "^5.1.0",
     "firebase": "^8.2.1",
     "localforage": "^1.9.0",
+    "mousetrap": "^1.6.5",
     "odata-query": "^6.6.0",
     "qs": "^6.9.4",
     "query-string": "^6.13.7",
@@ -26,6 +27,7 @@
     "vue": "^2.6.11",
     "vue-chartjs": "^3.5.1",
     "vue-i18n": "^8.17.3",
+    "vue-mousetrap": "^1.0.2",
     "vue-router": "^3.2.0",
     "vue-toast-notification": "^0.6.0"
   },

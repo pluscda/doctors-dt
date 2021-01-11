@@ -96,30 +96,11 @@ import queryString from "qs";
 import moment from "dayjs";
 import { store, actions } from "@/store/global.js";
 
-const vghOpts1 = ["chronic airyway disease", "asthma", "permaturity", "transplantation chemotherapy", "pompe disease", "other disease"].map((s) => s.toUpperCase());
-const vghOpts2 = ["forced spirometry", "bronchodilator TEST:100 mcq sblbutamol", "bronchodilator test", "spontaneour tidal breathing", "ios", "other"].map((s) =>
-  s.toUpperCase().replace("MCQ", "mcq")
-);
-const vghOpts3 = ["acceptable", "suboptiomal", "poor"].map((s) => s.toUpperCase());
-const vghOpts4 = [
-  "normal for body weight",
-  "this pft shows obstructive lung disease",
-  "this pft shows restrictive lung disease",
-  "this pft shows_impairment of small airways",
-  "bronchodilator test showed significant response to bronchodilators",
-  "bronchodilator test showed no significant response to bronchodilators",
-  "other",
-].map((s) => s.toUpperCase());
-
 const zero = "T00:00:00Z";
 export default {
   name: "childdetail",
   data() {
     return {
-      findOne: "",
-      obj: {},
-      numPages: 0,
-      pdfSrc: null,
       itemsHolderList: [],
       itemsAllList: [],
       item: { ...store.editItem },
@@ -130,13 +111,6 @@ export default {
       personHeight: "",
       age: "",
       id: "",
-      birthday: "",
-      personWeight: "",
-      continuousBtn: false,
-      nowPage: "",
-      textFieldKeys: [],
-      reportDetail: {},
-      graph: null,
     };
   },
   components: {},
@@ -158,10 +132,6 @@ export default {
     focusActive() {
       this.editing = true;
     },
-    packComments() {},
-    async temporarySave() {},
-    async officalSave() {},
-    async goPreReport() {},
     setPersonInfo() {
       this.checkTime = this.item.StudyTime ? this.item.StudyTime.split("T")[0] : "暫無資料";
       this.personName = this.item.Patient.Name ? this.item.Patient.Name : "暫無資料";
@@ -172,47 +142,13 @@ export default {
       this.birthday = this.item.Patient.Birthday ? this.item.Patient.Birthday.split("T")[0] : "暫無資料";
       this.personWeight = this.item.Weight ? this.item.Weight : "暫無資料";
     },
-    doShowPhraseDlg() {
-      store.showPhraseDlg = true;
-      this.textFieldKeys = this.$refs.reportOne ? this.$refs.reportOne.getInputSelector() : [];
-    },
-    insertPhrase(phrase) {
-      if (!this.$refs.reportOne) retutn;
-      this.$refs.reportOne.insertPhrase(phrase);
-    },
-    getAge(date) {
-      let ret = date ? moment().diff(date, "years") : "";
-      if (!ret && date) {
-        ret = 1;
-      }
-      return ret;
-    },
-    async fillForm() {
-      let content = Boolean(this.reportDetail.ReportTemplateData) ? JSON.parse(this.reportDetail.ReportTemplateData) : {};
-      content = { ...(content.comments ? content.comments : {}) };
-      this.vghOpt1 = content.vghOpt1;
-      this.vghOpt2 = content.vghOpt2;
-      this.vghOpt1Text = content.vghOpt1Text;
-      this.vghOpt2Text = content.vghOpt2Text;
-      this.vghOpt4Text = content.vghOpt4Text;
-      this.vghAns1 = content.vghAns1;
-      this.vghFind = content.vghFind;
-      this.vghOpt3 = content.vghOpt3;
-      this.vghOpt4 = content.vghOpt4;
-    },
-    async getData() {},
-    callPACS() {
-      alert("callPACS, need API");
-    },
   },
   async mounted() {
     this.$mousetrap.bind("f1", () => {
       this.showAll = !this.showAll;
       return false;
     });
-    this.$mousetrap.bind("f2", () => {
-      this.callPACS();
-    });
+
     this.$mousetrap.bind("f3", () => {
       this.doShowPhraseDlg();
       return false;

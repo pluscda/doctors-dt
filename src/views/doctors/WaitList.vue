@@ -286,9 +286,14 @@ export default {
         qs += `&_start=` + (this.currentPageNum - 1) * this.pagingRowPerPage;
       }
       // filters by user
+      if (this.status) {
+        qs += "&orderStatus=" + this.status;
+      }
+
       if (this.cate) {
         qs += "&inqueryCate=" + this.cate;
       }
+
       const { items, count } = await actions.getOrders(qs);
       this.items = items;
       this.rowCount = count;

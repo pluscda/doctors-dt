@@ -46,14 +46,12 @@
         >
         <div></div>
       </nav>
-      <section class="nav-left-right mx-2" :class="item.ProcedureCode == 'fv' ? 'dtc-fv' : 'dtc-ios'">
-        <div ref="reportLeft" class="left">
+      <section class="nav-left-right">
+        <div>
           <b-textarea v-model="item.judge" autofocus placeholder="請在此輸入報告..." spellcheck="false" no-resize class="input-area-dtc"></b-textarea>
         </div>
-        <div ref="reportRight" class="right"></div>
       </section>
     </main>
-    <div id="dtc-print-it" class="show-while-print"></div>
   </section>
 </template>
 
@@ -281,23 +279,10 @@ export default {
 }
 .nav-left-right {
   display: grid;
-  grid-template-columns: 2fr 1fr;
-  gap: 0.6rem;
-  box-shadow: 0 100vh 0 #e5e5e5;
-  .left,
-  .right {
-    border-radius: 12px;
-    background: white;
-    min-height: calc(100vh - 270px);
-    margin-bottom: 30px;
-    border-color: #a5d9ec !important;
-  }
-  .right {
-    padding: 1rem;
-    img {
-      width: 100%;
-      object-fit: cover;
-    }
+  padding: 3px;
+  textarea {
+    width: calc(100vw - 7px);
+    height: calc(100vh - 272px);
   }
 }
 

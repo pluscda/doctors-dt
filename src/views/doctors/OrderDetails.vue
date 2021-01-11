@@ -33,7 +33,7 @@
       </b-input-group>
     </div>
     <main class="main-sec">
-      <nav class="nav-opts mb-1 mx-2 mt-2 py-2 ml-4 print-hide">
+      <nav class="nav-opts mb-1  mt-2 py-2 ml-1">
         <b-button variant="primary" @click="save(false)" :disabled="!item.judge"
           ><span class="pr-1"><i class="fas fa-save"></i></span>暫存報告</b-button
         >

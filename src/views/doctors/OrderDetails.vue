@@ -4,7 +4,7 @@
       <i class="fas fa-times-circle"></i>
     </div>
     <header class="ask-header print-hide">
-      報告撰寫作業
+      診斷報告撰寫作業
       <div class="center-vgh-btn">
         <toggle-button
           class="mt-1"

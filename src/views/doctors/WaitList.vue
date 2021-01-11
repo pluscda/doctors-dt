@@ -258,8 +258,9 @@ export default {
     },
     async getData() {
       let qs = "doctorPhone_eq=" + sessionStorage.phone;
+      qs += `&_limit=` + this.pagingRowPerPage;
+      qs += `&_skip=` + this.currentPageNum > 1 ? (this.currentPageNum - 1) * this.pagingRowPerPage : 0;
       const { items, count } = await actions.getOrders(qs);
-
       this.items = items;
       this.rowCount = count;
       this.totalCountStr = `共${count} 筆`;

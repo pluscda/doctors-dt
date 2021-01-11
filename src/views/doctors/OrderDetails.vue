@@ -65,10 +65,10 @@
           <i class="fas fa-caret-right"></i>
         </div>
 
-        <b-button variant="primary" @click="save" :disabled="!item.judge"
+        <b-button variant="primary" @click="save(false)" :disabled="!item.judge || item.orderStatus == 'finish'"
           ><span class="pr-1"><i class="fas fa-save"></i></span>暫存報告(F5)</b-button
         >
-        <b-button variant="success" @click="save(true)" :disabled="!item.judge"
+        <b-button variant="success" @click="save(true)" :disabled="!item.judge || item.orderStatus == 'finish'"
           ><span class="pr-1"><i class="fas fa-check"></i></span>正式報告(F6)</b-button
         >
 
@@ -79,7 +79,15 @@
       </nav>
       <section class="nav-left-right mx-2" :class="item.ProcedureCode == 'fv' ? 'dtc-fv' : 'dtc-ios'">
         <div ref="reportLeft" class="left">
-          <b-textarea v-model="item.judge" autofocus placeholder="請在此輸入報告..." spellcheck="false" no-resize class="input-area-dtc"></b-textarea>
+          <b-textarea
+            :disabled="item.orderStatus == 'finish'"
+            v-model="item.judge"
+            autofocus
+            placeholder="請在此輸入報告..."
+            spellcheck="false"
+            no-resize
+            class="input-area-dtc"
+          ></b-textarea>
         </div>
         <div ref="reportRight" class="right"></div>
       </section>
@@ -125,13 +133,22 @@ export default {
   methods: {
     async save(offical) {
       const str = offical ? "正式報告" : "暫存報告";
+      if (!offical) {
+        this.item.orderStatus = "process";
+      } else {
+        this.item.orderStatus = "finish";
+      }
+
+      alert(str);
+
       try {
-        await actions.updateOrder(item);
-        this.$bvToast.toast(`儲存${str}成功`, {
+        await actions.updateOrder(this.item);
+        this.$bvToast.toast(`${str}成功`, {
           title: "系統資訊",
           autoHideDelay: 5000,
           variant: "success",
         });
+        this.item = { ...this.item };
       } catch (e) {
         alert("client :" + e);
       }

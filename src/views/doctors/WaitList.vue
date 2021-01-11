@@ -61,7 +61,7 @@
       </div>
       <div>{{ item.docUnreadMsg || 0 }}</div>
       <div>{{ item.cusUnreadMsg || 0 }}</div>
-      <div>NT{{ $formatPrice(item.paidAmount) }}</div>
+      <div>{{ $formatPrice(item.paidAmount) }}</div>
       <div>{{ $formatStatus(item.orderStatus) }}</div>
       <div>{{ $twDate(item.orderDate) }}</div>
       <div>{{ item.inqueryCate && cancerCates.find((s) => s.value == item.inqueryCate).text }}</div>

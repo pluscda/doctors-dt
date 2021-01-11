@@ -6,7 +6,7 @@
         <b-input v-model.trim="Code" placeholder="搜尋關鍵字" @keydown.enter="searchDb"></b-input>
       </b-input-group>
       <b-input-group prepend="客戶病狀">
-        <b-select :options="cancerCates" v-model="cate"></b-select>
+        <b-select :options="cancerCates" v-model="cate" @change="getData"></b-select>
       </b-input-group>
       <b-button class="mr-1" variant="light" @click="searchDb" size="sm"> <i class="fas fa-search"></i>進行查詢 </b-button>
       <b-button variant="info" @click="clearSearch" size="sm"> <i class="fas fa-eraser"></i>清除條件 </b-button>
@@ -278,6 +278,10 @@ export default {
       qs += "&_limit=" + this.pagingRowPerPage;
       if (this.currentPageNum > 1) {
         qs += `&_start=` + (this.currentPageNum - 1) * this.pagingRowPerPage;
+      }
+      // filters by user
+      if (this.cate) {
+        qs += "&inqueryCate=" + this.cate;
       }
       const { items, count } = await actions.getOrders(qs);
       this.items = items;

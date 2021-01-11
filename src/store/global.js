@@ -2,34 +2,14 @@ import Vue from "vue";
 import firebase from "firebase/app";
 import "firebase/auth";
 
-// remove hard coded password here; hide the password in server side 
-const docImgs = [
-"https://wwwv.tsgh.ndmctsgh.edu.tw/files/web/192/doctor/10004/24954/%E9%A5%92%E6%A8%B9%E6%96%87_%E5%A4%A7%E9%A0%AD%E7%85%A7.jpg",
-"https://wwwv.tsgh.ndmctsgh.edu.tw/files/web/192/doctor/10004/24954/%E6%9D%8E%E5%AE%B6%E6%94%BF_%E6%8A%B1%E8%83%B8%E7%85%A7.jpg",
-"https://wwwv.tsgh.ndmctsgh.edu.tw/files/web/192/doctor/10004/24954/%E9%99%B3%E6%98%AD%E4%BB%B0_%E6%8A%B1%E8%83%B8%E7%85%A7.jpg",
-"https://wwwv.tsgh.ndmctsgh.edu.tw/files/web/192/doctor/10004/24954/%E6%BA%AB%E5%AE%B6%E6%94%BF_%E5%A4%A7%E9%A0%AD%E7%85%A7.jpg",
-"https://wwwv.tsgh.ndmctsgh.edu.tw/files/web/192/doctor/10004/24954/%E9%84%AD%E5%B1%B9%E5%96%AC_%E6%8A%B1%E8%83%B8%E7%85%A7.jpg",
-"https://wwwv.tsgh.ndmctsgh.edu.tw/files/web/192/doctor/10004/24954/%E5%90%B3%E6%98%8C%E6%9D%B0_%E5%A4%A7%E9%A0%AD%E7%85%A7.jpg",
-"https://wwwv.tsgh.ndmctsgh.edu.tw/files/web/192/doctor/10004/24954/1050922%E8%83%A107.jpg",
-"https://wwwv.tsgh.ndmctsgh.edu.tw/files/web/192/doctor/10004/24954/%E9%A5%92%E6%A8%B9%E6%96%87_%E5%A4%A7%E9%A0%AD%E7%85%A7.jpg",
-"https://wwwv.tsgh.ndmctsgh.edu.tw/files/web/192/doctor/10004/24954/%E6%9D%8E%E5%AE%B6%E6%94%BF_%E6%8A%B1%E8%83%B8%E7%85%A7.jpg",
-"https://wwwv.tsgh.ndmctsgh.edu.tw/files/web/192/doctor/10004/24954/%E9%99%B3%E6%98%AD%E4%BB%B0_%E6%8A%B1%E8%83%B8%E7%85%A7.jpg",
-"https://wwwv.tsgh.ndmctsgh.edu.tw/files/web/192/doctor/10004/24954/%E6%BA%AB%E5%AE%B6%E6%94%BF_%E5%A4%A7%E9%A0%AD%E7%85%A7.jpg",
-"https://wwwv.tsgh.ndmctsgh.edu.tw/files/web/192/doctor/10004/24954/%E9%84%AD%E5%B1%B9%E5%96%AC_%E6%8A%B1%E8%83%B8%E7%85%A7.jpg",
-"https://wwwv.tsgh.ndmctsgh.edu.tw/files/web/192/doctor/10004/24954/%E5%90%B3%E6%98%8C%E6%9D%B0_%E5%A4%A7%E9%A0%AD%E7%85%A7.jpg",
-"https://wwwv.tsgh.ndmctsgh.edu.tw/files/web/192/doctor/10004/24954/1050922%E8%83%A107.jpg",
-"https://wwwv.tsgh.ndmctsgh.edu.tw/files/web/192/doctor/10004/24954/%E9%A5%92%E6%A8%B9%E6%96%87_%E5%A4%A7%E9%A0%AD%E7%85%A7.jpg",
-"https://wwwv.tsgh.ndmctsgh.edu.tw/files/web/192/doctor/10004/24954/%E6%9D%8E%E5%AE%B6%E6%94%BF_%E6%8A%B1%E8%83%B8%E7%85%A7.jpg",
-"https://wwwv.tsgh.ndmctsgh.edu.tw/files/web/192/doctor/10004/24954/%E9%99%B3%E6%98%AD%E4%BB%B0_%E6%8A%B1%E8%83%B8%E7%85%A7.jpg",
-"https://wwwv.tsgh.ndmctsgh.edu.tw/files/web/192/doctor/10004/24954/%E6%BA%AB%E5%AE%B6%E6%94%BF_%E5%A4%A7%E9%A0%AD%E7%85%A7.jpg",
-"https://wwwv.tsgh.ndmctsgh.edu.tw/files/web/192/doctor/10004/24954/%E9%84%AD%E5%B1%B9%E5%96%AC_%E6%8A%B1%E8%83%B8%E7%85%A7.jpg",
-"https://wwwv.tsgh.ndmctsgh.edu.tw/files/web/192/doctor/10004/24954/%E5%90%B3%E6%98%8C%E6%9D%B0_%E5%A4%A7%E9%A0%AD%E7%85%A7.jpg",
-"https://wwwv.tsgh.ndmctsgh.edu.tw/files/web/192/doctor/10004/24954/1050922%E8%83%A107.jpg",
-
-]
 let PASSWORD = "weR168@healther.dtc.tw"
+const ordersText = ["等待醫師處理中","醫生處理中","醫師已結案","醫師過期未結案"];
+const orderStatus = ["waiting","process", "finish","exception"].map((s,i) =>( {
+  value:s,
+  text: ordersText[i]
+}));
+
 const init = {
-  docImgs,
   isLogin: false,
   fireUid:'',
   PASSWORD,
@@ -38,6 +18,7 @@ const init = {
   cates:[],
   imgPrefix: process.env.NODE_ENV === 'production'? 'https://dtchealth.datacom.com.tw' : `http://${location.hostname}:1337`,
   isDoctor: false,
+  orderStatus,
 };
 export let store = Vue.observable({
   ...init,
@@ -156,4 +137,4 @@ const watchLogin = () => {
 }
 watchLogin();
 
-store.cates = actions.getCancerTypes();
+

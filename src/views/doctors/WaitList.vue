@@ -2,8 +2,8 @@
   <section class="dtc-main-section">
     <header class="ask-header">診斷報告</header>
     <div class="dtc-search pl-2">
-      <b-input-group prepend="關鍵字">
-        <b-input v-model.trim="Code" placeholder="搜尋關鍵字" @keydown.enter="searchDb"></b-input>
+      <b-input-group prepend="處理狀態">
+        <b-select :options="orderStatus" v-model="status" @change="getData"></b-select>
       </b-input-group>
       <b-input-group prepend="客戶病狀">
         <b-select :options="cancerCates" v-model="cate" @change="getData"></b-select>
@@ -143,6 +143,7 @@ export default {
       editItem: "",
       toggleComment: false,
       cate: 0,
+      status: 0,
     };
   },
   components: {},
@@ -157,6 +158,11 @@ export default {
           value: s.cid,
           text: s.name,
         }));
+      arr.unshift({ value: 0, text: "全部" });
+      return arr;
+    },
+    orderStatus() {
+      let arr = store.orderStatus;
       arr.unshift({ value: 0, text: "全部" });
       return arr;
     },

@@ -21,31 +21,31 @@
     </header>
     <div class="dtc-search pl-2 print-hide" v-if="showAll">
       <b-input-group prepend="檢查日期">
-        <b-input readonly v-model="checkTime"></b-input>
+        <b-input></b-input>
       </b-input-group>
       <b-input-group prepend="病患姓名">
-        <b-input readonly v-model="personName"></b-input>
+        <b-input></b-input>
       </b-input-group>
       <b-input-group prepend="病患性別">
-        <b-input readonly v-model="gender"></b-input>
+        <b-input></b-input>
       </b-input-group>
       <b-input-group prepend="病患身高">
-        <b-input readonly v-model="personHeight"></b-input>
+        <b-input></b-input>
       </b-input-group>
       <b-input-group prepend="病患年齡">
-        <b-input readonly v-model="age"></b-input>
+        <b-input></b-input>
       </b-input-group>
       <b-input-group prepend="檢查單號">
-        <b-input readonly v-model="item.ReqNo"></b-input>
+        <b-input></b-input>
       </b-input-group>
       <b-input-group prepend="身份證號">
-        <b-input readonly v-model="id"></b-input>
+        <b-input></b-input>
       </b-input-group>
       <b-input-group prepend="出生日期">
-        <b-input readonly v-model="birthday"></b-input>
+        <b-input></b-input>
       </b-input-group>
       <b-input-group prepend="病患體重">
-        <b-input readonly v-model="personWeight"></b-input>
+        <b-input></b-input>
       </b-input-group>
     </div>
     <main class="main-sec">
@@ -100,6 +100,7 @@
 import queryString from "qs";
 import moment from "dayjs";
 import { store, actions } from "@/store/global.js";
+import Vue from "vue";
 
 const zero = "T00:00:00Z";
 export default {
@@ -138,9 +139,6 @@ export default {
       } else {
         this.item.orderStatus = "finish";
       }
-
-      alert(str);
-
       try {
         await actions.updateOrder(this.item);
         this.$bvToast.toast(`${str}成功`, {
@@ -148,7 +146,6 @@ export default {
           autoHideDelay: 5000,
           variant: "success",
         });
-        this.item = { ...this.item };
       } catch (e) {
         alert("client :" + e);
       }
@@ -156,33 +153,33 @@ export default {
     setPersonInfo() {},
   },
   async mounted() {
-    this.$mousetrap.bind("f1", () => {
-      this.showAll = !this.showAll;
-      return false;
-    });
-    this.$mousetrap.bind("f3", () => {
-      this.doShowPhraseDlg();
-      return false;
-    });
-    this.$mousetrap.bind("f4", () => {
-      this.$router.push("waitlist");
-    });
-    this.$mousetrap.bind("f5", () => {
-      this.temporarySave();
-      return false;
-    });
-    this.$mousetrap.bind("f6", () => {
-      this.officalSave();
-      return false;
-    });
-    this.$mousetrap.bind("f7", () => {
-      this.goPreReport();
-      return false;
-    });
-    this.$mousetrap.bind("f8", () => {
-      this.goNextReport();
-      return false;
-    });
+    // this.$mousetrap.bind("f1", () => {
+    //   this.showAll = !this.showAll;
+    //   return false;
+    // });
+    // this.$mousetrap.bind("f3", () => {
+    //   this.doShowPhraseDlg();
+    //   return false;
+    // });
+    // this.$mousetrap.bind("f4", () => {
+    //   this.$router.push("waitlist");
+    // });
+    // this.$mousetrap.bind("f5", () => {
+    //   this.temporarySave();
+    //   return false;
+    // });
+    // this.$mousetrap.bind("f6", () => {
+    //   this.officalSave();
+    //   return false;
+    // });
+    // this.$mousetrap.bind("f7", () => {
+    //   this.goPreReport();
+    //   return false;
+    // });
+    // this.$mousetrap.bind("f8", () => {
+    //   this.goNextReport();
+    //   return false;
+    // });
 
     try {
       //

@@ -240,47 +240,6 @@ export default {
       });
       this.getData();
     },
-
-    async del(item) {
-      try {
-        await actions.deleteBlackWord(item.Id);
-        this.getData();
-      } catch (e) {
-        alert(e);
-      }
-    },
-
-    closePhraseUi() {
-      store.showPhraseDlg = false;
-    },
-    async edit(item) {
-      // get personal info
-      store.editItem = await actions.getInfoById(item.Id);
-      this.$router.push("details");
-    },
-    async updateStatus(item) {
-      const obj = {
-        Id: item.Id,
-        Word: item.Word,
-        IsActivated: !item.IsActivated,
-        CreateTime: item.CreateTime,
-        CreateAccountNo: item.CreateAccountNo,
-      };
-      try {
-        await actions.editBlackWord(obj);
-        this.$bvToast.toast(`啟用狀態更新成功`, {
-          title: "黑名單管理",
-          autoHideDelay: 5000,
-          variant: "success",
-        });
-      } catch (e) {
-        this.$bvToast.toast(`啟用狀態更新失敗 ` + e, {
-          title: "黑名單管理",
-          autoHideDelay: 5000,
-          variant: "danger",
-        });
-      }
-    },
     searchDb() {
       this.search = true;
       this.getData();

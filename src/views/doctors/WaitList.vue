@@ -48,7 +48,17 @@
           >查看留言</b-form-checkbox
         >
       </div>
-      <div @click="addComment(item)" style="cursor:pointer;">{{ item.message.length }} <i class="fas fa-plus-circle"></i></div>
+      <div v-if="!item.viewComment" @click="addComment(item)" style="cursor:pointer;">{{ item.message.length }} <i class="fas fa-plus-circle"></i></div>
+      <div
+        v-else
+        @click="
+          item.viewComment = false;
+          hideTextarea(item);
+        "
+        style="cursor:pointer;"
+      >
+        {{ item.message.length }}<i class="fas fa-minus-circle"></i>
+      </div>
       <div>{{ item.docUnreadMsg || 0 }}</div>
       <div>{{ item.cusUnreadMsg || 0 }}</div>
       <div>NT{{ $formatPrice(item.paidAmount) }}</div>

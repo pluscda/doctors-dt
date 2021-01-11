@@ -178,7 +178,7 @@ export default {
       return arr;
     },
     orderStatus() {
-      let arr = store.orderStatus;
+      let arr = [...store.orderStatus];
       arr.unshift({ value: 0, text: "全部" });
       return arr;
     },

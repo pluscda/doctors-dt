@@ -48,7 +48,7 @@
           >查看留言</b-form-checkbox
         >
       </div>
-      <div @click="addComment(item)" style="cursor:pointer;">{{ item.totalMsg }} <i class="fas fa-plus-circle"></i></div>
+      <div @click="addComment(item)" style="cursor:pointer;">{{ item.message.length }} <i class="fas fa-plus-circle"></i></div>
       <div>{{ item.docUnreadMsg || 0 }}</div>
       <div>{{ item.cusUnreadMsg || 0 }}</div>
       <div>NT{{ $formatPrice(item.paidAmount) }}</div>
@@ -185,6 +185,7 @@ export default {
       obj.commentAt = new Date().toISOString();
       obj.rating = 0;
       obj.userComment = "";
+      obj.read = false;
       item.message.unshift(obj);
       try {
         await actions.updateOrder(item);
@@ -196,8 +197,9 @@ export default {
           autoHideDelay: 5000,
           variant: "success",
         });
+        setTimeout(this.getData(), 200);
       } catch (e) {
-        alert(e);
+        alert("client :" + e);
       }
     },
     addComment(item) {

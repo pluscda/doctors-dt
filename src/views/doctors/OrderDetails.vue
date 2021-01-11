@@ -5,21 +5,8 @@
     </div>
     <header class="ask-header print-hide">
       診斷報告撰寫作業
-      <div class="center-vgh-btn">
-        <toggle-button
-          class="mt-1"
-          :width="162"
-          :height="25"
-          :font-size="16"
-          v-model="showAll"
-          :labels="{
-            checked: '顯示病患詳情(F1)',
-            unchecked: '顯示病患詳情(F1)',
-          }"
-        />
-      </div>
     </header>
-    <div class="dtc-search pl-2 print-hide" v-if="showAll">
+    <div class="dtc-search pl-2 print-hide">
       <b-input-group prepend="檢查日期">
         <b-input></b-input>
       </b-input-group>
@@ -35,9 +22,6 @@
       <b-input-group prepend="病患年齡">
         <b-input></b-input>
       </b-input-group>
-      <b-input-group prepend="檢查單號">
-        <b-input></b-input>
-      </b-input-group>
       <b-input-group prepend="身份證號">
         <b-input></b-input>
       </b-input-group>
@@ -50,44 +34,21 @@
     </div>
     <main class="main-sec">
       <nav class="nav-opts mb-1 mx-2 mt-2 py-2 ml-4 print-hide">
-        <b-check switch size="large" button-variant="primary" style="color:black;" class="mt-2 mr-2" v-model="continuousBtn"
-          >連續報告({{ item.number }}/{{ totalCount }})</b-check
-        >
-        <div
-          class="bar-icon mt-2 mr-2 go-prev"
-          style="color: black;font-size: 18px;"
-          @click="goPreReport"
-          :style="item.number == 1 ? 'cursor: not-allowed;color:(--dark)' : ''"
-        >
-          <i class="fas fa-caret-left"></i>
-        </div>
-        <div class="bar-icon mt-2 mr-3 go-next" style="color: black;font-size: 18px;" @click="goNextReport">
-          <i class="fas fa-caret-right"></i>
-        </div>
-
-        <b-button variant="primary" @click="save(false)" :disabled="!item.judge || item.orderStatus == 'finish'"
+        <b-button variant="primary" @click="save(false)" :disabled="!item.judge"
           ><span class="pr-1"><i class="fas fa-save"></i></span>暫存報告(F5)</b-button
         >
-        <b-button variant="success" @click="save(true)" :disabled="!item.judge || item.orderStatus == 'finish'"
+        <b-button variant="success" @click="save(true)" :disabled="!item.judge"
           ><span class="pr-1"><i class="fas fa-check"></i></span>正式報告(F6)</b-button
         >
 
-        <b-button @click="$router.push('/waitlist')"
+        <b-button @click="$router.go(-1)"
           ><span class="pr-1"><i class="fas fa-arrow-left"></i></span>返回清單(F4)</b-button
         >
         <div></div>
       </nav>
       <section class="nav-left-right mx-2" :class="item.ProcedureCode == 'fv' ? 'dtc-fv' : 'dtc-ios'">
         <div ref="reportLeft" class="left">
-          <b-textarea
-            :disabled="item.orderStatus == 'finish'"
-            v-model="item.judge"
-            autofocus
-            placeholder="請在此輸入報告..."
-            spellcheck="false"
-            no-resize
-            class="input-area-dtc"
-          ></b-textarea>
+          <b-textarea v-model="item.judge" autofocus placeholder="請在此輸入報告..." spellcheck="false" no-resize class="input-area-dtc"></b-textarea>
         </div>
         <div ref="reportRight" class="right"></div>
       </section>
@@ -141,12 +102,11 @@ export default {
       }
       try {
         await actions.updateOrder(this.item);
-        requestAnimationFrame(() => {
-          this.$bvToast.toast(`${str}成功`, {
-            title: "系統資訊",
-            autoHideDelay: 5000,
-            variant: "success",
-          });
+        // Vue.$toast.success(str);
+        this.$bvToast.toast(`${str}成功`, {
+          title: "系統資訊",
+          autoHideDelay: 5000,
+          variant: "success",
         });
       } catch (e) {
         alert("client :" + e);
@@ -182,12 +142,6 @@ export default {
     //   this.goNextReport();
     //   return false;
     // });
-
-    try {
-      //
-    } catch (e) {
-      alert(e);
-    }
   },
   async created() {},
 
@@ -394,17 +348,6 @@ export default {
   line-height: 20px;
   cursor: pointer;
   position: relative;
-}
-.go-prev::after,
-.go-next::after {
-  position: absolute;
-  bottom: -20px;
-  left: -2px;
-  font-size: 12px;
-  content: "(F7)";
-}
-.go-next::after {
-  content: "(F8)";
 }
 
 .vghOptText {

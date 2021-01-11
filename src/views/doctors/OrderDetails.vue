@@ -141,10 +141,12 @@ export default {
       }
       try {
         await actions.updateOrder(this.item);
-        this.$bvToast.toast(`${str}成功`, {
-          title: "系統資訊",
-          autoHideDelay: 5000,
-          variant: "success",
+        requestAnimationFrame(() => {
+          this.$bvToast.toast(`${str}成功`, {
+            title: "系統資訊",
+            autoHideDelay: 5000,
+            variant: "success",
+          });
         });
       } catch (e) {
         alert("client :" + e);

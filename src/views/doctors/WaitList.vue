@@ -258,6 +258,7 @@ export default {
     },
     async getData() {
       let qs = "doctorPhone=" + sessionStorage.phone;
+      qs += "&inqueryCate_lt=" + 34;
       qs += "&_limit=" + this.pagingRowPerPage;
       if (this.currentPageNum > 1) {
         qs += `&_skip=` + (this.currentPageNum - 1) * this.pagingRowPerPage;

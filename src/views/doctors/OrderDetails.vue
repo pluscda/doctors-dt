@@ -148,7 +148,6 @@ export default {
       this.showAll = !this.showAll;
       return false;
     });
-
     this.$mousetrap.bind("f3", () => {
       this.doShowPhraseDlg();
       return false;
@@ -343,7 +342,7 @@ export default {
   .right {
     border-radius: 12px;
     background: white;
-    min-height: calc(100vh - 200px);
+    min-height: calc(100vh - 270px);
     margin-bottom: 30px;
     border-color: #a5d9ec !important;
   }

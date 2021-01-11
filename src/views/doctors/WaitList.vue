@@ -225,7 +225,7 @@ export default {
       this.orderBy = [];
       this.headers.forEach((s) => {
         if (s.sortDesc !== null) {
-          this.orderBy.push(s.sortDesc ? `${s.key} desc` : `${s.key}`);
+          this.orderBy.push(s.sortDesc ? `${s.key}:desc` : `${s.key}:asc`);
         }
       });
       this.getData();
@@ -286,6 +286,9 @@ export default {
       let qs = "doctorPhone=" + sessionStorage.phone;
       qs += "&inqueryCate_lt=" + 34;
       qs += "&_limit=" + this.pagingRowPerPage;
+      if (this.orderBy.length) {
+        qs += "&_sort=" + this.orderBy.join(",");
+      }
       if (this.currentPageNum > 1) {
         qs += `&_start=` + (this.currentPageNum - 1) * this.pagingRowPerPage;
       }

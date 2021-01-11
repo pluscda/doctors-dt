@@ -82,7 +82,7 @@
       </nav>
       <section class="nav-left-right mx-2" :class="item.ProcedureCode == 'fv' ? 'dtc-fv' : 'dtc-ios'">
         <div ref="reportLeft" class="left">
-          <b-textarea placeholder="請在此輸入報告..." spellcheck="false" no-resize class="input-area-dtc"></b-textarea>
+          <b-textarea autofocus placeholder="請在此輸入報告..." spellcheck="false" no-resize class="input-area-dtc"></b-textarea>
         </div>
         <div ref="reportRight" class="right"></div>
       </section>
@@ -117,14 +117,7 @@ export default {
   data() {
     return {
       findOne: "",
-      vghAns1BH1: "",
-      vghAns1SAPN: "",
-      vghAns1BH2: "",
-      vghAns1LENGTH: "",
-      findTwo: "",
       obj: {},
-      vghOpts1,
-      vghOpts2,
       numPages: 0,
       pdfSrc: null,
       itemsHolderList: [],
@@ -144,20 +137,6 @@ export default {
       textFieldKeys: [],
       reportDetail: {},
       graph: null,
-      vghOpt1: "",
-      vghOpt2: "",
-      vghOpt1Text: "",
-      vghOpt2Text: "",
-      vghOpts1,
-      vghOpts2,
-      vghOpts3,
-      vghOpts4,
-      vghOpt4Text: "",
-      // text1: "predicted lung function values are adjusted by corrected body height:".toUpperCase(),
-      vghAns1: "",
-      vghFind: "",
-      vghOpt3: "",
-      vghOpt4: "",
     };
   },
   components: {},
@@ -179,149 +158,10 @@ export default {
     focusActive() {
       this.editing = true;
     },
-    packComments() {
-      this.obj = {};
-      this.obj.vghOpt1 = this.vghOpt1;
-      this.obj.vghOpt2 = this.vghOpt2;
-      this.obj.vghOpt1Text = this.vghOpt1Text;
-      this.obj.vghOpt2Text = this.vghOpt2Text;
-      this.obj.vghOpt4Text = this.vghOpt4Text;
-      this.obj.vghAns1 = this.vghAns1;
-      this.obj.vghFind = this.vghFind;
-      this.obj.vghOpt3 = this.vghOpt3;
-      this.obj.vghOpt4 = this.vghOpt4;
-      return this.obj;
-    },
-    async temporarySave() {
-      if (!this.continuousBtn) {
-        if (this.item.ProcedureCode == "fv") {
-          await this.$refs.reportOne.tempSave({ comments: this.packComments() });
-          await this.getData();
-          this.$root.$emit("get-NewestReportOne-Formdata");
-        } else {
-          await this.$refs.reportTwo.tempSave({ comments: this.packComments() });
-          await this.getData();
-          this.$root.$emit("get-NewestReportTwo-Formdata");
-        }
-      } else {
-        if (store.editItem.number <= this.itemsHolderList.length + 1) {
-          if (this.item.ProcedureCode == "fv") {
-            await this.$refs.reportOne.tempSave({ comments: this.packComments() });
-          } else {
-            await this.$refs.reportTwo.tempSave({ comments: this.packComments() });
-          }
-          if (this.item.number == this.totalCount) {
-            this.$router.push("waitlist");
-          }
-
-          this.item = this.itemsHolderList[store.editItem.number - 1];
-          store.editItem.number = store.editItem.number + 1;
-          this.item.number = store.editItem.number;
-
-          if (this.item.ProcedureCode == "fv") {
-            store.editItem.showFv = true;
-            this.item.showFv = true;
-            await this.getData();
-            this.$root.$emit("get-NewestReportOne-Formdata");
-          } else {
-            store.editItem.showFv = false;
-            this.item.showFv = false;
-            await this.getData();
-            this.$root.$emit("get-NewestReportTwo-Formdata");
-          }
-        } else {
-          this.$router.push("waitlist");
-        }
-      }
-    },
-    async officalSave() {
-      if (!this.continuousBtn) {
-        if (this.item.ProcedureCode == "fv") {
-          await this.$refs.reportOne.officalSave({ comments: this.packComments() });
-          await this.getData();
-          this.$root.$emit("get-NewestReportOne-Formdata");
-        } else {
-          await this.$refs.reportTwo.officalSave({ comments: this.packComments() });
-          await this.getData();
-          this.$root.$emit("get-NewestReportTwo-Formdata");
-        }
-      } else {
-        if (store.editItem.number <= this.itemsHolderList.length + 1) {
-          if (this.item.ProcedureCode == "fv") {
-            await this.$refs.reportOne.officalSave({ comments: this.packComments() });
-          } else {
-            await this.$refs.reportTwo.officalSave({ comments: this.packComments() });
-          }
-          if (this.item.number == this.totalCount) {
-            this.$router.push("waitlist");
-          }
-
-          this.item = this.itemsHolderList[store.editItem.number - 1];
-          store.editItem.number = store.editItem.number + 1;
-          this.item.number = store.editItem.number;
-
-          if (this.item.ProcedureCode == "fv") {
-            store.editItem.showFv = true;
-            this.item.showFv = true;
-            await this.getData();
-            this.$root.$emit("get-NewestReportOne-Formdata");
-          } else {
-            store.editItem.showFv = false;
-            this.item.showFv = false;
-            await this.getData();
-            this.$root.$emit("get-NewestReportTwo-Formdata");
-          }
-        } else {
-          this.$router.push("waitlist");
-        }
-      }
-    },
-    async goNextReport() {
-      if (this.item.number == this.totalCount) {
-        this.$router.push("waitlist");
-      }
-      if (store.editItem.number <= this.itemsHolderList.length + 1) {
-        this.item = this.itemsHolderList[store.editItem.number - 1];
-        store.editItem.number = store.editItem.number + 1;
-        this.item.number = store.editItem.number;
-
-        if (this.item.ProcedureCode == "fv") {
-          store.editItem.showFv = true;
-          this.item.showFv = true;
-          await this.getData();
-          this.$root.$emit("get-NewestReportOne-Formdata");
-        } else {
-          store.editItem.showFv = false;
-          this.item.showFv = false;
-          await this.getData();
-          this.$root.$emit("get-NewestReportTwo-Formdata");
-        }
-      } else {
-        this.$router.push("waitlist");
-      }
-    },
-    async goPreReport() {
-      // store.editItem.number = store.editItem.number - 1;
-      if (store.editItem.number > 1) {
-        this.item = this.itemsAllList[store.editItem.number - 2];
-        store.editItem.number = store.editItem.number - 1;
-        this.item.number = store.editItem.number;
-
-        if (this.item.ProcedureCode == "fv") {
-          store.editItem.showFv = true;
-          this.item.showFv = true;
-          await this.getData();
-          this.$root.$emit("get-NewestReportOne-Formdata");
-        } else {
-          store.editItem.showFv = false;
-          this.item.showFv = false;
-          await this.getData();
-          this.$root.$emit("get-NewestReportTwo-Formdata");
-        }
-      } else {
-        return;
-      }
-    },
+    packComments() {},
+    async temporarySave() {},
+    async officalSave() {},
+    async goPreReport() {},
     setPersonInfo() {
       this.checkTime = this.item.StudyTime ? this.item.StudyTime.split("T")[0] : "暫無資料";
       this.personName = this.item.Patient.Name ? this.item.Patient.Name : "暫無資料";
@@ -401,23 +241,12 @@ export default {
       return false;
     });
     try {
-      await this.getData();
-      await this.setPersonInfo();
+      //
     } catch (e) {
       alert(e);
     }
   },
-  async created() {
-    this.itemsHolderList = (await this.$vlf.getItem("childItems")).filter((s) => s.ReqNo != this.item.ReqNo);
-    const qs = await this.$vlf.getItem("oDataQs");
-    const { Items, Count } = await axios.get("/examine/List" + qs);
-    let arr = Items.filter((s) => !this.itemsHolderList.find((key) => key.ReqNo == s.ReqNo));
-    arr = arr.filter((s) => s.ReqNo != this.item.ReqNo);
-    // indexdb items + ajax items
-    this.itemsHolderList = [...this.itemsHolderList, ...arr];
-    this.itemsAllList = [...this.itemsHolderList, ...arr];
-    this.itemsAllList.unshift(this.item);
-  },
+  async created() {},
 
   watch: {},
 };

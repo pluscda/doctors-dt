@@ -50,6 +50,7 @@
       <div>NT{{ $formatPrice(item.paidAmount) }}</div>
       <div>{{ $formatStatus(item.orderStatus) }}</div>
       <div>{{ $twDate(item.orderDate) }}</div>
+      <div>{{ item.inqueryCate && cancerCates.find((s) => s.value == item.inqueryCate).text }}</div>
       <div>{{ item.orderPhoneNum }}</div>
       <div>{{ item.hardCopyReceived ? "是" : "否" }}</div>
       <div>{{ item.copySendBack ? "是" : "否" }}</div>
@@ -110,6 +111,7 @@ const headers = [
   { name: "支付金額", key: "paidAmount", sortDesc: null },
   { name: "處理狀態", key: "status", sortDesc: null },
   { name: "下單日期", key: "orderDate", sortDesc: null },
+  { name: "客戶病狀", key: "cid", sortDesc: null },
   { name: "客戶電話", key: "orderPhoneNum", sortDesc: null },
   { name: "收到快遞", key: "hardCopyReceived", sortDesc: null },
   { name: "寄回快遞", key: "copySendBack", sortDesc: null },
@@ -312,7 +314,7 @@ export default {
 }
 .dtc-grid-header {
   display: grid;
-  grid-template-columns: 200px repeat(3, 100px) 120px 180px repeat(3, 120px) 1fr;
+  grid-template-columns: 200px repeat(3, 100px) 120px 180px repeat(4, 120px) 1fr;
 
   text-align: center;
   padding-right: 0px;

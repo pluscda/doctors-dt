@@ -171,10 +171,7 @@ export default {
       this.goNextReport();
       return false;
     });
-    this.$mousetrap.bind("f9", () => {
-      this.printImage();
-      return false;
-    });
+
     try {
       //
     } catch (e) {

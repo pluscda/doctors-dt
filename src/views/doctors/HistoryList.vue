@@ -256,7 +256,7 @@ export default {
       this.getData();
     },
     async getData() {
-      let qs = "doctorPhone=" + sessionStorage.phone;
+      let qs = sessionStorage.isAdmin ? "" : "doctorPhone=" + sessionStorage.phone;
       qs += "&_limit=" + this.pagingRowPerPage;
       if (this.orderBy.length) {
         qs += "&_sort=" + this.orderBy.join(",");

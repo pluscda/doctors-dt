@@ -32,7 +32,7 @@ export default {
   name: "navbardoc",
   data() {
     return {
-      name: sessionStorage.phone,
+      name: !sessionStorage.isAdmin ? "Dr.@" + sessionStorage.phone : "DTC ADMIN",
     };
   },
   computed: {
@@ -44,11 +44,15 @@ export default {
   methods: {
     async logout() {
       mutations.logout();
-      this.$router.push("login?isdoc=true");
+      this.$router.push("login");
       setTimeout(() => location.reload(true), 200);
     },
   },
-  mounted() {},
+  mounted() {
+    if (!sessionStorage.isDoctor && !location.href.includes("login")) {
+      setTimeout(() => this.logout(), 200);
+    }
+  },
 };
 </script>
 

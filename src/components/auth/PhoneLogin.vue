@@ -50,7 +50,19 @@ export default {
   },
 
   methods: {
+    async loginDtcBe() {
+      const { jwt } = await this.loginStrapi().catch(() => {});
+      if (!jwt) await this.registerStrapi().catch(() => {});
+      sessionStorage.token = this.jwt;
+      //this.user = JSON.stringify(this.user, null, 2);
+      this.showMask = false;
+      if (this.jwt) {
+        mutations.login(this.phone);
+        this.$router.push("home");
+      }
+    },
     async register() {
+      sessionStorage.phone = this.phone.slice(1);
       try {
         this.showMask = true;
         this.confirmationSMSCodeResult = await actions.registerByMobilePhone(`+886${this.phone}`, this.recaptchaDomId);
@@ -70,17 +82,7 @@ export default {
         Vue.$toast.error("請檢查驗證號碼" + e);
         this.showMask = false;
       }
-      try {
-        const { jwt } = await this.loginStrapi();
-        if (!jwt) this.registerStrapi();
-      } finally {
-        sessionStorage.token = this.jwt;
-        localStorage.token = this.jwt;
-        this.user = JSON.stringify(this.user, null, 2);
-        this.showMask = false;
-        mutations.login(this.phone);
-        //this.$router.push("home");
-      }
+      this.loginDtcBe();
     },
     async registerStrapi() {
       const { user, jwt } = await actions.registerStrapi({ username: this.phone, password: store.PASSWORD });
@@ -88,18 +90,16 @@ export default {
         this.user = user;
         store.isDoctor = user.isDoctor ? "true" : "";
         this.jwt = jwt;
-        this.$router.push("home");
       }
     },
     async loginStrapi() {
-      sessionStorage.phone = this.phone;
       try {
         const { user, jwt } = await actions.loginStrapi({ identifier: this.phone, password: store.PASSWORD });
         if (jwt) {
           this.user = user;
-          store.isDoctor = user.isDoctor ? "true" : "";
+          sessionStorage.isDoctor = store.isDoctor = user.isDoctor ? "true" : "";
+          sessionStorage.isAdmin = user.isAdmin ? "true" : "";
           this.jwt = jwt;
-          this.$router.push("home");
         }
         return { jwt };
       } catch (e) {

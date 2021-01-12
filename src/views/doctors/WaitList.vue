@@ -64,7 +64,7 @@
       <div>{{ $formatPrice(item.paidAmount) }}</div>
       <div>{{ $formatStatus(item.orderStatus) }}</div>
       <div>{{ $twDate(item.orderDate) }}</div>
-      <div>{{ item.inqueryCate && cancerCates.find((s) => s.value == item.inqueryCate).text }}</div>
+      <div>{{ (item.inqueryCate && allCate.find((s) => s.value == item.inqueryCate) && allCate.find((s) => s.value == item.inqueryCate).text) || item.inqueryCate }}</div>
       <div>{{ item.orderPhoneNum }}</div>
       <div>{{ item.hardCopyReceived ? "是" : "否" }}</div>
       <div>{{ item.copySendBack ? "是" : "否" }}</div>
@@ -177,6 +177,12 @@ export default {
       arr.unshift({ value: 0, text: "全部" });
       return arr;
     },
+    allCate() {
+      return store.cates.map((s) => ({
+        value: s.cid,
+        text: s.name,
+      }));
+    },
     orderStatus() {
       let arr = [...store.orderStatus].slice(0, 2);
       arr.unshift({ value: 0, text: "全部" });
@@ -256,7 +262,7 @@ export default {
       this.getData();
     },
     async getData() {
-      let qs = "doctorPhone=" + sessionStorage.phone;
+      let qs = sessionStorage.isAdmin ? "" : "doctorPhone=" + sessionStorage.phone;
       qs += "&orderStatus_in=waiting&orderStatus_in=process";
       qs += "&inqueryCate_lt=" + 34;
       qs += "&_limit=" + this.pagingRowPerPage;

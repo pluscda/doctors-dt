@@ -33,7 +33,7 @@ export default {
   components: {
     DtcNavBar,
   },
-  async mounted() {
+  async created() {
     store.cates = await actions.getCancerTypes();
   },
   watch: {

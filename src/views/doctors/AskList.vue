@@ -293,6 +293,9 @@ export default {
   async mounted() {
     this.getData();
   },
+  async created() {
+    store.cates = await actions.getCancerTypes();
+  },
 
   watch: {
     currentPageNum(v) {

@@ -178,7 +178,7 @@ export default {
       return arr;
     },
     orderStatus() {
-      let arr = [...store.orderStatus];
+      let arr = [...store.orderStatus].slice(0, 2);
       arr.unshift({ value: 0, text: "全部" });
       return arr;
     },
@@ -257,6 +257,7 @@ export default {
     },
     async getData() {
       let qs = "doctorPhone=" + sessionStorage.phone;
+      qs += "&orderStatus_in=waiting&orderStatus_in=process";
       qs += "&inqueryCate_lt=" + 34;
       qs += "&_limit=" + this.pagingRowPerPage;
       if (this.orderBy.length) {

@@ -92,6 +92,7 @@ export default {
       }
     },
     async loginStrapi() {
+      sessionStorage.phone = this.phone;
       try {
         const { user, jwt } = await actions.loginStrapi({ identifier: this.phone, password: store.PASSWORD });
         if (jwt) {

@@ -77,7 +77,7 @@
       </nav>
       <footer v-if="item.viewComment">
         <main v-for="(note, k) in item.message" :key="k">
-          <section class="mb-1" style="color:white;" :style="note.docComment ? 'background:#1f7cd3;' : 'background:#0f579b;'">
+          <section class="mb-1" style="color:white;" :style="note.docComment ? 'background:#1f7cd3;' : 'background:#f3d6d2;color:black !important;'">
             <div>
               <span class="mr-2" v-if="note.docComment"><i class="fas fa-hospital-user"></i></span>
               <span class="mr-2" v-else> <i class="fas fa-chevron-circle-right"></i></span>

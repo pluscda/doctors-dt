@@ -18,7 +18,8 @@ const init = {
   imgPrefix: process.env.NODE_ENV === 'production'? 'https://dtchealth.datacom.com.tw' : `http://${location.hostname}:1337`,
   isDoctor: false,
   orderStatus,
-  editItem:''
+  editItem:'',
+  MIN_NON_CANCER_NUM: 34,
 };
 export let store = Vue.observable({
   ...init,

@@ -118,6 +118,7 @@
 <script>
 import { store, actions } from "@/store/global.js";
 import moment from "dayjs";
+import queryString from "qs";
 
 const headers = [
   { name: "留言數量", key: "totalMsg", sortDesc: null },
@@ -263,7 +264,7 @@ export default {
     },
     async getData() {
       let qs = sessionStorage.isAdmin ? "" : "doctorPhone=" + sessionStorage.phone;
-      qs += "&orderStatus_in=waiting&orderStatus_in=process";
+      qs += "&orderStatus=waiting&orderStatus=process";
       qs += "&inqueryCate_lt=" + 34;
       qs += "&_limit=" + this.pagingRowPerPage;
       if (this.orderBy.length) {

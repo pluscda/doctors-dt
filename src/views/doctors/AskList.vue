@@ -262,8 +262,8 @@ export default {
     },
     async getData() {
       let qs = sessionStorage.isAdmin ? "" : "doctorPhone=" + sessionStorage.phone;
-      qs += "&orderStatus_in=waiting&orderStatus_in=process";
-      qs += "&inqueryCate_gt=" + 33;
+      qs += "&orderStatus=waiting&orderStatus=process";
+      qs += "&inqueryCate_gt=" + (store.MIN_NON_CANCER_NUM - 1);
       qs += "&_limit=" + this.pagingRowPerPage;
       if (this.orderBy.length) {
         qs += "&_sort=" + this.orderBy.join(",");
@@ -296,7 +296,6 @@ export default {
   async created() {
     store.cates = await actions.getCancerTypes();
   },
-
   watch: {
     currentPageNum(v) {
       this.currentPageNum = v;

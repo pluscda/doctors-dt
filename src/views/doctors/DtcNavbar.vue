@@ -11,6 +11,10 @@
         </b-navbar-nav>
       </b-collapse>
       <b-navbar-nav class="ml-auto">
+        <div class="login-name">
+          W<span>e</span>lco<span>m</span>e
+          {{ name }}
+        </div>
         <div class="bar-icon" id="popover-9" style="color:black;">
           <i class="fas fa-user-alt"></i>
         </div>
@@ -27,7 +31,9 @@ import { store, mutations } from "@/store/global.js";
 export default {
   name: "navbardoc",
   data() {
-    return {};
+    return {
+      name: sessionStorage.phone,
+    };
   },
   computed: {
     isLogin() {
@@ -63,5 +69,15 @@ export default {
 }
 /deep/ .nav-item .nav-link {
   color: white !important;
+}
+.login-name {
+  margin-right: 12px;
+  padding: 4px 12px;
+  font-size: 14px;
+  color: var(--primary);
+  background: white;
+  border-radius: 5px;
+  width: max-content;
+  line-height: 22px;
 }
 </style>

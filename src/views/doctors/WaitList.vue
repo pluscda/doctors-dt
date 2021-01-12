@@ -195,7 +195,12 @@ export default {
     async updateReadStatus(item, note) {
       note.read = true;
       await actions.updateOrder(item);
-      this.items = [...this.items];
+      await this.getData();
+      const ret = this.items.find((s) => item.id == s.id);
+      if (ret) {
+        ret.viewComment = true;
+        this.items = [...this.items];
+      }
     },
     getMsgStatus(item) {
       let str = item.docComment && item.read ? "狀態: 客戶已讀取" : "";

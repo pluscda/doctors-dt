@@ -262,7 +262,6 @@ export default {
     },
     async getData() {
       let qs = sessionStorage.isAdmin ? "" : "doctorPhone=" + sessionStorage.phone;
-      qs += "&orderStatus=waiting&orderStatus=process";
       qs += "&inqueryCate_gt=" + (store.MIN_NON_CANCER_NUM - 1);
       qs += "&_limit=" + this.pagingRowPerPage;
       if (this.orderBy.length) {
@@ -274,6 +273,8 @@ export default {
       // filters by user
       if (this.status) {
         qs += "&orderStatus=" + this.status;
+      } else {
+        qs += "&orderStatus=waiting&orderStatus=process";
       }
 
       if (this.cate) {

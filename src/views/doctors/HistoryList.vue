@@ -178,7 +178,7 @@ export default {
       return arr;
     },
     orderStatus() {
-      let arr = [...store.orderStatus];
+      let arr = [...store.orderStatus].slice(2);
       arr.unshift({ value: 0, text: "全部" });
       return arr;
     },
@@ -257,6 +257,7 @@ export default {
     },
     async getData() {
       let qs = sessionStorage.isAdmin ? "" : "doctorPhone=" + sessionStorage.phone;
+      qs += "&orderStatus=finish&orderStatus=exception";
       qs += "&_limit=" + this.pagingRowPerPage;
       if (this.orderBy.length) {
         qs += "&_sort=" + this.orderBy.join(",");

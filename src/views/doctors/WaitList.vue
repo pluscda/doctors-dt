@@ -82,7 +82,8 @@
               <span class="mr-2" v-if="note.docComment"><i class="fas fa-hospital-user"></i></span>
               <span class="mr-2" v-else> <i class="fas fa-chevron-circle-right"></i></span>
 
-              {{ $twDate(note.commentAt) }}
+              {{ $twDate(note.commentAt) }} {{ getMsgStatus(note) }}
+              <span class="mark-as-read" v-if="!note.read && note.userComment" @click="updateReadStatus(item, note)">註記已讀</span>
             </div>
             <div class="pb-3">{{ note.docComment || note.userComment }}</div>
           </section>
@@ -191,6 +192,18 @@ export default {
     },
   },
   methods: {
+    async updateReadStatus(item, note) {
+      note.read = true;
+      await actions.updateOrder(item);
+      this.items = [...this.items];
+    },
+    getMsgStatus(item) {
+      let str = item.docComment && item.read ? "狀態: 客戶已讀取" : "";
+      if (!str) str = item.docComment && !item.read ? "狀態: 客戶未讀取" : "";
+      if (!str) str = item.userComment && !item.read ? "狀態: 您未讀取" : "";
+      if (!str) str = item.userComment && item.read ? "狀態: 您已讀取" : "";
+      return str;
+    },
     wirteReport(item) {
       store.editItem = { ...item };
       this.$router.push("orderdetail");

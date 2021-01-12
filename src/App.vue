@@ -22,7 +22,7 @@ export default {
       return store.isLogin;
     },
     isDoc() {
-      return location.href.includes("isdoc=true");
+      return true;
     },
   },
   methods: {

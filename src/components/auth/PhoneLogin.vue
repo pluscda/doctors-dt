@@ -62,7 +62,7 @@ export default {
       }
     },
     async register() {
-      sessionStorage.phone = this.phone.slice(1);
+      sessionStorage.phone = this.phone;
       try {
         this.showMask = true;
         this.confirmationSMSCodeResult = await actions.registerByMobilePhone(`+886${this.phone}`, this.recaptchaDomId);

@@ -488,4 +488,17 @@ export default {
     }
   }
 }
+.mark-as-read {
+  display: inline-block;
+  clip-path: polygon(10% 1%, 100% 0%, 100% 99%, 10% 100%, 0% 50%);
+  background: linear-gradient(to right, #da5afa, #c735ec);
+  height: 25px;
+  width: 70px;
+  text-align: center;
+  color: white;
+  font-size: 12px;
+  line-height: 25px;
+  transform: translateY(-5px);
+}
+//'background:#1f7cd3;' : 'background:#f3d6d2;color:black;'"
 </style>

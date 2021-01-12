@@ -43,7 +43,6 @@
       :style="i % 2 == 0 ? 'background-color: #F5F5F5;' : 'background-color: #E0E0E0;'"
     >
       <div style="display:grid; grid-template-columns: max-content max-content">
-        <b-button size="sm" variant="info" class="mx-2" @click="wirteReport(item)">報告撰寫</b-button>
         <b-form-checkbox v-model="item.viewItemComment" :disabled="!item.message.length" style="margin-top:2px;" class="ml-1" @change="viewComment(item)" switch
           >查看留言</b-form-checkbox
         >
@@ -314,7 +313,7 @@ export default {
 }
 .dtc-grid-header {
   display: grid;
-  grid-template-columns: 200px repeat(4, 100px) 120px 180px repeat(4, 120px) 1fr;
+  grid-template-columns: 120px repeat(4, 100px) 120px 180px repeat(4, 120px) 1fr;
 
   text-align: center;
   padding-right: 0px;

@@ -78,7 +78,7 @@
 
               <span class="mark-as-read" v-if="!note.read && note.userComment" @click.stop="updateReadStatus(note)">註記已讀</span>
             </div>
-            <div style="line-height:22px;">{{ note.docComment ? "我留言" : "客戶說" }}: {{ note.docComment || note.userComment }}</div>
+            <div style="line-height:22px;">{{ note.docComment ? "醫生留言" : "客戶說" }}: {{ note.docComment || note.userComment }}</div>
           </section>
         </main>
       </footer>
@@ -203,10 +203,10 @@ export default {
       }
     },
     getMsgStatus(item) {
-      let str = item.docComment && item.read ? "狀態: 客戶已讀取" : "";
-      if (!str) str = item.docComment && !item.read ? "狀態: 客戶未讀取" : "";
-      if (!str) str = item.userComment && !item.read ? "狀態: 您未讀取" : "";
-      if (!str) str = item.userComment && item.read ? "狀態: 您已讀取" : "";
+      let str = item.docComment && item.read ? "客戶已讀取" : "";
+      if (!str) str = item.docComment && !item.read ? "客戶未讀取" : "";
+      if (!str) str = item.userComment && !item.read ? "醫生未讀取" : "";
+      if (!str) str = item.userComment && item.read ? "醫生已讀取" : "";
       return str;
     },
     wirteReport(item) {

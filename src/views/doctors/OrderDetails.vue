@@ -36,10 +36,10 @@
     </div>
     <main class="main-sec">
       <nav class="nav-opts mb-1  mt-2 py-2 ml-1">
-        <b-button variant="primary" @click="save(false)" :disabled="!item.judge"
+        <b-button variant="primary" @click="save(false)" :disabled="!item.judge || isAdmin"
           ><span class="pr-1"><i class="fas fa-save"></i></span>暫存報告</b-button
         >
-        <b-button variant="success" @click="save(true)" :disabled="!item.judge"
+        <b-button variant="success" @click="save(true)" :disabled="!item.judge || isAdmin"
           ><span class="pr-1"><i class="fas fa-check"></i></span>正式報告</b-button
         >
 
@@ -50,7 +50,7 @@
       </nav>
       <section class="nav-left-right">
         <div>
-          <b-textarea v-model="item.judge" autofocus placeholder="請在此輸入報告..." spellcheck="false" no-resize class="input-area-dtc"></b-textarea>
+          <b-textarea :readonly="isAdmin" v-model="item.judge" autofocus placeholder="請在此輸入報告..." spellcheck="false" no-resize class="input-area-dtc"></b-textarea>
         </div>
       </section>
     </main>

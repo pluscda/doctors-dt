@@ -8,29 +8,30 @@
     </header>
     <div class="dtc-search pl-2 print-hide">
       <b-input-group prepend="檢查日期">
-        <b-input></b-input>
+        <b-input type="date" v-model="inspectDate"></b-input>
       </b-input-group>
       <b-input-group prepend="病患姓名">
-        <b-input></b-input>
+        <b-input v-model="name"></b-input>
       </b-input-group>
       <b-input-group prepend="病患性別">
-        <b-input></b-input>
+        <b-input v-model="sec"></b-input>
       </b-input-group>
       <b-input-group prepend="病患身高">
-        <b-input></b-input>
+        <b-input v-model="height"></b-input>
       </b-input-group>
       <b-input-group prepend="病患年齡">
-        <b-input></b-input>
+        <b-input v-model="age"></b-input>
       </b-input-group>
       <b-input-group prepend="身份證號">
-        <b-input></b-input>
+        <b-input v-model="personId"></b-input>
       </b-input-group>
       <b-input-group prepend="出生日期">
-        <b-input></b-input>
+        <b-input v-model="birthday"></b-input>
       </b-input-group>
       <b-input-group prepend="病患體重">
-        <b-input></b-input>
+        <b-input v-model="weight"></b-input>
       </b-input-group>
+      <b-button variant="primary">儲存病患基本資料</b-button>
     </div>
     <main class="main-sec">
       <nav class="nav-opts mb-1  mt-2 py-2 ml-1">
@@ -62,6 +63,7 @@ import { store, actions } from "@/store/global.js";
 import Vue from "vue";
 
 const zero = "T00:00:00Z";
+let inspectDate, name, sex, weight, age, personId, birthday, height;
 export default {
   name: "childdetail",
   data() {
@@ -76,6 +78,14 @@ export default {
       personHeight: "",
       age: "",
       id: "",
+      inspectDate,
+      name,
+      sex,
+      weight,
+      age,
+      personId,
+      birthday,
+      height,
     };
   },
   components: {},

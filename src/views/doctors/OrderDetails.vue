@@ -14,7 +14,7 @@
         <b-input v-model="name"></b-input>
       </b-input-group>
       <b-input-group prepend="病患性別">
-        <b-input v-model="sec"></b-input>
+        <b-select :options="sexs" v-model="sex"></b-select>
       </b-input-group>
       <b-input-group prepend="病患身高">
         <b-input v-model="height"></b-input>
@@ -31,7 +31,7 @@
       <b-input-group prepend="病患體重">
         <b-input v-model="weight"></b-input>
       </b-input-group>
-      <b-button variant="primary">儲存病患基本資料</b-button>
+      <b-button variant="primary" @click="saveBasic">儲存病患基本資料</b-button>
     </div>
     <main class="main-sec">
       <nav class="nav-opts mb-1  mt-2 py-2 ml-1">
@@ -64,10 +64,15 @@ import Vue from "vue";
 
 const zero = "T00:00:00Z";
 let inspectDate, name, sex, weight, age, personId, birthday, height;
+const sexs = [
+  { value: 1, text: "男" },
+  { value: 2, text: "女" },
+];
 export default {
   name: "childdetail",
   data() {
     return {
+      sexs,
       itemsHolderList: [],
       itemsAllList: [],
       item: { ...store.editItem },
@@ -80,7 +85,7 @@ export default {
       id: "",
       inspectDate,
       name,
-      sex,
+      sex: 1,
       weight,
       age,
       personId,
@@ -101,6 +106,28 @@ export default {
     },
   },
   methods: {
+    async saveBasic() {
+      //const { inspectDate, name, sex, weight, age, personId, birthday, height } = this.data;
+      this.item.report = {};
+      this.item.report.inspectDate = this.inspectDate;
+      this.item.report.name = this.name;
+      this.item.report.sex = this.sex == 1 ? "male" : "female";
+      this.item.report.weight = this.weight;
+      this.item.report.personId = this.personId;
+      this.item.report.birthday = this.birthday;
+      this.item.report.height = this.height;
+      this.item.report.age = this.age;
+      try {
+        await actions.updateOrder(this.item);
+        this.$bvToast.toast(`儲存病患基本資料成功`, {
+          title: "系統資訊",
+          autoHideDelay: 5000,
+          variant: "success",
+        });
+      } catch (e) {
+        alert("client :" + e);
+      }
+    },
     async save(offical) {
       const str = offical ? "正式報告" : "暫存報告";
       if (!offical) {
@@ -134,7 +161,17 @@ export default {
       this.$router.go(-1);
     });
   },
-  async created() {},
+  async created() {
+    if (!this.item.report) return;
+    this.inspectDate = moment(this.item.report.inspectDate).format("YYYY-MM-DD");
+    this.name = this.item.report.name;
+    this.sex = this.item.report.sex == "male " ? 1 : 2;
+    this.height = this.item.report.height;
+    this.personId = this.item.report.personId;
+    this.birthday = moment(this.item.report.birthday).format("YYYY-MM-DD");
+    this.weight = this.item.report.weight;
+    this.age = this.item.report.age;
+  },
 
   watch: {},
 };

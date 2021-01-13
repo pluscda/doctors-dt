@@ -130,6 +130,7 @@ const headers = [
 
 const zero = "T00:00:00";
 const rows = [10, 20, 50];
+let itemIdViewComment = "";
 export default {
   name: "waitList",
   data() {
@@ -229,14 +230,14 @@ export default {
       try {
         await actions.updateOrder(item);
         item.addedComment = "";
-        item.addNewComment = "";
         this.items = [...this.items];
         this.$bvToast.toast(`新增留言成功`, {
           title: "系統資訊",
           autoHideDelay: 5000,
           variant: "success",
         });
-        setTimeout(this.getData(), 200);
+        itemIdViewComment = item.id;
+        setTimeout(this.getData(), 100);
       } catch (e) {
         alert("client :" + e);
       }
@@ -307,6 +308,14 @@ export default {
       }
 
       const { items, count } = await actions.getOrders(qs);
+      if (itemIdViewComment) {
+        const item = items.find((s) => s.id == itemIdViewComment);
+        if (item) {
+          item.viewComment = true;
+          item.viewItemComment = true;
+          itemIdViewComment = "";
+        }
+      }
       this.items = items;
       this.rowCount = count;
       this.totalCountStr = `共${count} 筆`;

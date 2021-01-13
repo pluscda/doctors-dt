@@ -48,25 +48,12 @@
           >查看留言</b-form-checkbox
         >
       </div>
-      <!-- <div v-if="!item.viewComment" @click="addComment(item)" style="cursor:pointer;">{{ item.message.length }} <i class="fas fa-plus-circle"></i></div>
-      <div
-        v-else
-        @click="
-          item.viewComment = false;
-          hideTextarea(item);
-        "
-        style="cursor:pointer;"
-      >
-      
-        {{ item.message.length }}<i class="fas fa-minus-circle"></i>
-      </div> -->
       <div>
-        <van-switch v-model="item.viewComment" size="18px" @change="toggleMsgArea(item)" />
-        <van-badge :content="item.message.length" color="rgb(25, 137, 250)" style="display:inline-block; transform:translateY(-10px)"> </van-badge>
+        {{ item.message.length || 0 }}
       </div>
 
-      <div>{{ item.docUnreadMsg || 0 }}</div>
-      <div>{{ item.cusUnreadMsg || 0 }}</div>
+      <div :style="item.docUnreadMsg ? 'color:red;' : 'color:black;'">{{ item.docUnreadMsg || 0 }}</div>
+      <div :style="item.cusUnreadMsg > 0 ? 'color:red;' : 'color:black;'">{{ item.cusUnreadMsg || 0 }}</div>
       <div>{{ $formatPrice(item.paidAmount) }}</div>
       <div>{{ $formatStatus(item.orderStatus) }}</div>
       <div>{{ $twDate(item.orderDate) }}</div>

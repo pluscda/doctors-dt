@@ -442,6 +442,7 @@ export default {
 }
 .ask-header {
   background: #646b74;
+  box-shadow: 100vw 0 0 #646b74;
   height: 42px;
   color: white;
   font-size: 20px;

@@ -59,9 +59,9 @@
       <div>{{ $twDate(item.orderDate) }}</div>
       <div>{{ (item.inqueryCate && allCate.find((s) => s.value == item.inqueryCate) && allCate.find((s) => s.value == item.inqueryCate).text) || item.inqueryCate }}</div>
       <div>{{ item.orderPhoneNum }}</div>
-      <div>{{ item.hardCopyReceived ? "是" : "否" }}</div>
-      <div>{{ item.copySendBack ? "是" : "否" }}</div>
-      <div>{{ item.docHasCopy ? "是" : "否" }}</div>
+      <div>{{ item.hardCopyReceived ? $twDate(item.hardCopyReceived) : "否" }}</div>
+      <div>{{ item.copySendBack ? $twDate(item.copySendBack) : "否" }}</div>
+      <div>{{ item.docHasCopy ? $twDate(item.docHasCopy) : "否" }}</div>
 
       <nav v-if="item.viewItemComment" class="mb-2" style="text-align:left;">
         <b-button :disabled="!item.addedComment" @click="addNewDoctorComment(item)" class="mt-1 mb-1 ml-2" variant="primary" size="sm">確認新增留言</b-button>

@@ -109,7 +109,6 @@ export default {
   },
   methods: {
     async saveBasic() {
-      //const { inspectDate, name, sex, weight, age, personId, birthday, height } = this.data;
       this.item.report = {};
       this.item.report.inspectDate = this.inspectDate;
       this.item.report.name = this.name;

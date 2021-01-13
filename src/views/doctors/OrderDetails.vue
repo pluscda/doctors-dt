@@ -8,30 +8,31 @@
     </header>
     <div class="dtc-search pl-2 print-hide">
       <b-input-group prepend="檢查日期">
-        <b-input type="date" v-model="inspectDate"></b-input>
+        <b-input type="date" v-model="inspectDate" :readonly="!isAdmin"></b-input>
       </b-input-group>
       <b-input-group prepend="病患姓名">
-        <b-input v-model="name"></b-input>
+        <b-input v-model="name" :readonly="!isAdmin"></b-input>
       </b-input-group>
       <b-input-group prepend="病患性別">
-        <b-select :options="sexs" v-model="sex"></b-select>
+        <b-select :options="sexs" v-model="sex" v-if="isAdmin"></b-select>
+        <b-input v-model="name" readonly v-if="!isAdmin"></b-input>
       </b-input-group>
       <b-input-group prepend="病患身高">
-        <b-input v-model="height"></b-input>
+        <b-input v-model="height" :readonly="!isAdmin"></b-input>
       </b-input-group>
       <b-input-group prepend="病患年齡">
-        <b-input v-model="age"></b-input>
+        <b-input v-model="age" :readonly="!isAdmin"></b-input>
       </b-input-group>
       <b-input-group prepend="身份證號">
-        <b-input v-model="personId"></b-input>
+        <b-input v-model="personId" :readonly="!isAdmin"></b-input>
       </b-input-group>
       <b-input-group prepend="出生日期">
-        <b-input type="date" v-model="birthday"></b-input>
+        <b-input type="date" v-model="birthday" :readonly="!isAdmin"></b-input>
       </b-input-group>
       <b-input-group prepend="病患體重">
-        <b-input v-model="weight"></b-input>
+        <b-input v-model="weight" :readonly="!isAdmin"></b-input>
       </b-input-group>
-      <b-button variant="primary" @click="saveBasic">儲存病患基本資料</b-button>
+      <b-button variant="primary" @click="saveBasic" v-if="isAdmin">儲存病患基本資料</b-button>
     </div>
     <main class="main-sec">
       <nav class="nav-opts mb-1  mt-2 py-2 ml-1">
@@ -91,6 +92,7 @@ export default {
       personId,
       birthday,
       height,
+      isAdmin: sessionStorage.isAdmin ? true : false,
     };
   },
   components: {},

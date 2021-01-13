@@ -26,7 +26,7 @@
         <b-input v-model="personId"></b-input>
       </b-input-group>
       <b-input-group prepend="出生日期">
-        <b-input v-model="birthday"></b-input>
+        <b-input type="date" v-model="birthday"></b-input>
       </b-input-group>
       <b-input-group prepend="病患體重">
         <b-input v-model="weight"></b-input>

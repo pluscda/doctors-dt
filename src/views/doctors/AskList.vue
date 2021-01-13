@@ -71,8 +71,10 @@
 
       <nav v-if="item.addNewComment" class="mb-2 add-comment">
         <b-textarea v-model="item.addedComment" placeholder="請在此輸入留言..." no-resize spellcheck="false" rows="4" style="width:99vw;"> </b-textarea>
-        <b-button :disabled="!item.addedComment" @click="addNewDoctorComment(item)" class="mt-1 mr-2" variant="primary" size="sm" style="float:left">新增留言</b-button>
-        <b-button class="mt-1" size="sm" style="float:left" @click="hideTextarea(item)">取消</b-button>
+        <span class="grid-2-btn">
+          <b-button :disabled="!item.addedComment" @click="addNewDoctorComment(item)" class="mt-1 mr-2" variant="primary" size="sm">新增留言</b-button>
+          <b-button class="mt-1" size="sm" @click="hideTextarea(item)">取消</b-button>
+        </span>
       </nav>
       <footer v-if="item.viewComment">
         <main v-for="(note, k) in item.message" :key="k">
@@ -483,5 +485,11 @@ export default {
       }
     }
   }
+}
+.grid-2-btn {
+  display: grid;
+  grid-template-columns: repeat(10, max-content);
+  grid-gap: 0.5rem;
+  padding-left: 10px;
 }
 </style>

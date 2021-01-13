@@ -70,8 +70,8 @@
       <div>{{ item.copySendBack ? "是" : "否" }}</div>
       <div>{{ item.docHasCopy ? "是" : "否" }}</div>
 
-      <nav v-if="item.addNewComment" class="mb-2">
-        <b-button :disabled="!item.addedComment" @click="addNewDoctorComment(item)" class="mt-1 mb-1" variant="primary" size="sm">新增留言</b-button>
+      <nav v-if="item.addNewComment" class="mb-2" style="text-align:left;">
+        <b-button :disabled="!item.addedComment" @click="addNewDoctorComment(item)" class="mt-1 mb-1 ml-2" variant="primary" size="sm">確認新增留言</b-button>
         <b-textarea v-model="item.addedComment" placeholder="請在此輸入留言..." no-resize spellcheck="false" rows="4" style="width:99vw;"> </b-textarea>
       </nav>
       <footer v-if="item.viewComment">

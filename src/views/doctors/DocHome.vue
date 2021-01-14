@@ -10,20 +10,21 @@
     </main>
     <main>
       <aside>
-        <b-select v-model="row1_2" :options="years"></b-select>
-        <b-select v-model="row1_2_1" :options="months"></b-select>
-        <h6 class="mt-2 ml-3">線上諮詢數量</h6>
-      </aside>
-      <ImgDtc :year="row1_2" :month="row1_2_1"></ImgDtc>
-    </main>
-    <main>
-      <aside>
         <b-select v-model="row1_3" :options="years"></b-select>
         <b-select v-model="row1_3_1" :options="months"></b-select>
         <h6 class="mt-2 ml-3">診斷數量累計金額</h6>
       </aside>
       <Person :year="row1_3" :month="row1_3_1"></Person>
     </main>
+    <main>
+      <aside>
+        <b-select v-model="row1_2" :options="years"></b-select>
+        <b-select v-model="row1_2_1" :options="months"></b-select>
+        <h6 class="mt-2 ml-3">線上諮詢數量</h6>
+      </aside>
+      <ImgDtc :year="row1_2" :month="row1_2_1"></ImgDtc>
+    </main>
+
     <main>
       <aside>
         <b-select v-model="row2_1" :options="years"></b-select>

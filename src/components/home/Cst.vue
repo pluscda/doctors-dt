@@ -1,97 +1,74 @@
 <div class="dtc-chart">
-    <Bar :chartdata="chartData" :options="chartOptions"  />
+    <Doughnut :chartdata="chartData" :options="chartOptions"  />
 </div>
 
 <script>
-//import VueCharts from "vue-chartjs";
-import { Bar, mixins } from "vue-chartjs";
+import { Doughnut, mixins } from "vue-chartjs";
 const { reactiveData } = mixins;
-// #1
-const PRE_URL =
-  "/reportStatistics/NegativeCount?startDate={%0}&endDate={%1}&$inlinecount=allpages&$skip=0&$top=11111440";
+import { store, mutations, actions } from "@/store/global.js";
+const types = ["已完成", "未完成", "待處理"];
+//
 export default {
-  extends: Bar,
+  labels: types,
+  extends: Doughnut,
   mixins: [reactiveData],
-  name: "homeCST",
-  props: ["time"],
+  name: "homeImgcst",
+
   data() {
     return {
       chartdata: {},
-      labels: window.taipeis,
       options: {
         responsive: true,
         maintainAspectRatio: false,
-        scales: {
-          yAxes: [
-            {
-              ticks: {
-                beginAtZero: true
-              }
-            }
-          ]
-        }
-      }
+      },
     };
   },
+  props: ["year", "month"],
   methods: {
-    async getData(num = 1) {
-      // CSTID: "CST2019001", CSTNAME: "肺癌", NEGATIVE_COUNT: 18, POSITIVE_COUNT: 3}
-      this.$root.$emit("陰性報告", true);
-      const labels = [];
-      let data1 = [];
-      let data2 = [];
-      const today = window.dtcToday;
-      const start = window.dtcStart(num);
-      const url = PRE_URL.replace(/{%0}/, start).replace(/{%1}/, today);
-      try {
-        const map = await window.axios.get(url);
-        map.Items.forEach(s => {
-          labels.push(s.CSTNAME);
-          data1.push(s.POSITIVE_COUNT);
-          data2.push(s.NEGATIVE_COUNT);
-        });
-      } catch (e) {
-        alert(e);
-      }
-      this.labels = [...labels];
-      this.$root.$emit("陰性報告", false);
-      this.drawReport(data1, data2);
+    getRandomInt() {
+      return Math.floor(Math.random() * (50 - 5 + 1)) + 5;
     },
-    async drawReport(data1, data2) {
-      const labels = this.labels;
+
+    async getData() {
+      let qs = "phone=" + sessionStorage.phone;
+      qs += "&date=" + this.year + "-" + (this.month < 10 ? "0" + this.month : this.month);
+      const items = await actions.getCancerStats(qs);
+      const data = [];
+      let labels = [];
+      items.forEach((s) => {
+        if (s.count && +s.count > 0) {
+          data.push(s.count);
+          labels.push(s.status);
+        }
+      });
+      labels = labels.map((s) => this.$formatStatus(s));
+      this.drawReport(data, labels);
+    },
+    drawReport(data, labels) {
       this.chartData = {
         labels,
         datasets: [
           {
-            label: "12個行政區人數",
-            backgroundColor: "#41B883",
-            data: data1
-          }
-        ]
+            label: "體位",
+            backgroundColor: ["#41B883", "#E46651", "#ffc107"],
+            data,
+          },
+        ],
       };
-    }
+    },
   },
   async mounted() {
-    this.drawReport([
-      100,
-      300,
-      600,
-      500,
-      100,
-      300,
-      400,
-      100,
-      100,
-      300,
-      400,
-      100
-    ]);
+    this.getData();
+    // this.drawReport([this.getRandomInt(), this.getRandomInt(), this.getRandomInt()]);
   },
   watch: {
-    time(val) {
-      this.getData(val);
-    }
-  }
+    year(val) {
+      this.getData();
+    },
+    month(val) {
+      this.getData();
+    },
+  },
 };
 </script>
 

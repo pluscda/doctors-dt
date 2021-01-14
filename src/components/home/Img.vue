@@ -4,6 +4,7 @@
 
 <script>
 import { Doughnut, mixins } from "vue-chartjs";
+import { store, mutations, actions } from "@/store/global.js";
 const { reactiveData } = mixins;
 const types = ["已完成", "未完成", "待處理"];
 // #2

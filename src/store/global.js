@@ -55,6 +55,15 @@ export let actions = {
   async getDocInfo(phone){
     return axios.get('doctores?phone_eq=' + sessionStorage.phone);
   },
+  async getCancerStats(qs){
+    return axios.get('hits/cancer-job?' + qs);
+  },
+  async getInqueryStats(qs){
+    return axios.get('hits/inquery-job?' + qs);
+  },
+  async getIncomeStats(qs){
+    return axios.get('hits/income?' + qs);
+  },
  
   async getOrders(qs){
     const url = "dtc-orders?" + qs;

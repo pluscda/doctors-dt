@@ -3,13 +3,15 @@
     <main>
       <aside>
         <b-select v-model="row1_1" :options="years"></b-select>
+        <b-select v-model="row1_1_1" :options="months"></b-select>
         <h6 class="mt-2 ml-3">診斷數量</h6>
       </aside>
-      <CstChart :time="row1_1"></CstChart>
+      <CstChart :year="row1_1" :month="row1_1_1"></CstChart>
     </main>
     <main>
       <aside>
         <b-select v-model="row1_2" :options="years"></b-select>
+        <b-select v-model="row1_2_1" :options="months"></b-select>
         <h6 class="mt-2 ml-3">線上諮詢數量</h6>
       </aside>
       <ImgDtc :time="row1_2"></ImgDtc>
@@ -64,10 +66,26 @@ Chart.helpers.merge(Chart.defaults.global.plugins.datalabels, {
   align: "start",
 });
 
-let year = new Date().getFullYear() - 1911;
-const years = new Array(7).fill().map((s, i) => ({ value: year - i, text: year - i + "年" }));
+let year = new Date().getFullYear();
+const years = new Array(2).fill().map((s, i) => ({ value: year - i, text: year - i + "年" }));
+const months = new Array(12).fill().map((s, i) => ({ value: i + 1, text: i + 1 + "月" }));
 export default {
   name: "homedashboard",
+
+  data() {
+    return {
+      months,
+      years,
+      row1_1: year,
+      row1_1_1: 1,
+      row1_2: year,
+      row1_2_1: 1,
+      row1_3: year,
+      row2_1: year,
+      row2_2: year,
+      row2_3: year,
+    };
+  },
   components: {
     CstChart,
     Device,
@@ -77,17 +95,6 @@ export default {
     Delay,
     Person,
     Loading,
-  },
-  data() {
-    return {
-      years,
-      row1_1: year,
-      row1_2: year,
-      row1_3: year,
-      row2_1: year,
-      row2_2: year,
-      row2_3: year,
-    };
   },
   computed: {
     isLogin() {
@@ -129,5 +136,6 @@ export default {
 aside {
   display: grid;
   grid-template-columns: repeat(13, max-content);
+  gap: 12px;
 }
 </style>

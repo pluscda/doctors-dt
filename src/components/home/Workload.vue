@@ -6,6 +6,7 @@
 <script>
 //import VueCharts from "vue-chartjs";
 import { Bar, mixins } from "vue-chartjs";
+import { store, mutations, actions } from "@/store/global.js";
 const { reactiveData } = mixins;
 // #4
 const PRE_URL_1 = "/reportStatistics/DxStatusTotalCount?staftype=20&startDate={%0}&endDate={%1}";
@@ -42,37 +43,30 @@ export default {
       },
     };
   },
+  props: ["year", "month"],
   methods: {
     getRandomInt() {
       return Math.floor(Math.random() * (50 - 5 + 1)) + 5;
     },
-    async getData(num = 1) {
-      this.$root.$emit("工作總量", true);
-      const labels = [];
+    async getData() {
+      let qs = "phone=" + sessionStorage.phone;
+      qs += "&date=" + this.year + "-" + (this.month < 10 ? "0" + this.month : this.month);
+      const items = await actions.getTopIncomeStats(qs);
       const data = [];
-      const today = window.dtcToday;
-      const start = window.dtcStart(num);
-      const url = this.url.replace(/{%0}/, start).replace(/{%1}/, today);
-      try {
-        const map = await window.axios.get(url);
-        map.Items.forEach((s) => {
-          labels.push(s.EMPLOYEENAME);
-          data.push(s.COUNT > 0 ? parseInt(s.COUNT) : 0);
-        });
-      } catch (e) {
-        alert(e);
-      }
-      this.labels = labels;
-      this.$root.$emit("工作總量", false);
-      this.drawReport(data);
+      let labels = [];
+      items.forEach((s) => {
+        data.push(s.income);
+        labels.push(s.phone);
+      });
+      //labels = labels.map((s) => this.$formatStatus(s));
+      this.drawReport(data, labels);
     },
-    drawReport(data) {
-      const labels = window.taipeis;
+    drawReport(data, labels) {
       this.chartData = {
         labels,
         datasets: [
           {
-            label: "平均作業時間(單位小時)",
+            label: "客戶累計金額(單位 NT)",
             backgroundColor: "#E46651",
             data,
           },
@@ -81,37 +75,14 @@ export default {
     },
   },
   async mounted() {
-    this.drawReport([
-      this.getRandomInt(),
-      this.getRandomInt(),
-      this.getRandomInt(),
-      this.getRandomInt(),
-      this.getRandomInt(),
-      this.getRandomInt(),
-      this.getRandomInt(),
-      this.getRandomInt(),
-      this.getRandomInt(),
-      this.getRandomInt(),
-      this.getRandomInt(),
-      this.getRandomInt(),
-    ]);
+    this.getData();
   },
   watch: {
-    time(val) {
-      this.currentTime = val;
-      this.getData(val);
+    year(val) {
+      this.getData();
     },
-    type(val) {
-      if (val == 1) {
-        this.url = PRE_URL_1;
-      } else if (val == 2) {
-        this.url = PRE_URL_2;
-      } else if (val == 3) {
-        this.url = PRE_URL_3;
-      } else {
-        this.url = PRE_URL_4;
-      }
-      this.getData(this.currentTime);
+    month(val) {
+      this.getData();
     },
   },
 };

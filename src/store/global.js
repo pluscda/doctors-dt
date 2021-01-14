@@ -64,6 +64,9 @@ export let actions = {
   async getIncomeStats(qs){
     return axios.get('hits/income?' + qs);
   },
+  async getTopIncomeStats(qs){
+    return axios.get('hits/top-income?' + qs);
+  },
  
   async getOrders(qs){
     const url = "dtc-orders?" + qs;

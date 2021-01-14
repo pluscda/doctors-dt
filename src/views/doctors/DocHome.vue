@@ -36,9 +36,10 @@
     <main>
       <aside>
         <b-select v-model="row2_2" :options="years"></b-select>
-        <h6 class="mt-2 ml-3">診斷作業完成率 (報到-完成收件)</h6>
+        <b-select v-model="row2_2_1" :options="months"></b-select>
+        <h6 class="mt-2 ml-3">TOP 10 客戶貢獻</h6>
       </aside>
-      <Workload :time="row2_2"></Workload>
+      <Workload :year="row2_2" :month="row2_2_1"></Workload>
     </main>
     <main>
       <aside>
@@ -88,6 +89,7 @@ export default {
       row2_1: year - 1,
       row2_1_1: 7,
       row2_2: year - 1,
+      row2_2_1: 7,
       row2_3: year - 1,
     };
   },

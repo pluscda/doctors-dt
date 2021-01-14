@@ -8,14 +8,10 @@
 import { Bar, mixins } from "vue-chartjs";
 const { reactiveData } = mixins;
 // #4
-const PRE_URL_1 =
-  "/reportStatistics/DxStatusTotalCount?staftype=20&startDate={%0}&endDate={%1}";
-const PRE_URL_2 =
-  "/reportStatistics/DxStatusTotalVerifyCount?startDate={%0}&endDate={%1}";
-const PRE_URL_3 =
-  "/reportStatistics/DxStatusTotalCount?staftype=35&startDate={%0}&endDate={%1}";
-const PRE_URL_4 =
-  "/reportStatistics/DxStatusTotalCount?staftype=51&startDate={%0}&endDate={%1}";
+const PRE_URL_1 = "/reportStatistics/DxStatusTotalCount?staftype=20&startDate={%0}&endDate={%1}";
+const PRE_URL_2 = "/reportStatistics/DxStatusTotalVerifyCount?startDate={%0}&endDate={%1}";
+const PRE_URL_3 = "/reportStatistics/DxStatusTotalCount?staftype=35&startDate={%0}&endDate={%1}";
+const PRE_URL_4 = "/reportStatistics/DxStatusTotalCount?staftype=51&startDate={%0}&endDate={%1}";
 
 const years = ["109", "108", "107", "106"];
 export default {
@@ -38,12 +34,12 @@ export default {
           yAxes: [
             {
               ticks: {
-                beginAtZero: true
-              }
-            }
-          ]
-        }
-      }
+                beginAtZero: true,
+              },
+            },
+          ],
+        },
+      },
     };
   },
   methods: {
@@ -59,7 +55,7 @@ export default {
       const url = this.url.replace(/{%0}/, start).replace(/{%1}/, today);
       try {
         const map = await window.axios.get(url);
-        map.Items.forEach(s => {
+        map.Items.forEach((s) => {
           labels.push(s.EMPLOYEENAME);
           data.push(s.COUNT > 0 ? parseInt(s.COUNT) : 0);
         });
@@ -78,11 +74,11 @@ export default {
           {
             label: "平均作業時間(單位小時)",
             backgroundColor: "#E46651",
-            data
-          }
-        ]
+            data,
+          },
+        ],
       };
-    }
+    },
   },
   async mounted() {
     this.drawReport([
@@ -97,7 +93,7 @@ export default {
       this.getRandomInt(),
       this.getRandomInt(),
       this.getRandomInt(),
-      this.getRandomInt()
+      this.getRandomInt(),
     ]);
   },
   watch: {
@@ -116,8 +112,8 @@ export default {
         this.url = PRE_URL_4;
       }
       this.getData(this.currentTime);
-    }
-  }
+    },
+  },
 };
 </script>
 

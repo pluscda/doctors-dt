@@ -27,9 +27,10 @@
     <main>
       <aside>
         <b-select v-model="row2_1" :options="years"></b-select>
+        <b-select v-model="row2_1_1" :options="months"></b-select>
         <h6 class="mt-2 ml-3">線上諮詢累計金額</h6>
       </aside>
-      <Finish :time="row2_1"></Finish>
+      <Finish :year="row2_1" :month="row2_1_1"></Finish>
     </main>
     <main>
       <aside>
@@ -84,6 +85,7 @@ export default {
       row1_3: year,
       row1_3_1: 1,
       row2_1: year,
+      row2_1_1: 1,
       row2_2: year,
       row2_3: year,
     };

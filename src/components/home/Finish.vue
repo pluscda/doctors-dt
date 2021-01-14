@@ -1,25 +1,26 @@
 <div class="dtc-chart">
-    <HorizontalBar :chartdata="chartData" :options="chartOptions"  />
+     <HorizontalBar :chartdata="chartData" :options="chartOptions"  />
 </div>
 
 <script>
 //import VueCharts from "vue-chartjs";
 import { HorizontalBar, mixins } from "vue-chartjs";
+import { store, mutations, actions } from "@/store/global.js";
 const { reactiveData } = mixins;
-
-// this is #6 in dashboard
-const PRE_URL =
-  "/reportStatistics/IssueDateAvg?deviceguid={%2}&startDate={%0}&endDate={%1}";
+let labels = `一般、皮膚、頭部、鼻喉、口腔、胸部、心臟血管、腹部、新陳代謝、血液、腎臟、泌尿生殖器、性病、四肢及軀幹、聽力及聽器、視力及視器、神經系統`;
+labels = labels.split("、");
+//#7 &$inlinecount=allpages&$skip=0&$top=10
+const PRE_URL = "/reportStatistics/OverTimeCount?startDate={%0}&endDate={%1}&$top=10";
 export default {
   extends: HorizontalBar,
   mixins: [reactiveData],
-  name: "homeFinish",
-  props: ["time", "type"],
+  name: "homeDelayPersonf",
+  props: ["time"],
   data() {
     return {
-      deviceId: 1,
-      myTime: 1,
-      lables: [],
+      income: 0,
+      labels,
+      types: [],
       chartdata: {},
       options: {
         responsive: true,
@@ -28,80 +29,62 @@ export default {
           xAxes: [
             {
               ticks: {
-                beginAtZero: true
-              }
-            }
-          ]
-        }
-      }
+                beginAtZero: true,
+              },
+            },
+          ],
+        },
+      },
     };
   },
+  props: ["year", "month"],
   methods: {
     getRandomInt() {
-      return Math.floor(Math.random() * (11150 - 5 + 1)) + 3000;
+      return Math.floor(Math.random() * (50 - 5 + 1)) + 5;
     },
     convertMin2Hour(num) {
       let h = num;
       h = (num / 60).toFixed(2);
       return h;
     },
-    async getData(num = 1, device = 1) {
-      this.$root.$emit("完成時間", true);
-      const labels = [];
-      const data = [];
-      const today = window.dtcToday;
-      const start = window.dtcStart(num);
-      const url = PRE_URL.replace(/{%0}/, start)
-        .replace(/{%1}/, today)
-        .replace(/{%2}/, device);
-
-      try {
-        const map = await window.axios.get(url);
-        map.Items.forEach(s => {
-          labels.push(s.EMPLOYEENAME);
-          data.push(s.PAYDAY > 0 ? this.convertMin2Hour(s.PAYDAY) : 0);
-        });
-      } catch (e) {
-        alert(e);
-      }
-      this.labels = labels;
-      this.$root.$emit("完成時間", false);
-      this.drawReport(data);
+    async getData() {
+      let qs = "phone=" + sessionStorage.phone;
+      qs += "&date=" + this.year + "-" + (this.month < 10 ? "0" + this.month : this.month);
+      let items = await actions.getIncomeStats(qs);
+      items = items.filter((s) => s.cate > 33);
+      const labels = items.map((s) => this.types.find((k) => k.cid == s.cate).name);
+      const data = items.map((s) => s.income);
+      const income = items.reduce((acc, init) => {
+        return (acc += init.income);
+      }, 0);
+      this.income = this.$formatPrice(income);
+      this.drawReport(data, labels);
     },
-    drawReport(data) {
-      const labels = [];
-
+    drawReport(data, labels) {
       this.chartData = {
-        labels: ["體檢人數", "實際報到人數"],
+        labels,
         datasets: [
           {
-            label: `報到比率(${this.rate}%)`,
+            label: `各項累積金額總數(共${this.income}元)`,
             backgroundColor: "#ffc107",
-            data
-          }
-        ]
+            data,
+          },
+        ],
       };
-    }
+    },
   },
   async mounted() {
-    const n1 = this.getRandomInt();
-    const n2 = this.getRandomInt();
-    const small = Math.min(n1, n2);
-    const big = Math.max(n1, n2);
-    this.rate = ((small / big) * 100).toFixed(1);
-    this.drawReport([big, small]);
-    //this.getData();
+    this.types = await actions.getCancerTypes();
+    this.getData();
   },
   watch: {
-    time(val) {
-      this.myTime = val;
-      this.getData(val, this.deviceId);
+    year(val) {
+      this.getData();
     },
-    type(val) {
-      this.deviceId = val;
-      this.getData(this.myTime, val);
-    }
-  }
+    month(val) {
+      this.getData();
+    },
+  },
 };
 </script>
 

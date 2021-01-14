@@ -50,7 +50,7 @@ export default {
         datasets: [
           {
             label: "體位",
-            backgroundColor: ["#41B883", "#E46651", "#ffc107"],
+            backgroundColor: ["#41B883", "#E46651", "#ffc107", "#dc3545"],
             data,
           },
         ],

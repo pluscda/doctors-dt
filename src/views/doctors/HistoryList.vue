@@ -257,7 +257,7 @@ export default {
     },
     async getData() {
       let qs = sessionStorage.isAdmin ? "" : "doctorPhone=" + sessionStorage.phone;
-      qs += "&orderStatus=finish&orderStatus=exception";
+
       qs += "&_limit=" + this.pagingRowPerPage;
       if (this.orderBy.length) {
         qs += "&_sort=" + this.orderBy.join(",");
@@ -268,6 +268,8 @@ export default {
       // filters by user
       if (this.status) {
         qs += "&orderStatus=" + this.status;
+      } else {
+        qs += "&orderStatus=finish&orderStatus=exception";
       }
 
       if (this.cate) {

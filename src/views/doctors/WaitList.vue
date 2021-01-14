@@ -301,7 +301,7 @@ export default {
       if (this.cate) {
         qs += "&inqueryCate=" + this.cate;
       } else {
-        qs += "&inqueryCate_lt=" + 34;
+        qs += "&inqueryCate_lt=" + store.MIN_NON_CANCER_NUM;
       }
 
       if (this.phone) {

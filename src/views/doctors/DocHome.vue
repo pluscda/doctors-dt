@@ -37,7 +37,7 @@
       <aside>
         <b-select v-model="row2_2" :options="years"></b-select>
         <b-select v-model="row2_2_1" :options="months"></b-select>
-        <h6 class="mt-2 ml-3">TOP 10 客戶貢獻</h6>
+        <h6 class="mt-2 ml-3" style="font-size:15px;">TOP 10 客戶貢獻(NOTE:用客戶手機)</h6>
       </aside>
       <Workload :year="row2_2" :month="row2_2_1"></Workload>
     </main>
@@ -143,6 +143,6 @@ export default {
 aside {
   display: grid;
   grid-template-columns: repeat(13, max-content);
-  gap: 12px;
+  gap: 2px;
 }
 </style>

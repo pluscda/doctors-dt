@@ -1,80 +1,90 @@
 <div class="dtc-chart">
-    <Radar :chartdata="chartData" :options="chartOptions"  />
+     <HorizontalBar :chartdata="chartData" :options="chartOptions"  />
 </div>
 
 <script>
 //import VueCharts from "vue-chartjs";
-import { Radar, mixins } from "vue-chartjs";
+import { HorizontalBar, mixins } from "vue-chartjs";
+import { store, mutations, actions } from "@/store/global.js";
 const { reactiveData } = mixins;
-
-// #8 last one
+let labels = `一般、皮膚、頭部、鼻喉、口腔、胸部、心臟血管、腹部、新陳代謝、血液、腎臟、泌尿生殖器、性病、四肢及軀幹、聽力及聽器、視力及視器、神經系統`;
+labels = labels.split("、");
+//#7 &$inlinecount=allpages&$skip=0&$top=10
+const PRE_URL = "/reportStatistics/OverTimeCount?startDate={%0}&endDate={%1}&$top=10";
 export default {
-  extends: Radar,
+  extends: HorizontalBar,
   mixins: [reactiveData],
-  name: "homeDevice",
-  props: ["time", "person"],
+  name: "homeDelayPerson",
+  props: ["time"],
   data() {
     return {
+      income: 0,
+      labels,
+      types: [],
       chartdata: {},
-      labels: window.taipeis,
       options: {
         responsive: true,
-        maintainAspectRatio: false
-      }
+        maintainAspectRatio: false,
+        scales: {
+          xAxes: [
+            {
+              ticks: {
+                beginAtZero: true,
+              },
+            },
+          ],
+        },
+      },
     };
   },
+  props: ["year", "month"],
   methods: {
     getRandomInt() {
-      return Math.floor(Math.random() * (1050 - 5 + 1)) + 225;
+      return Math.floor(Math.random() * (50 - 5 + 1)) + 5;
+    },
+    convertMin2Hour(num) {
+      let h = num;
+      h = (num / 60).toFixed(2);
+      return h;
     },
     async getData() {
-      // TODO: get data from person id and time
-      //this.drawReport(data);
+      let qs = "phone=" + sessionStorage.phone;
+      qs += "&date=" + this.year + "-" + (this.month < 10 ? "0" + this.month : this.month);
+      let items = await actions.getIncomeStats(qs);
+      items = items.filter((s) => s.cate < 34);
+      const labels = items.map((s) => this.types.find((k) => k.cid == s.cate).name);
+      const data = items.map((s) => s.income);
+      const income = items.reduce((acc, init) => {
+        return (acc += init.income);
+      }, 0);
+      this.income = this.$formatPrice(income);
+      this.drawReport(data, labels);
     },
-    async drawReport(data) {
-      const labels = this.labels;
+    drawReport(data, labels) {
       this.chartData = {
         labels,
         datasets: [
           {
-            label: "免疫原因",
-            backgroundColor: "rgba(255,99,132,0.2)",
-            borderColor: "rgba(255,99,132,1)",
-            pointBackgroundColor: "rgba(255,99,132,1)",
-            pointBorderColor: "#fff",
-            pointHoverBackgroundColor: "#fff",
-            pointHoverBorderColor: "rgba(255,99,132,1)",
-            data
-          }
-        ]
+            label: `各項累積金額總數(共${this.income}元)`,
+            backgroundColor: "#fd7e14",
+            data,
+          },
+        ],
       };
-    }
+    },
   },
   async mounted() {
-    const data = [
-      this.getRandomInt(),
-      this.getRandomInt(),
-      this.getRandomInt(),
-      this.getRandomInt(),
-      this.getRandomInt(),
-      this.getRandomInt(),
-      this.getRandomInt(),
-      this.getRandomInt(),
-      this.getRandomInt(),
-      this.getRandomInt(),
-      this.getRandomInt(),
-      this.getRandomInt()
-    ];
-    this.drawReport(data);
+    this.types = await actions.getCancerTypes();
+    this.getData();
   },
   watch: {
-    time(val) {
-      // val from 1 ~ 4
+    year(val) {
+      this.getData();
     },
-    person(val) {
-      //person id
-    }
-  }
+    month(val) {
+      this.getData();
+    },
+  },
 };
 </script>
 

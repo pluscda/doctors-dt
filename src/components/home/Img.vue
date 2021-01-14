@@ -4,17 +4,16 @@
 
 <script>
 import { Doughnut, mixins } from "vue-chartjs";
-import { store, mutations, actions } from "@/store/global.js";
 const { reactiveData } = mixins;
+import { store, mutations, actions } from "@/store/global.js";
 const types = ["已完成", "未完成", "待處理"];
-// #2
-const PRE_URL = "/reportStatistics/ImageQuality?startDate={%0}&endDate={%1}&$inlinecount=allpages&$skip=0&$top=11111440";
+//
 export default {
   labels: types,
   extends: Doughnut,
   mixins: [reactiveData],
-  name: "homeImg",
-  props: ["time"],
+  name: "homeImgcst",
+
   data() {
     return {
       chartdata: {},
@@ -24,38 +23,30 @@ export default {
       },
     };
   },
+  props: ["year", "month"],
   methods: {
     getRandomInt() {
       return Math.floor(Math.random() * (50 - 5 + 1)) + 5;
     },
 
-    async getData(num = 1) {
-      this.$root.$emit("影像品質", true);
-      let imgs = await window.axios.get("/GeneralData/SelectNoList?groupNo=ImageQuality");
-      let arr = [];
-      const today = window.dtcToday;
-      const start = window.dtcStart(num);
-      imgs = imgs.Items;
-      imgs.forEach((s) => {
-        arr.push(s.Name);
+    async getData() {
+      let qs = "phone=" + sessionStorage.phone;
+      qs += "&date=" + this.year + "-" + (this.month < 10 ? "0" + this.month : this.month);
+      const items = await actions.getInqueryStats(qs);
+      const data = [];
+      let labels = [];
+      items.forEach((s) => {
+        if (s.count && +s.count > 0) {
+          data.push(s.count);
+          labels.push(s.status);
+        }
       });
-      this.labels = arr;
-      const url = PRE_URL.replace(/{%0}/, start).replace(/{%1}/, today);
-      try {
-        const map = await window.axios.get(url);
-        const data = [map[0].IMAGEQUALITY30_COUNT, map[0].IMAGEQUALITY40_COUNT, map[0].IMAGEQUALITY60_COUNT];
-        this.$root.$emit("影像品質", false);
-        this.drawReport(data);
-      } catch (e) {
-        alert(e);
-      }
-      //this.labels = labels;
-      //this.drawReport(data);
+      labels = labels.map((s) => this.$formatStatus(s));
+      this.drawReport(data, labels);
     },
-    drawReport(data) {
-      const labels = ["已完成", "未完成", "待處理"];
+    drawReport(data, labels) {
       this.chartData = {
-        labels: [`${labels[0]}(${data[0]})`, `${labels[1]}(${data[1]})`, `${labels[2]}(${data[2]})`],
+        labels,
         datasets: [
           {
             label: "體位",
@@ -67,11 +58,15 @@ export default {
     },
   },
   async mounted() {
-    this.drawReport([this.getRandomInt(), this.getRandomInt(), this.getRandomInt()]);
+    this.getData();
+    // this.drawReport([this.getRandomInt(), this.getRandomInt(), this.getRandomInt()]);
   },
   watch: {
-    time(val) {
-      this.getData(val);
+    year(val) {
+      this.getData();
+    },
+    month(val) {
+      this.getData();
     },
   },
 };

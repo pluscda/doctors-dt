@@ -14,14 +14,15 @@
         <b-select v-model="row1_2_1" :options="months"></b-select>
         <h6 class="mt-2 ml-3">線上諮詢數量</h6>
       </aside>
-      <ImgDtc :time="row1_2"></ImgDtc>
+      <ImgDtc :year="row1_2" :month="row1_2_1"></ImgDtc>
     </main>
     <main>
       <aside>
         <b-select v-model="row1_3" :options="years"></b-select>
+        <b-select v-model="row1_3_1" :options="months"></b-select>
         <h6 class="mt-2 ml-3">診斷數量累計金額</h6>
       </aside>
-      <Person :time="row1_3"></Person>
+      <Person :year="row1_3" :month="row1_3_1"></Person>
     </main>
     <main>
       <aside>
@@ -81,6 +82,7 @@ export default {
       row1_2: year,
       row1_2_1: 1,
       row1_3: year,
+      row1_3_1: 1,
       row2_1: year,
       row2_2: year,
       row2_3: year,

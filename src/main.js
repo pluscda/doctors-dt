@@ -44,7 +44,10 @@ Vue.prototype.$formatStatus = function(str){
         return "等待醫師處理中"
      }else if(str == 'process'){
         return "醫生處理中"
-     }else{
+     }else if(str == 'exception'){
+        return "逾時未處理完"
+     }
+     else{
        return "醫師已結案"
      }
 

@@ -43,21 +43,10 @@
       :style="i % 2 == 0 ? 'background-color: #F5F5F5;' : 'background-color: #E0E0E0;'"
     >
       <div style="display:grid; grid-template-columns: max-content max-content">
-        <b-form-checkbox v-model="item.viewItemComment" :disabled="!item.message.length" style="margin-top:2px;" class="ml-1" @change="viewComment(item)" switch
-          >查看留言</b-form-checkbox
-        >
+        <b-form-checkbox v-model="item.viewItemComment" style="margin-top:2px;" class="ml-1" @change="viewComment(item)" switch>留言</b-form-checkbox>
       </div>
-      <div v-if="!item.viewComment" @click="addComment(item)" style="cursor:pointer;">{{ item.message.length }} <i class="fas fa-plus-circle"></i></div>
-      <div
-        v-else
-        @click="
-          item.viewComment = false;
-          hideTextarea(item);
-        "
-        style="cursor:pointer;"
-      >
-        {{ item.message.length }}<i class="fas fa-minus-circle"></i>
-      </div>
+      <div>{{ item.message.length }}</div>
+
       <div>{{ item.docUnreadMsg || 0 }}</div>
       <div>{{ item.cusUnreadMsg || 0 }}</div>
       <div>{{ $formatPrice(item.paidAmount) }}</div>
@@ -223,15 +212,11 @@ export default {
         alert("client :" + e);
       }
     },
-    addComment(item) {
-      item.viewComment = true;
-      item.addNewComment = true;
-      this.toggleComment = true;
-      this.items = [...this.items];
-    },
+
     viewComment(item) {
       requestAnimationFrame(() => {
         item.viewComment ? (item.viewComment = false) : (item.viewComment = true);
+        item.addNewComment = item.viewComment;
         this.items = [...this.items];
       });
     },
@@ -326,7 +311,7 @@ export default {
 }
 .dtc-grid-header {
   display: grid;
-  grid-template-columns: 120px repeat(4, 100px) 120px 180px repeat(4, 120px) 1fr;
+  grid-template-columns: 80px repeat(4, 100px) 120px 180px repeat(4, 120px) 1fr;
 
   text-align: center;
   padding-right: 0px;

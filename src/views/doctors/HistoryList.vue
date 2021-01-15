@@ -44,21 +44,11 @@
     >
       <div style="display:grid; grid-template-columns: max-content max-content">
         <b-button size="sm" variant="info" class="mx-2" @click="wirteReport(item)">查看報告</b-button>
-        <b-form-checkbox v-model="item.viewItemComment" :disabled="!item.message.length" style="margin-top:2px;" class="ml-1" @change="viewComment(item)" switch
-          >查看留言</b-form-checkbox
+        <b-form-checkbox :disabled="!item.message.length" v-model="item.viewItemComment" style="margin-top:2px;" class="ml-1" @change="viewComment(item)" switch
+          >留言</b-form-checkbox
         >
       </div>
-      <div v-if="!item.viewComment" @click="addComment(item)" style="cursor:pointer;">{{ item.message.length }} <i class="fas fa-plus-circle"></i></div>
-      <div
-        v-else
-        @click="
-          item.viewComment = false;
-          hideTextarea(item);
-        "
-        style="cursor:pointer;"
-      >
-        {{ item.message.length }}<i class="fas fa-minus-circle"></i>
-      </div>
+      <div>{{ item.message.length }}</div>
       <div>{{ item.docUnreadMsg || 0 }}</div>
       <div>{{ item.cusUnreadMsg || 0 }}</div>
       <div>{{ $formatPrice(item.paidAmount) }}</div>
@@ -72,7 +62,7 @@
       <div>{{ item.copySendBack ? "是" : "否" }}</div>
       <div>{{ item.docHasCopy ? "是" : "否" }}</div>
 
-      <nav v-if="item.addNewComment" class="mb-2 add-comment">
+      <nav v-if="item.addNewComment" class="mb-2 add-comment" hidden>
         <b-textarea v-model="item.addedComment" placeholder="請在此輸入留言..." no-resize spellcheck="false" rows="4" style="width:99vw;"> </b-textarea>
         <b-button :disabled="!item.addedComment" @click="addNewDoctorComment(item)" class="mt-1 mr-2" variant="primary" size="sm" style="float:left">新增留言</b-button>
         <b-button class="mt-1" size="sm" style="float:left" @click="hideTextarea(item)">取消</b-button>
@@ -225,6 +215,7 @@ export default {
     viewComment(item) {
       requestAnimationFrame(() => {
         item.viewComment ? (item.viewComment = false) : (item.viewComment = true);
+        item.addNewComment = item.viewComment;
         this.items = [...this.items];
       });
     },
@@ -318,7 +309,7 @@ export default {
 }
 .dtc-grid-header {
   display: grid;
-  grid-template-columns: 200px repeat(4, 100px) 120px 180px repeat(4, 120px) 1fr;
+  grid-template-columns: 168px repeat(4, 100px) 120px 180px repeat(4, 120px) 1fr;
 
   text-align: center;
   padding-right: 0px;

@@ -45,7 +45,7 @@
       <div style="display:grid; grid-template-columns: max-content max-content">
         <b-form-checkbox v-model="item.viewItemComment" style="margin-top:2px;" class="ml-1" @change="viewComment(item)" switch>留言</b-form-checkbox>
       </div>
-      <div>{{ item.message.length }}</div>
+      <div>{{ (item.message && item.message.length) || 0 }}</div>
 
       <div>{{ item.docUnreadMsg || 0 }}</div>
       <div>{{ item.cusUnreadMsg || 0 }}</div>

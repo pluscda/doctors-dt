@@ -265,7 +265,7 @@ export default {
       this.orderBy = [];
       this.headers.forEach((s) => {
         if (s.sortDesc !== null) {
-          this.orderBy.push(s.sortDesc ? `${s.key}:desc` : `${s.key}:asc`);
+          this.orderBy.push(s.sortDesc ? `${s.key}:desc` : `${s.key}`);
         }
       });
       this.getData();

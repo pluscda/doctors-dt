@@ -5,20 +5,23 @@
 <script>
 //import VueCharts from "vue-chartjs";
 import { HorizontalBar, mixins } from "vue-chartjs";
+import { store, mutations, actions } from "@/store/global.js";
 const { reactiveData } = mixins;
 let labels = `一般、皮膚、頭部、鼻喉、口腔、胸部、心臟血管、腹部、新陳代謝、血液、腎臟、泌尿生殖器、性病、四肢及軀幹、聽力及聽器、視力及視器、神經系統`;
 labels = labels.split("、");
 //#7 &$inlinecount=allpages&$skip=0&$top=10
-const PRE_URL =
-  "/reportStatistics/OverTimeCount?startDate={%0}&endDate={%1}&$top=10";
+const PRE_URL = "/reportStatistics/OverTimeCount?startDate={%0}&endDate={%1}&$top=10";
 export default {
   extends: HorizontalBar,
   mixins: [reactiveData],
-  name: "homeDelay",
+  name: "homeDelayPersonf",
   props: ["time"],
   data() {
     return {
+      total: 0,
+      income: 0,
       labels,
+      types: [],
       chartdata: {},
       options: {
         responsive: true,
@@ -27,14 +30,15 @@ export default {
           xAxes: [
             {
               ticks: {
-                beginAtZero: true
-              }
-            }
-          ]
-        }
-      }
+                beginAtZero: true,
+              },
+            },
+          ],
+        },
+      },
     };
   },
+  props: ["year", "month"],
   methods: {
     getRandomInt() {
       return Math.floor(Math.random() * (50 - 5 + 1)) + 5;
@@ -44,67 +48,38 @@ export default {
       h = (num / 60).toFixed(2);
       return h;
     },
-    async getData(num = 1) {
-      this.$root.$emit("逾時報告", true);
-      const labels = [];
-      const data = [];
-      const today = window.dtcToday;
-      const start = window.dtcStart(num);
-      const url = PRE_URL.replace(/{%0}/, start).replace(/{%1}/, today);
-      try {
-        const map = await window.axios.get(url);
-        map.Items.forEach(s => {
-          labels.push(s.EMPLOYEENAME);
-          data.push(s.OVERTIME > 0 ? this.convertMin2Hour(s.OVERTIME) : 0);
-        });
-      } catch (e) {
-        alert(e);
-      }
-      this.labels = labels;
-      this.$root.$emit("逾時報告", false);
-      this.drawReport(data);
+    async getData() {
+      let qs = "phone=" + sessionStorage.phone;
+      qs += "&date=" + this.year + "-" + (this.month < 10 ? "0" + this.month : this.month);
+      let items = await actions.getUnreadMsgStats(qs);
+      this.total = items[0].docMsg + items[0].customerMsg;
+      this.drawReport([items[0].docMsg, items[0].customerMsg], ["醫生未讀", "客戶未讀"]);
     },
-    drawReport(data) {
-      const labels = this.labels;
+    drawReport(data, labels) {
       this.chartData = {
         labels,
         datasets: [
           {
-            label: "平均作業時間(單位天數)",
+            label: `線上留言未讀數總數(共${this.total}筆)`,
             backgroundColor: "#dc3545",
-            data
-          }
-        ]
+            data,
+          },
+        ],
       };
-    }
+    },
   },
   async mounted() {
-    const data = [
-      this.getRandomInt(),
-      this.getRandomInt(),
-      this.getRandomInt(),
-      this.getRandomInt(),
-      this.getRandomInt(),
-      this.getRandomInt(),
-      this.getRandomInt(),
-      this.getRandomInt(),
-      this.getRandomInt(),
-      this.getRandomInt(),
-      this.getRandomInt(),
-      this.getRandomInt(),
-      this.getRandomInt(),
-      this.getRandomInt(),
-      this.getRandomInt(),
-      this.getRandomInt(),
-      this.getRandomInt()
-    ];
-    this.drawReport(data);
+    this.types = await actions.getCancerTypes();
+    this.getData();
   },
   watch: {
-    time(val) {
-      this.getData(val);
-    }
-  }
+    year(val) {
+      this.getData();
+    },
+    month(val) {
+      this.getData();
+    },
+  },
 };
 </script>
 

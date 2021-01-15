@@ -44,9 +44,10 @@
     <main>
       <aside>
         <b-select v-model="row2_3" :options="years"></b-select>
-        <h6 class="mt-2 ml-3">線上諮詢完成率 (報到-完成總評)</h6>
+        <b-select v-model="row2_3_1" :options="months"></b-select>
+        <h6 class="mt-2 ml-3">線上留言未讀數</h6>
       </aside>
-      <Delay :time="row2_3"></Delay>
+      <Delay :year="row2_3" :month="row2_3_1"></Delay>
     </main>
   </section>
 </template>
@@ -91,6 +92,7 @@ export default {
       row2_2: year - 1,
       row2_2_1: 7,
       row2_3: year - 1,
+      row2_3_1: 7,
     };
   },
   components: {

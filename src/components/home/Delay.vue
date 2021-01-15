@@ -52,8 +52,9 @@ export default {
       let qs = "phone=" + sessionStorage.phone;
       qs += "&date=" + this.year + "-" + (this.month < 10 ? "0" + this.month : this.month);
       let items = await actions.getUnreadMsgStats(qs);
-      this.total = items[0].docMsg + items[0].customerMsg;
-      this.drawReport([items[0].docMsg, items[0].customerMsg], ["醫生未讀", "客戶未讀"]);
+      this.total = items && items.length ? items[0].docMsg + items[0].customerMsg : 0;
+      if (this.total) this.drawReport([items[0].docMsg, items[0].customerMsg], ["醫生未讀", "客戶未讀"]);
+      else this.drawReport([0, 0], ["醫生未讀", "客戶未讀"]);
     },
     drawReport(data, labels) {
       this.chartData = {

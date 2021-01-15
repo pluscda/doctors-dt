@@ -311,7 +311,7 @@ export default {
 }
 .dtc-grid-header {
   display: grid;
-  grid-template-columns: 80px repeat(4, 120px) 120px 180px repeat(4, 120px) 1fr;
+  grid-template-columns: 90px repeat(4, 120px) 120px 180px repeat(4, 120px) 1fr;
 
   text-align: center;
   padding-right: 0px;

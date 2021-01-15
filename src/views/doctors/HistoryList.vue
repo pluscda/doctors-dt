@@ -54,7 +54,9 @@
           >留言</b-form-checkbox
         >
       </div>
-      <div>{{ (item.message && item.message.length) || 0 }}</div>
+      <div>
+        {{ item.totalMsg || 0 }}
+      </div>
       <div :style="item.docUnreadMsg > 0 ? 'color:red;' : 'color:black;'">{{ item.docUnreadMsg || 0 }}</div>
       <div :style="item.cusUnreadMsg > 0 ? 'color:red;' : 'color:black;'">{{ item.cusUnreadMsg || 0 }}</div>
       <div>{{ $formatPrice(item.paidAmount) }}</div>
@@ -64,9 +66,10 @@
         {{ (item.inqueryCate && allCates.find((s) => s.value == item.inqueryCate) && allCates.find((s) => s.value == item.inqueryCate).text) || item.inqueryCate }}
       </div>
       <div>{{ item.orderPhoneNum }}</div>
-      <div>{{ item.hardCopyReceived ? "是" : "否" }}</div>
-      <div>{{ item.copySendBack ? "是" : "否" }}</div>
-      <div>{{ item.docHasCopy ? "是" : "否" }}</div>
+      <div>{{ item.hardCopyReceived ? $twDate(item.hardCopyReceived).split(" ")[0] : "否" }}</div>
+      <div>{{ item.copySendBack ? $twDate(item.copySendBack).split(" ")[0] : "否" }}</div>
+      <div>{{ item.docHasCopy ? $twDate(item.docHasCopy).split(" ")[0] : "否" }}</div>
+
       <footer v-if="item.viewComment">
         <main v-for="(note, k) in item.message" :key="k">
           <section class="mb-1" style="color:white;" :style="note.docComment ? 'background:#1f7cd3;' : 'background:#0f579b;'">

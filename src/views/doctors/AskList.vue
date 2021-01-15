@@ -45,7 +45,9 @@
       <div style="display:grid; grid-template-columns: max-content max-content">
         <b-form-checkbox v-model="item.viewItemComment" style="margin-top:2px;" class="ml-1" @change="viewComment(item)" switch>留言</b-form-checkbox>
       </div>
-      <div>{{ (item.message && item.message.length) || 0 }}</div>
+      <div>
+        {{ item.totalMsg || 0 }}
+      </div>
 
       <div :style="item.docUnreadMsg > 0 ? 'color:red;' : 'color:black;'">{{ item.docUnreadMsg || 0 }}</div>
       <div :style="item.cusUnreadMsg > 0 ? 'color:red;' : 'color:black;'">{{ item.cusUnreadMsg || 0 }}</div>
@@ -54,9 +56,9 @@
       <div>{{ $twDate(item.orderDate) }}</div>
       <div>{{ (item.inqueryCate && allCate.find((s) => s.value == item.inqueryCate) && allCate.find((s) => s.value == item.inqueryCate).text) || item.inqueryCate }}</div>
       <div>{{ item.orderPhoneNum }}</div>
-      <div>{{ item.hardCopyReceived ? "是" : "否" }}</div>
-      <div>{{ item.copySendBack ? "是" : "否" }}</div>
-      <div>{{ item.docHasCopy ? "是" : "否" }}</div>
+      <div>{{ item.hardCopyReceived ? $twDate(item.hardCopyReceived).split(" ")[0] : "否" }}</div>
+      <div>{{ item.copySendBack ? $twDate(item.copySendBack).split(" ")[0] : "否" }}</div>
+      <div>{{ item.docHasCopy ? $twDate(item.docHasCopy).split(" ")[0] : "否" }}</div>
 
       <nav v-if="item.addNewComment" class="mb-2 add-comment">
         <b-textarea v-model="item.addedComment" placeholder="請在此輸入留言..." no-resize spellcheck="false" rows="4" style="width:99vw;"> </b-textarea>

@@ -47,7 +47,7 @@
         <b-form-checkbox v-model="item.viewItemComment" style="margin-top:2px;" class="ml-1" @change="viewComment(item)" switch>留言</b-form-checkbox>
       </div>
       <div>
-        {{ (item.message && item.message.length) || 0 }}
+        {{ item.totalMsg || 0 }}
       </div>
 
       <div :style="item.docUnreadMsg > 0 ? 'color:red;' : 'color:black;'">{{ item.docUnreadMsg || 0 }}</div>
@@ -57,9 +57,9 @@
       <div>{{ $twDate(item.orderDate) }}</div>
       <div>{{ (item.inqueryCate && allCate.find((s) => s.value == item.inqueryCate) && allCate.find((s) => s.value == item.inqueryCate).text) || item.inqueryCate }}</div>
       <div>{{ item.orderPhoneNum }}</div>
-      <div>{{ item.hardCopyReceived ? $twDate(item.hardCopyReceived) : "否" }}</div>
-      <div>{{ item.copySendBack ? $twDate(item.copySendBack) : "否" }}</div>
-      <div>{{ item.docHasCopy ? $twDate(item.docHasCopy) : "否" }}</div>
+      <div>{{ item.hardCopyReceived ? $twDate(item.hardCopyReceived).split(" ")[0] : "否" }}</div>
+      <div>{{ item.copySendBack ? $twDate(item.copySendBack).split(" ")[0] : "否" }}</div>
+      <div>{{ item.docHasCopy ? $twDate(item.docHasCopy).split(" ")[0] : "否" }}</div>
 
       <nav v-if="item.viewItemComment" class="mb-2" style="text-align:left;">
         <b-button :disabled="!item.addedComment" @click="addNewDoctorComment(item)" class="mt-1 mb-1 ml-2" variant="primary" size="sm">確認新增留言</b-button>

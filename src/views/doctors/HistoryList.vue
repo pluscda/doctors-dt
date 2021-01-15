@@ -55,8 +55,8 @@
         >
       </div>
       <div>{{ (item.message && item.message.length) || 0 }}</div>
-      <div>{{ item.docUnreadMsg || 0 }}</div>
-      <div>{{ item.cusUnreadMsg || 0 }}</div>
+      <div :style="item.docUnreadMsg > 0 ? 'color:red;' : 'color:black;'">{{ item.docUnreadMsg || 0 }}</div>
+      <div :style="item.cusUnreadMsg > 0 ? 'color:red;' : 'color:black;'">{{ item.cusUnreadMsg || 0 }}</div>
       <div>{{ $formatPrice(item.paidAmount) }}</div>
       <div>{{ $formatStatus(item.orderStatus) }}</div>
       <div>{{ $twDate(item.orderDate) }}</div>
@@ -67,12 +67,6 @@
       <div>{{ item.hardCopyReceived ? "是" : "否" }}</div>
       <div>{{ item.copySendBack ? "是" : "否" }}</div>
       <div>{{ item.docHasCopy ? "是" : "否" }}</div>
-
-      <nav v-if="item.addNewComment" class="mb-2 add-comment" hidden>
-        <b-textarea v-model="item.addedComment" placeholder="請在此輸入留言..." no-resize spellcheck="false" rows="4" style="width:99vw;"> </b-textarea>
-        <b-button :disabled="!item.addedComment" @click="addNewDoctorComment(item)" class="mt-1 mr-2" variant="primary" size="sm" style="float:left">新增留言</b-button>
-        <b-button class="mt-1" size="sm" style="float:left" @click="hideTextarea(item)">取消</b-button>
-      </nav>
       <footer v-if="item.viewComment">
         <main v-for="(note, k) in item.message" :key="k">
           <section class="mb-1" style="color:white;" :style="note.docComment ? 'background:#1f7cd3;' : 'background:#0f579b;'">

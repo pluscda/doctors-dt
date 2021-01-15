@@ -47,8 +47,8 @@
       </div>
       <div>{{ (item.message && item.message.length) || 0 }}</div>
 
-      <div>{{ item.docUnreadMsg || 0 }}</div>
-      <div>{{ item.cusUnreadMsg || 0 }}</div>
+      <div :style="item.docUnreadMsg > 0 ? 'color:red;' : 'color:black;'">{{ item.docUnreadMsg || 0 }}</div>
+      <div :style="item.cusUnreadMsg > 0 ? 'color:red;' : 'color:black;'">{{ item.cusUnreadMsg || 0 }}</div>
       <div>{{ $formatPrice(item.paidAmount) }}</div>
       <div>{{ $formatStatus(item.orderStatus) }}</div>
       <div>{{ $twDate(item.orderDate) }}</div>

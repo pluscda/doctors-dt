@@ -44,11 +44,17 @@
     >
       <div style="display:grid; grid-template-columns: max-content max-content">
         <b-button size="sm" variant="info" class="mx-2" @click="wirteReport(item)">查看報告</b-button>
-        <b-form-checkbox :disabled="!item.message.length" v-model="item.viewItemComment" style="margin-top:2px;" class="ml-1" @change="viewComment(item)" switch
+        <b-form-checkbox
+          :disabled="!item.message || !item.message.length"
+          v-model="item.viewItemComment"
+          style="margin-top:2px;"
+          class="ml-1"
+          @change="viewComment(item)"
+          switch
           >留言</b-form-checkbox
         >
       </div>
-      <div>{{ item.message.length }}</div>
+      <div>{{ (item.message && item.message.length) || 0 }}</div>
       <div>{{ item.docUnreadMsg || 0 }}</div>
       <div>{{ item.cusUnreadMsg || 0 }}</div>
       <div>{{ $formatPrice(item.paidAmount) }}</div>

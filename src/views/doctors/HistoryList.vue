@@ -2,7 +2,7 @@
   <section class="dtc-main-section">
     <header class="ask-header">歷史報告</header>
     <div class="dtc-search pl-2">
-      <b-input-group prepend="處理狀態">
+      <b-input-group prepend="處理狀態" hidden>
         <b-select :options="orderStatus" v-model="status" @change="getData"></b-select>
       </b-input-group>
       <b-input-group prepend="客戶病狀">
@@ -252,19 +252,19 @@ export default {
     async getData() {
       let qs = sessionStorage.isAdmin ? "" : "doctorPhone=" + sessionStorage.phone;
 
-      qs += "&_limit=" + this.pagingRowPerPage;
+      qs += "&orderStatus=finish&&_limit=" + this.pagingRowPerPage;
       if (this.orderBy.length) {
         qs += "&_sort=" + this.orderBy.join(",");
       }
       if (this.currentPageNum > 1) {
         qs += `&_start=` + (this.currentPageNum - 1) * this.pagingRowPerPage;
       }
-      // filters by user
-      if (this.status) {
-        qs += "&orderStatus=" + this.status;
-      } else {
-        qs += "&orderStatus=finish&orderStatus=exception";
-      }
+      // // filters by user
+      // if (this.status) {
+      //   qs += "&orderStatus=" + this.status;
+      // } else {
+      //   qs += "&orderStatus=finish&orderStatus=exception";
+      // }
 
       if (this.cate) {
         qs += "&inqueryCate=" + this.cate;

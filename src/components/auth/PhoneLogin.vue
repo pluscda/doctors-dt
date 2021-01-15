@@ -30,7 +30,7 @@ export default {
   data() {
     return {
       showKeyboard: true,
-      phone: "0928012500",
+      phone: "0928012503",
       needCode: "",
       code: "654321",
       confirmationSMSCodeResult: "",
@@ -63,6 +63,7 @@ export default {
     },
     async register() {
       sessionStorage.phone = this.phone;
+      return this.loginDtcBe();
       try {
         this.showMask = true;
         this.confirmationSMSCodeResult = await actions.registerByMobilePhone(`+886${this.phone}`, this.recaptchaDomId);

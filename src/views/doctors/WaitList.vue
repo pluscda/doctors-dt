@@ -179,6 +179,7 @@ export default {
     },
     orderStatus() {
       let arr = [...store.orderStatus].slice(0, 2);
+      arr.push({ value: "exception", text: "逾時未處理完" });
       arr.unshift({ value: 0, text: "全部" });
       return arr;
     },
@@ -293,7 +294,7 @@ export default {
       if (this.status) {
         qs += "&orderStatus=" + this.status;
       } else {
-        qs += "&orderStatus=waiting&orderStatus=process";
+        qs += "&orderStatus=waiting&orderStatus=process&orderStatus=exception";
       }
 
       if (this.cate) {

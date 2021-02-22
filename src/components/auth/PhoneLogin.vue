@@ -5,25 +5,16 @@
     </van-overlay>
     <main>
       <h2>
-        <span class="mr-3"><i class="fas fa-sign-in-alt"></i></span>DTC Health 健康通行證
+        <span class="mr-3"><i class="fas fa-sign-in-alt"></i></span>名醫會館(醫生端)
       </h2>
-      <div class="phone-div">
-        <input v-model="phone" placeholder="請輸入手機號碼" minlength="10" maxlength="10" />
-      </div>
-      <div class="phone-div mt-3 short-code">
-        <div class="code-btn" @click="register" v-show="phone.length == 10">獲取短信驗證碼</div>
-        <input placeholder="請輸入短信驗證碼" minlength="6" maxlength="6" v-model="code" v-show="needCode" />
-      </div>
-
-      <div class="login" @click="confirmSMSCode" v-show="enableLogin">登入</div>
+      <b-button size="lg" @click="loginLine">登入會館</b-button>
     </main>
-    <button :id="recaptchaDomId" note="google requried this invisable div"></button>
-    <!-- <pre style="color:white;">{{ user }}</pre> -->
   </section>
 </template>
 
 <script>
 import { store, mutations, actions } from "@/store/global.js";
+import liff from "@line/liff";
 import Vue from "vue";
 export default {
   name: "login",
@@ -48,63 +39,48 @@ export default {
       return this.code && this.code.length == 6 && !isNaN(this.code) && this.needCode;
     },
   },
-
   methods: {
-    async loginDtcBe() {
-      const { jwt } = await this.loginStrapi().catch(() => {});
-      if (!jwt) await this.registerStrapi().catch(() => {});
-      sessionStorage.token = this.jwt;
-      //this.user = JSON.stringify(this.user, null, 2);
-      this.showMask = false;
-      if (this.jwt) {
-        mutations.login(this.phone);
-        this.$router.push("home");
-      }
-    },
-    async register() {
-      sessionStorage.phone = this.phone;
-      return this.loginDtcBe();
+    async connectWithStrapi() {
       try {
-        this.showMask = true;
-        this.confirmationSMSCodeResult = await actions.registerByMobilePhone(`+886${this.phone}`, this.recaptchaDomId);
-        this.needCode = true;
-        this.showMask = false;
+        const { jwt: jwt1 } = await this.loginStrapi();
+        window.token = jwt1;
+        if (!window.token) {
+          const { jwt: jwt2 } = await this.registerStrapi().catch((e) => {
+            alert("something wrong at app jwt connectWithStrapi");
+            return;
+          });
+          window.token = jwt2;
+        }
+        mutations.login(store.lineProfile.userId);
       } catch (e) {
-        Vue.$toast.error("請檢查電話號碼是否正確");
-        this.showMask = false;
+        alert("請檢查驗證號碼" + e);
       }
-    },
-    async confirmSMSCode() {
-      try {
-        this.showMask = true;
-        await this.confirmationSMSCodeResult.confirm(this.code);
-      } catch (e) {
-        location.reload();
-        Vue.$toast.error("請檢查驗證號碼" + e);
-        this.showMask = false;
-      }
-      this.loginDtcBe();
     },
     async registerStrapi() {
-      const { user, jwt } = await actions.registerStrapi({ username: this.phone, password: store.PASSWORD });
-      if (jwt) {
-        this.user = user;
-        store.isDoctor = user.isDoctor ? "true" : "";
-        this.jwt = jwt;
-      }
+      const { jwt } = await actions.registerStrapi({ username: store.lineProfile.userId, password: store.PASSWORD });
+      return { jwt };
     },
     async loginStrapi() {
       try {
-        const { user, jwt } = await actions.loginStrapi({ identifier: this.phone, password: store.PASSWORD });
-        if (jwt) {
-          this.user = user;
-          sessionStorage.isDoctor = store.isDoctor = user.isDoctor ? "true" : "";
-          sessionStorage.isAdmin = user.isAdmin ? "true" : "";
-          this.jwt = jwt;
-        }
+        const { jwt } = await actions.loginStrapi({ identifier: store.lineProfile.userId, password: store.PASSWORD });
         return { jwt };
       } catch (e) {
         return { jwt: "" };
+      }
+    },
+    async loginLine() {
+      // ckc@datacom.com.tw / 22458558   ; line dev login user/pass
+      await liff.init({ liffId: "1655686518-8xOGVJBq" });
+      await liff.login();
+      let isLineApp = liff.isInClient();
+      //isLineApp = false;
+      if (isLineApp) {
+        store.lineProfile = await liff.getProfile();
+        const ret = await liff.getDecodedIDToken();
+        store.lineProfile.email = ret.email;
+        await this.connectWithStrapi();
+      } else {
+        await this.connectWithStrapi();
       }
     },
   },

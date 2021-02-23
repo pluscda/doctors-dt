@@ -14,7 +14,6 @@ export default {
 
   mounted() {
     const qs = location.href.split('?')[1];
-    alert(qs);
     const parsed = queryString.parse(qs);
     if (!parsed) {
       return;

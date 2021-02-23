@@ -3,17 +3,19 @@
 </template>
 
 <script>
-import { store, mutations, actions } from "@/store/global.js";
-import queryString from "qs";
+import { store, mutations, actions } from '@/store/global.js';
+import queryString from 'qs';
 export default {
-  name: "login",
+  name: 'login',
   data() {
     return {};
   },
   computed: {},
 
   mounted() {
-    const parsed = queryString.parse(location.search);
+    const qs = location.href.split('?')[1];
+    alert(qs);
+    const parsed = queryString.parse(qs);
     if (!parsed) {
       return;
     } else {
@@ -21,9 +23,9 @@ export default {
     }
     sessionStorage.phone = store.lineProfile.userId;
     sessionStorage.token = store.lineProfile.jwt;
-    mutations.login(sessionStorage.token.userId);
+    mutations.login(store.lineProfile.userId);
     console.log(JSON.stringify(store.lineProfile));
-    this.$router.push("/home");
+    this.$router.push('/home');
   },
 };
 </script>

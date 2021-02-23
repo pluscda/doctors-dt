@@ -1,6 +1,4 @@
 import Vue from "vue";
-import firebase from "firebase/app";
-import "firebase/auth";
 
 let PASSWORD = "weR168@healther.dtc.tw"
 const ordersText = ["等待醫師處理中","醫生處理中","醫師已結案","醫師過期未結案"];
@@ -26,17 +24,6 @@ export let store = Vue.observable({
   ...init,
 });
 
-
-function recaptch(id){
-    try{ 
-      if(!window.recaptchaVerifier)
-        window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier(id, {
-          'size': 'invisible',
-        });
-    }catch(e){
-      alert("recaptch error: " + e);
-    }
-}
 export let actions = {
   async getCount(url){
      return await axios.get(url);
@@ -102,17 +89,6 @@ export let actions = {
       return e;
     }
   },
-  async registerByMobilePhone(phoneNum, id) {
-     recaptch(id);
-      try{
-        return await firebase
-          .auth()
-          .signInWithPhoneNumber(phoneNum, window.recaptchaVerifier);
-      }catch(e){
-        return e;
-      }    
-  },
- 
    
 };
 export let mutations = {
@@ -122,8 +98,6 @@ export let mutations = {
     sessionStorage.phone = phone;
   },
   async logout() {
-    await firebase.auth().signOut();
-    window.recaptchaVerifier = null;
     store.isLogin = false; // need this line to tigger other pages; DO NOT REMOVE
     sessionStorage.clear();
     localStorage.clear();
@@ -132,26 +106,4 @@ export let mutations = {
     });
   },
 };
-
-const firebaseConfig = {
-    apiKey: "AIzaSyDPO6XXcDTQxtakG1PE8xqCw1QZGHI6Alg",
-    authDomain: "ddeeee-4f963.firebaseapp.com",
-    databaseURL: "https://ddeeee-4f963.firebaseio.com",
-    projectId: "ddeeee-4f963",
-    storageBucket: "ddeeee-4f963.appspot.com",
-    messagingSenderId: "567717669747",
-    appId: "1:567717669747:web:b0ab336820fadd5147f306",
-    measurementId: "G-J5P1YXHGMR",
-};
-
-const watchLogin = () => {
-  firebase.initializeApp(firebaseConfig);
-  firebase.auth().useDeviceLanguage();
-  firebase.auth().onAuthStateChanged((user) => {
-    // firebase user id
-    user ? store.fireUid = user.uid : mutations.logout();
-  });
-}
-watchLogin();
-
 

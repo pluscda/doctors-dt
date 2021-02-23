@@ -1,7 +1,7 @@
 <template>
   <div style="position:sticky;top:0;z-index:3;">
     <b-navbar toggleable="lg" type="dark" class="dtc-bg">
-      <b-navbar-brand @click="$router.push('/home')" style="max-width:200px;cursor:pointer;"><i class="fas fa-sign-in-alt mr-2"></i> DTC HEALTH</b-navbar-brand>
+      <b-navbar-brand @click="$router.push('/home')" style="max-width:200px;cursor:pointer;"><i class="fas fa-sign-in-alt mr-2"></i> 名醫會館(醫生端)</b-navbar-brand>
       <b-collapse id="nav-collapse" is-nav>
         <b-navbar-nav>
           <b-nav-item @click="$router.push('/home')">首頁</b-nav-item>
@@ -13,9 +13,9 @@
       <b-navbar-nav class="ml-auto">
         <div class="login-name">
           W<span>e</span>lco<span>m</span>e
-          {{ name }}
+          {{ myInfo }}
         </div>
-        <div class="bar-icon" id="popover-9" style="color:black;">
+        <div class="bar-icon" id="popover-9" style="color:black;" hidden>
           <i class="fas fa-user-alt"></i>
         </div>
         <b-popover target="popover-9" title="個人專區" triggers="hover" placement="bottom">
@@ -31,28 +31,20 @@ import { store, mutations } from "@/store/global.js";
 export default {
   name: "navbardoc",
   data() {
-    return {
-      name: !sessionStorage.isAdmin ? "Dr.@" + sessionStorage.phone : "DTC ADMIN",
-    };
+    return {};
   },
   computed: {
-    isLogin() {
-      return sessionStorage.token || store.isLogin;
+    myInfo() {
+      let email = store.lineProfile?.email ? store.lineProfile.email : ""; // ? window.phone.slice(0, 9) : "";
+      let name = store.lineProfile?.displayName ? store.lineProfile.displayName : window.phone;
+      return !email ? name : name + " | " + email;
     },
   },
   components: {},
   methods: {
-    async logout() {
-      mutations.logout();
-      this.$router.push("login");
-      setTimeout(() => location.reload(true), 200);
-    },
+    async logout() {},
   },
-  mounted() {
-    if (!sessionStorage.isDoctor && !location.href.includes("login")) {
-      setTimeout(() => this.logout(), 200);
-    }
-  },
+  mounted() {},
 };
 </script>
 

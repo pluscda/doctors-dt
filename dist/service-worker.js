@@ -14,10 +14,10 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/precache-manifest.521d4a835d32c7da79298f1f685e362f.js"
+  "/precache-manifest.928cca767bb888745d4e68cbd8c9fc6f.js"
 );
 
-workbox.core.setCacheNameDetails({prefix: "vant-mobile"});
+workbox.core.setCacheNameDetails({prefix: "dtc-be-ui"});
 
 self.addEventListener('message', (event) => {
   if (event.data && event.data.type === 'SKIP_WAITING') {

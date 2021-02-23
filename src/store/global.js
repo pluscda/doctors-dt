@@ -20,6 +20,7 @@ const init = {
   orderStatus,
   editItem:'',
   MIN_NON_CANCER_NUM: 34,
+  lineProfile:{},
 };
 export let store = Vue.observable({
   ...init,

@@ -65,10 +65,10 @@
       <div>
         {{ (item.inqueryCate && allCates.find((s) => s.value == item.inqueryCate) && allCates.find((s) => s.value == item.inqueryCate).text) || item.inqueryCate }}
       </div>
-      <div>{{ item.orderPhoneNum }}</div>
-      <div>{{ item.hardCopyReceived ? $twDate(item.hardCopyReceived).split(" ")[0] : "否" }}</div>
-      <div>{{ item.copySendBack ? $twDate(item.copySendBack).split(" ")[0] : "否" }}</div>
-      <div>{{ item.docHasCopy ? $twDate(item.docHasCopy).split(" ")[0] : "否" }}</div>
+      <div>{{ item.clientLinePhone ? clientLinePhone : '暫無資料' }}</div>
+      <div>{{ item.hardCopyReceived ? $twDate(item.hardCopyReceived).split(' ')[0] : '否' }}</div>
+      <div>{{ item.copySendBack ? $twDate(item.copySendBack).split(' ')[0] : '否' }}</div>
+      <div>{{ item.docHasCopy ? $twDate(item.docHasCopy).split(' ')[0] : '否' }}</div>
 
       <footer v-if="item.viewComment">
         <main v-for="(note, k) in item.message" :key="k">
@@ -111,37 +111,37 @@
 </template>
 
 <script>
-import { store, actions } from "@/store/global.js";
-import moment from "dayjs";
+import { store, actions } from '@/store/global.js';
+import moment from 'dayjs';
 
 const headers = [
-  { name: "留言數量", key: "totalMsg", sortDesc: null },
-  { name: "醫生未讀留言", key: "docUnreadMsg", sortDesc: null },
-  { name: "客戶未讀留言", key: "cusUnreadMsg", sortDesc: null },
-  { name: "支付金額", key: "paidAmount", sortDesc: null },
-  { name: "處理狀態", key: "orderStatus", sortDesc: null },
-  { name: "下單日期", key: "orderDate", sortDesc: null },
-  { name: "客戶病狀", key: "inqueryCate", sortDesc: null },
-  { name: "客戶電話", key: "orderPhoneNum", sortDesc: null },
-  { name: "收到快遞", key: "hardCopyReceived", sortDesc: null },
-  { name: "寄回快遞", key: "copySendBack", sortDesc: null },
-  { name: "醫生收到快遞", key: "docHasCopy", sortDesc: null },
+  { name: '留言數量', key: 'totalMsg', sortDesc: null },
+  { name: '醫生未讀留言', key: 'docUnreadMsg', sortDesc: null },
+  { name: '客戶未讀留言', key: 'cusUnreadMsg', sortDesc: null },
+  { name: '支付金額', key: 'paidAmount', sortDesc: null },
+  { name: '處理狀態', key: 'orderStatus', sortDesc: null },
+  { name: '下單日期', key: 'orderDate', sortDesc: null },
+  { name: '客戶病狀', key: 'inqueryCate', sortDesc: null },
+  { name: '客戶電話', key: 'clientLinePhone', sortDesc: null },
+  { name: '收到快遞', key: 'hardCopyReceived', sortDesc: null },
+  { name: '寄回快遞', key: 'copySendBack', sortDesc: null },
+  { name: '醫生收到快遞', key: 'docHasCopy', sortDesc: null },
 ];
 
-const zero = "T00:00:00";
+const zero = 'T00:00:00';
 const rows = [10, 20, 50];
 export default {
-  name: "historylist",
+  name: 'historylist',
   data() {
     return {
       orderBy: [],
-      Code: "",
-      Text: "",
+      Code: '',
+      Text: '',
       dtcPublic: false,
       showEdit: false,
-      number: "",
-      name: "",
-      id: "",
+      number: '',
+      name: '',
+      id: '',
       headers,
       items: [],
       currentPageNum: 1,
@@ -149,12 +149,12 @@ export default {
       pagingRowPerPage: 10,
       search: false,
       rows,
-      totalCountStr: "",
-      editItem: "",
+      totalCountStr: '',
+      editItem: '',
       toggleComment: false,
       cate: 0,
       status: 0,
-      phone: "",
+      phone: '',
     };
   },
   components: {},
@@ -167,22 +167,22 @@ export default {
         value: s.cid,
         text: s.name,
       }));
-      arr.unshift({ value: 0, text: "全部" });
+      arr.unshift({ value: 0, text: '全部' });
       return arr;
     },
     orderStatus() {
       let arr = [...store.orderStatus].slice(2);
-      arr.unshift({ value: 0, text: "全部" });
+      arr.unshift({ value: 0, text: '全部' });
       return arr;
     },
   },
   methods: {
     wirteReport(item) {
       store.editItem = { ...item };
-      this.$router.push("orderdetail");
+      this.$router.push('orderdetail');
     },
     hideTextarea(item) {
-      item.addNewComment = item.addNewDoctorComment = "";
+      item.addNewComment = item.addNewDoctorComment = '';
       this.items = [...this.items];
     },
     async addNewDoctorComment(item) {
@@ -191,22 +191,22 @@ export default {
       //const str = moment().format("YYYY-MM-DD HH:mm");
       obj.commentAt = new Date().toISOString();
       obj.rating = 0;
-      obj.userComment = "";
+      obj.userComment = '';
       obj.read = false;
       item.message.unshift(obj);
       try {
         await actions.updateOrder(item);
-        item.addedComment = "";
-        item.addNewComment = "";
+        item.addedComment = '';
+        item.addNewComment = '';
         this.items = [...this.items];
         this.$bvToast.toast(`新增留言成功`, {
-          title: "系統資訊",
+          title: '系統資訊',
           autoHideDelay: 5000,
-          variant: "success",
+          variant: 'success',
         });
         setTimeout(this.getData(), 200);
       } catch (e) {
-        alert("client :" + e);
+        alert('client :' + e);
       }
     },
     addComment(item) {
@@ -245,16 +245,16 @@ export default {
     async clearSearch() {
       this.status = 0;
       this.cate = 0;
-      this.phone = "";
+      this.phone = '';
       this.search = false;
       this.getData();
     },
     async getData() {
-      let qs = sessionStorage.isAdmin ? "" : "doctorPhone=" + sessionStorage.phone;
+      let qs = sessionStorage.isAdmin ? '' : 'doctorPhone=' + sessionStorage.phone;
 
-      qs += "&orderStatus=finish&&_limit=" + this.pagingRowPerPage;
+      qs += '&orderStatus=finish&&_limit=' + this.pagingRowPerPage;
       if (this.orderBy.length) {
-        qs += "&_sort=" + this.orderBy.join(",");
+        qs += '&_sort=' + this.orderBy.join(',');
       }
       if (this.currentPageNum > 1) {
         qs += `&_start=` + (this.currentPageNum - 1) * this.pagingRowPerPage;
@@ -267,11 +267,11 @@ export default {
       // }
 
       if (this.cate) {
-        qs += "&inqueryCate=" + this.cate;
+        qs += '&inqueryCate=' + this.cate;
       }
 
       if (this.phone) {
-        qs += "&orderPhoneNum=" + this.phone;
+        qs += '&clientLinePhone=' + this.phone;
       }
 
       const { items, count } = await actions.getOrders(qs);

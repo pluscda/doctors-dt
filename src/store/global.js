@@ -25,6 +25,9 @@ export let store = Vue.observable({
 });
 
 export let actions = {
+  async lineMsg(obj){
+    await axios.post("dtc-line",obj);
+  },
   async getCount(url){
      return await axios.get(url);
   },

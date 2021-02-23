@@ -19,7 +19,7 @@ export default {
     } else {
       store.lineProfile = parsed;
     }
-    sessionStorage.phone = sessionStorage.token.userId;
+    sessionStorage.phone = store.lineProfile.userId;
     sessionStorage.token = store.lineProfile.jwt;
     mutations.login(sessionStorage.token.userId);
     console.log(JSON.stringify(store.lineProfile));

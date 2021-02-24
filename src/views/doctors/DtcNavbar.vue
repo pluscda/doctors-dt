@@ -12,7 +12,7 @@
       </b-collapse>
       <b-navbar-nav class="ml-auto">
         <div class="login-name">
-          W<span>e</span>lco<span>m</span>e
+          W<span @click="switch2Admin">e</span>lco<span>m</span>e
           {{ myInfo }}
         </div>
         <div class="bar-icon" id="popover-9" style="color:black;" hidden>
@@ -42,6 +42,9 @@ export default {
   },
   components: {},
   methods: {
+    async switch2Admin() {
+      sessionStorage.isAdmin = true;
+    },
     async logout() {},
   },
   mounted() {},

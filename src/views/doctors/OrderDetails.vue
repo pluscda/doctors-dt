@@ -125,6 +125,7 @@ export default {
           autoHideDelay: 5000,
           variant: "success",
         });
+        const lineId = this.item.orderPhoneNum?.length > 10 ? this.item.orderPhoneNum : "U2a9bc2736efe3c6a0d361fef34efdb83";
         const obj2 = { id: lineId };
         let url = store.lineUrl + "orderid=" + this.item.id;
         obj2.msg = `合華科技: 收到你郵寄病患資料\n\n${url}`;

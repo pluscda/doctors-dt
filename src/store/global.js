@@ -19,7 +19,7 @@ const init = {
   editItem:'',
   MIN_NON_CANCER_NUM: 34,
   lineProfile:{},
-  lineUrl: " https://liff.line.me/1655679414-AdYmjyMx?"
+  lineUrl: "https://liff.line.me/1655679414-AdYmjyMx?"
 };
 export let store = Vue.observable({
   ...init,

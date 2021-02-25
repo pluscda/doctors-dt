@@ -50,7 +50,15 @@
       </nav>
       <section class="nav-left-right">
         <div>
-          <b-textarea :readonly="isAdmin" v-model="item.judge" autofocus placeholder="請在此輸入報告..." spellcheck="false" no-resize class="input-area-dtc"></b-textarea>
+          <b-textarea
+            :readonly="isAdmin"
+            v-model="item.judge"
+            autofocus
+            placeholder="請在此輸入報告(NOTE: Admin is not allowed to type here)..."
+            spellcheck="false"
+            no-resize
+            class="input-area-dtc"
+          ></b-textarea>
         </div>
       </section>
     </main>

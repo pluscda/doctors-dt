@@ -54,7 +54,7 @@
             :readonly="isAdmin"
             v-model="item.judge"
             autofocus
-            placeholder="請在此輸入報告(NOTE: Admin is not allowed to type here)..."
+            :placeholder="isAdmin ? '請在此輸入報告(NOTE: Admin is not allowed to type here)...' : '請在此輸入報告...'"
             spellcheck="false"
             no-resize
             class="input-area-dtc"

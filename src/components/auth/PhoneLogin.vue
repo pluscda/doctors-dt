@@ -39,7 +39,7 @@ export default {
     sessionStorage.phone = store.lineProfile.userId;
     sessionStorage.token = store.lineProfile.jwt;
     mutations.login(store.lineProfile.userId);
-    this.$router.push("/home");
+    store.lineProfile.orderId ? this.checkOrderId() : this.$router.push("/home");
   },
 };
 </script>

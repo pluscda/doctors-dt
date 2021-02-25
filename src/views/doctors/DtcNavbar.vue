@@ -5,9 +5,9 @@
       <b-collapse id="nav-collapse" is-nav>
         <b-navbar-nav>
           <b-nav-item @click="$router.push('/home')">首頁</b-nav-item>
-          <b-nav-item @click="$router.push('/historylist')">歷史報告</b-nav-item>
           <b-nav-item @click="$router.push('/waitlist')">診斷報告</b-nav-item>
           <b-nav-item @click="$router.push('/asklist')">線上諮詢</b-nav-item>
+          <b-nav-item @click="$router.push('/historylist')">歷史報告</b-nav-item>
         </b-navbar-nav>
       </b-collapse>
       <b-navbar-nav class="ml-auto">

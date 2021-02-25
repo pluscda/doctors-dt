@@ -56,10 +56,10 @@
       <div>{{ $formatStatus(item.orderStatus) }}</div>
       <div>{{ $twDate(item.orderDate) }}</div>
       <div>{{ (item.inqueryCate && allCate.find((s) => s.value == item.inqueryCate) && allCate.find((s) => s.value == item.inqueryCate).text) || item.inqueryCate }}</div>
-      <div>{{ item.clientLinePhone ? clientLinePhone : '暫無資料' }}</div>
-      <div>{{ item.hardCopyReceived ? $twDate(item.hardCopyReceived).split(' ')[0] : '否' }}</div>
-      <div>{{ item.copySendBack ? $twDate(item.copySendBack).split(' ')[0] : '否' }}</div>
-      <div>{{ item.docHasCopy ? $twDate(item.docHasCopy).split(' ')[0] : '否' }}</div>
+      <div>{{ item.clientLinePhone ? clientLinePhone : "暫無資料" }}</div>
+      <div>{{ item.hardCopyReceived ? $twDate(item.hardCopyReceived).split(" ")[0] : "否" }}</div>
+      <div>{{ item.copySendBack ? $twDate(item.copySendBack).split(" ")[0] : "否" }}</div>
+      <div>{{ item.docHasCopy ? $twDate(item.docHasCopy).split(" ")[0] : "否" }}</div>
 
       <nav v-if="item.viewItemComment" class="mb-2" style="text-align:left;">
         <b-button :disabled="!item.addedComment" @click="addNewDoctorComment(item)" class="mt-1 mb-1 ml-2" variant="primary" size="sm">確認新增留言</b-button>
@@ -72,11 +72,11 @@
               <van-icon name="pending-payment" size="20px" v-if="getMsgStatus(note).includes('未讀取')" />
               <van-icon name="certificate" color="black" size="20px" v-if="getMsgStatus(note).includes('已讀取')" />
               <span>{{ getMsgStatus(note) }}</span>
-              <span>{{ $twDate(note.commentAt, '@') }}</span>
+              <span>{{ $twDate(note.commentAt, "@") }}</span>
 
               <span class="mark-as-read" v-if="!note.read && note.userComment" @click.stop="updateReadStatus(note)">註記已讀</span>
             </div>
-            <div style="line-height:22px;">{{ note.docComment ? '醫生留言' : '客戶說' }}: {{ note.docComment || note.userComment }}</div>
+            <div style="line-height:22px;">{{ note.docComment ? "醫生留言" : "客戶說" }}: {{ note.docComment || note.userComment }}</div>
           </section>
         </main>
       </footer>
@@ -108,39 +108,39 @@
 </template>
 
 <script>
-import { store, actions } from '@/store/global.js';
-import moment from 'dayjs';
-import queryString from 'qs';
+import { store, actions } from "@/store/global.js";
+import moment from "dayjs";
+import queryString from "qs";
 
 const headers = [
-  { name: '留言數量', key: 'totalMsg', sortDesc: null },
-  { name: '醫生未讀留言', key: 'docUnreadMsg', sortDesc: null },
-  { name: '客戶未讀留言', key: 'cusUnreadMsg', sortDesc: null },
-  { name: '支付金額', key: 'paidAmount', sortDesc: null },
-  { name: '處理狀態', key: 'orderStatus', sortDesc: null },
-  { name: '下單日期', key: 'orderDate', sortDesc: null },
-  { name: '客戶病狀', key: 'inqueryCate', sortDesc: null },
-  { name: '客戶電話', key: 'clientLinePhone', sortDesc: null },
-  { name: '收到快遞', key: 'hardCopyReceived', sortDesc: null },
-  { name: '寄回快遞', key: 'copySendBack', sortDesc: null },
-  { name: '醫生收到快遞', key: 'docHasCopy', sortDesc: null },
+  { name: "留言數量", key: "totalMsg", sortDesc: null },
+  { name: "醫生未讀留言", key: "docUnreadMsg", sortDesc: null },
+  { name: "客戶未讀留言", key: "cusUnreadMsg", sortDesc: null },
+  { name: "支付金額", key: "paidAmount", sortDesc: null },
+  { name: "處理狀態", key: "orderStatus", sortDesc: null },
+  { name: "下單日期", key: "orderDate", sortDesc: null },
+  { name: "客戶病狀", key: "inqueryCate", sortDesc: null },
+  { name: "客戶電話", key: "clientLinePhone", sortDesc: null },
+  { name: "收到快遞", key: "hardCopyReceived", sortDesc: null },
+  { name: "寄回快遞", key: "copySendBack", sortDesc: null },
+  { name: "醫生收到快遞", key: "docHasCopy", sortDesc: null },
 ];
 
-const zero = 'T00:00:00';
+const zero = "T00:00:00";
 const rows = [10, 20, 50];
-let itemIdViewComment = '';
+let itemIdViewComment = "";
 export default {
-  name: 'waitList',
+  name: "waitList",
   data() {
     return {
       orderBy: [],
-      Code: '',
-      Text: '',
+      Code: "",
+      Text: "",
       dtcPublic: false,
       showEdit: false,
-      number: '',
-      name: '',
-      id: '',
+      number: "",
+      name: "",
+      id: "",
       headers,
       items: [],
       currentPageNum: 1,
@@ -148,12 +148,12 @@ export default {
       pagingRowPerPage: 10,
       search: false,
       rows,
-      totalCountStr: '',
-      editItem: '',
+      totalCountStr: "",
+      editItem: "",
       toggleComment: false,
       cate: 0,
       status: 0,
-      phone: '',
+      phone: "",
     };
   },
   components: {},
@@ -168,7 +168,7 @@ export default {
           value: s.cid,
           text: s.name,
         }));
-      arr.unshift({ value: 0, text: '全部' });
+      arr.unshift({ value: 0, text: "全部" });
       return arr;
     },
     allCate() {
@@ -179,8 +179,8 @@ export default {
     },
     orderStatus() {
       let arr = [...store.orderStatus].slice(0, 2);
-      arr.push({ value: 'exception', text: '逾時未處理完' });
-      arr.unshift({ value: 0, text: '全部' });
+      arr.push({ value: "exception", text: "逾時未處理完" });
+      arr.unshift({ value: 0, text: "全部" });
       return arr;
     },
   },
@@ -203,18 +203,18 @@ export default {
       }
     },
     getMsgStatus(item) {
-      let str = item.docComment && item.read ? '客戶已讀取' : '';
-      if (!str) str = item.docComment && !item.read ? '客戶未讀取' : '';
-      if (!str) str = item.userComment && !item.read ? '醫生未讀取' : '';
-      if (!str) str = item.userComment && item.read ? '醫生已讀取' : '';
+      let str = item.docComment && item.read ? "客戶已讀取" : "";
+      if (!str) str = item.docComment && !item.read ? "客戶未讀取" : "";
+      if (!str) str = item.userComment && !item.read ? "醫生未讀取" : "";
+      if (!str) str = item.userComment && item.read ? "醫生已讀取" : "";
       return str;
     },
     wirteReport(item) {
       store.editItem = { ...item };
-      this.$router.push('orderdetail');
+      this.$router.push("orderdetail");
     },
     hideTextarea(item) {
-      item.addNewComment = item.addNewDoctorComment = '';
+      item.addNewComment = item.addNewDoctorComment = "";
       this.items = [...this.items];
     },
     async addNewDoctorComment(item) {
@@ -223,27 +223,27 @@ export default {
       //const str = moment().format("YYYY-MM-DD HH:mm");
       obj.commentAt = new Date().toISOString();
       obj.rating = 0;
-      obj.userComment = '';
+      obj.userComment = "";
       obj.read = false;
       item.message.unshift(obj);
       try {
         await actions.updateOrder(item);
-        item.addedComment = '';
+        item.addedComment = "";
         this.items = [...this.items];
         this.$bvToast.toast(`新增留言成功`, {
-          title: '系統資訊',
+          title: "系統資訊",
           autoHideDelay: 5000,
-          variant: 'success',
+          variant: "success",
         });
         itemIdViewComment = item.id;
         setTimeout(this.getData(), 100);
-        const lineId = item.orderPhoneNum?.length > 10 ? item.orderPhoneNum : 'U2a9bc2736efe3c6a0d361fef34efdb83';
+        const lineId = item.orderPhoneNum?.length > 10 ? item.orderPhoneNum : "U2a9bc2736efe3c6a0d361fef34efdb83";
         const obj2 = { id: lineId };
-        item.realName ? '' : (item.realName = 'DTC tester');
+        item.realName ? "" : (item.realName = "DTC tester");
         obj2.msg = `${item.realName}醫師留言:\n ${obj.docComment}`;
         actions.lineMsg(obj2);
       } catch (e) {
-        alert('client :' + e);
+        alert("client :" + e);
       }
     },
     addComment(item) {
@@ -281,44 +281,47 @@ export default {
     async clearSearch() {
       this.status = 0;
       this.cate = 0;
-      this.phone = '';
+      this.phone = "";
       this.search = false;
       this.getData();
     },
-    async getData() {
-      let qs = sessionStorage.isAdmin ? '' : 'doctorPhone=' + sessionStorage.phone;
+    async getData(id) {
+      let qs = sessionStorage.isAdmin ? "" : "doctorPhone=" + sessionStorage.phone;
 
-      qs += '&_limit=' + this.pagingRowPerPage;
+      qs += "&_limit=" + this.pagingRowPerPage;
       if (this.orderBy.length) {
-        qs += '&_sort=' + this.orderBy.join(',');
+        qs += "&_sort=" + this.orderBy.join(",");
       }
       if (this.currentPageNum > 1) {
         qs += `&_start=` + (this.currentPageNum - 1) * this.pagingRowPerPage;
       }
       // filters by user
       if (this.status) {
-        qs += '&orderStatus=' + this.status;
+        qs += "&orderStatus=" + this.status;
       } else {
-        qs += '&orderStatus=waiting&orderStatus=process&orderStatus=exception';
+        qs += "&orderStatus=waiting&orderStatus=process&orderStatus=exception";
       }
 
       if (this.cate) {
-        qs += '&inqueryCate=' + this.cate;
+        qs += "&inqueryCate=" + this.cate;
       } else {
-        qs += '&inqueryCate_lt=' + store.MIN_NON_CANCER_NUM;
+        qs += "&inqueryCate_lt=" + store.MIN_NON_CANCER_NUM;
       }
 
       if (this.phone) {
-        qs += '&clientLinePhone=' + this.phone;
+        qs += "&clientLinePhone=" + this.phone;
       }
 
+      if (id) {
+        qs = "id=" + id;
+      }
       const { items, count } = await actions.getOrders(qs);
       if (itemIdViewComment) {
         const item = items.find((s) => s.id == itemIdViewComment);
         if (item) {
           item.viewComment = true;
           item.viewItemComment = true;
-          itemIdViewComment = '';
+          itemIdViewComment = "";
         }
       }
       this.items = [...items];
@@ -327,7 +330,9 @@ export default {
     },
   },
   async mounted() {
-    this.getData();
+    const str = location.href.split("?")[1];
+    const { id } = queryString.parse(str);
+    this.getData(id);
   },
   async created() {
     store.cates = await actions.getCancerTypes();

@@ -256,7 +256,7 @@ export default {
       this.search = false;
       this.getData();
     },
-    async getData() {
+    async getData(id) {
       let qs = sessionStorage.isAdmin ? "" : "doctorPhone=" + sessionStorage.phone;
 
       qs += "&_limit=" + this.pagingRowPerPage;
@@ -283,6 +283,10 @@ export default {
         qs += "&clientLinePhone=" + this.phone;
       }
 
+      if (id) {
+        qs = "id=" + id;
+      }
+
       const { items, count } = await actions.getOrders(qs);
       this.items = items;
       this.rowCount = count;
@@ -290,7 +294,9 @@ export default {
     },
   },
   async mounted() {
-    this.getData();
+    const str = location.href.split("?")[1];
+    const { id } = queryString.parse(str);
+    this.getData(id);
   },
   async created() {
     store.cates = await actions.getCancerTypes();

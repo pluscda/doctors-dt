@@ -12,7 +12,23 @@ export default {
   },
   computed: {},
 
-  mounted() {
+  methods: {
+    async checkOrderId() {
+      let id = store.lineProfile.orderId;
+      if (!id) {
+        return;
+      }
+      const qs = "id=" + id;
+      const { items } = await actions.getOrders(qs);
+      if (items[0].inqueryCate >= store.MIN_NON_CANCER_NUM) {
+        setTimeout(() => this.$router.push("/asklist?id=" + id), 100);
+      } else {
+        setTimeout(() => this.$router.push("/waitlist?id=" + id), 100);
+      }
+    },
+  },
+
+  async mounted() {
     const qs = location.href.split("?")[1];
     const parsed = queryString.parse(qs);
     if (!parsed) {
@@ -23,7 +39,6 @@ export default {
     sessionStorage.phone = store.lineProfile.userId;
     sessionStorage.token = store.lineProfile.jwt;
     mutations.login(store.lineProfile.userId);
-    console.log(JSON.stringify(store.lineProfile));
     this.$router.push("/home");
   },
 };

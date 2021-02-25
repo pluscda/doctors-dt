@@ -28,19 +28,6 @@ export default {
     goDocList() {
       this.$router.push("doclist");
     },
-    async checkOrderId() {
-      let id = location.href.split("orderid=")[1];
-      if (!id) {
-        return;
-      }
-      const qs = "id=" + id;
-      const { items } = await actions.getOrders(qs);
-      if (items[0].inqueryCate >= store.MIN_NON_CANCER_NUM) {
-        setTimeout(() => this.$router.push("/asklist?id=" + id), 300);
-      } else {
-        setTimeout(() => this.$router.push("/waitlist?id=" + id), 300);
-      }
-    },
   },
   components: {
     DtcNavBar,
@@ -48,9 +35,7 @@ export default {
   async created() {
     store.cates = await actions.getCancerTypes();
   },
-  async mounted() {
-    this.checkOrderId();
-  },
+
   watch: {
     $route(to, from) {
       if (to.path.includes("home")) {

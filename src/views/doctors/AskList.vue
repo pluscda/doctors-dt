@@ -110,6 +110,7 @@
 <script>
 import { store, actions } from "@/store/global.js";
 import moment from "dayjs";
+import queryString from "qs";
 
 const headers = [
   { name: "留言數量", key: "totalMsg", sortDesc: null },

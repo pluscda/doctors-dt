@@ -49,8 +49,8 @@
         {{ item.totalMsg || 0 }}
       </div>
 
-      <div :style="item.docUnreadMsg > 0 ? 'color:black;' : 'color:black;'">{{ 0 }}</div>
-      <div :style="item.cusUnreadMsg > 0 ? 'color:black;' : 'color:black;'">{{ 0 }}</div>
+      <div>{{ item.lineClientDisplayName || "暫無資料" }}</div>
+      <div>{{ 0 }}</div>
       <div>{{ $formatPrice(item.paidAmount) }}</div>
       <div>{{ $formatStatus(item.orderStatus) }}</div>
       <div>{{ $twDate(item.orderDate) }}</div>
@@ -114,7 +114,7 @@ import queryString from "qs";
 
 const headers = [
   { name: "留言數量", key: "totalMsg", sortDesc: null },
-  { name: "醫生未讀留言", key: "docUnreadMsg", sortDesc: null },
+  { name: "客戶姓名", key: "lineClientDisplayName", sortDesc: null },
   { name: "客戶未讀留言", key: "cusUnreadMsg", sortDesc: null },
   { name: "支付金額", key: "paidAmount", sortDesc: null },
   { name: "處理狀態", key: "orderStatus", sortDesc: null },

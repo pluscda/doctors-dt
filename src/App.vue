@@ -68,8 +68,8 @@ export default {
     DtcNavBar,
   },
   async mounted() {
-    const qs = location.href.split("?")[1];
-    if (!qs) {
+    const https = location.href.includes("https");
+    if (!https) {
       sessionStorage.phone = "0911911911";
       await this.connectWithStrapi();
     }

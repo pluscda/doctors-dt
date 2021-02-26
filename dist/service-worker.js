@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/precache-manifest.bdb2be98e537c16d6061e0008c89a73f.js"
+  "/precache-manifest.f0f24f32278f70dcd7e8c0afe6b11759.js"
 );
 
 workbox.core.setCacheNameDetails({prefix: "dtc-be-ui"});

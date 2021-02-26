@@ -45,10 +45,9 @@
       <div>
         <b-button size="sm" variant="info" class="mx-2" @click="wirteReport(item)">報告撰寫</b-button>
       </div>
-      <div>
-        <b-form-checkbox v-model="item.viewItemComment" style="margin-top:2px;" class="ml-1" @change="viewComment(item)" switch>
-          {{ item.totalMsg || 0 }}
-        </b-form-checkbox>
+      <div style="display:grid;grid-template-columns: 60px max-content">
+        <b-form-checkbox v-model="item.viewItemComment" style="margin-top:2px;" class="ml-1" @change="viewComment(item)" switch> </b-form-checkbox>
+        <div>{{ item.totalMsg || 0 }}</div>
       </div>
 
       <div>{{ item.lineClientDisplayName || "暫無資料" }}</div>

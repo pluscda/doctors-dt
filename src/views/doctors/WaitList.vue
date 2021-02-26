@@ -51,7 +51,7 @@
       </div>
 
       <div>{{ item.lineClientDisplayName || "暫無資料" }}</div>
-      <div>{{ 0 }}</div>
+      <div>{{ item.clientEmail || "暫無資料" }}</div>
       <div>{{ $formatPrice(item.paidAmount) }}</div>
       <div>{{ $formatStatus(item.orderStatus) }}</div>
       <div>{{ $twDate(item.orderDate) }}</div>
@@ -115,7 +115,7 @@ import queryString from "qs";
 const headers = [
   { name: "留言數量", key: "totalMsg", sortDesc: null },
   { name: "客戶姓名", key: "lineClientDisplayName", sortDesc: null },
-  { name: "客戶未讀留言", key: "cusUnreadMsg", sortDesc: null },
+  { name: "客戶信箱", key: "clientEmail", sortDesc: null },
   { name: "支付金額", key: "paidAmount", sortDesc: null },
   { name: "處理狀態", key: "orderStatus", sortDesc: null },
   { name: "下單日期", key: "orderDate", sortDesc: null },

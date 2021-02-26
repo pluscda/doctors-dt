@@ -8,6 +8,7 @@
 <script>
 import { store, mutations, actions } from "@/store/global.js";
 import DtcNavBar from "./views/doctors/DtcNavbar";
+import queryString from "qs";
 
 export default {
   name: "app",
@@ -25,6 +26,40 @@ export default {
     },
   },
   methods: {
+    async connectWithStrapi() {
+      sessionStorage.token = "";
+      try {
+        const { jwt: jwt1 } = await this.loginStrapi();
+        if (!jwt1) {
+          const { jwt: jwt2 } = await this.registerStrapi().catch((e) => {
+            alert("something wrong at app jwt connectWithStrapi");
+            return;
+          });
+          sessionStorage.token = jwt2;
+        } else {
+          sessionStorage.token = jwt1;
+        }
+        mutations.login(store.lineProfile.userId);
+      } catch (e) {
+        alert("請檢查驗證號碼" + e);
+      }
+    },
+    async registerStrapi() {
+      const { jwt } = await actions.registerStrapi({
+        username: store.lineProfile.userId,
+        password: store.PASSWORD,
+        email: store.lineProfile.email,
+      });
+      return { jwt };
+    },
+    async loginStrapi() {
+      try {
+        const { jwt } = await actions.loginStrapi({ identifier: store.lineProfile.userId, password: store.PASSWORD });
+        return { jwt };
+      } catch (e) {
+        return { jwt: "" };
+      }
+    },
     goDocList() {
       this.$router.push("doclist");
     },
@@ -32,7 +67,12 @@ export default {
   components: {
     DtcNavBar,
   },
-  async created() {
+  async mounted() {
+    const qs = location.href.split("?")[1];
+    if (!qs) {
+      sessionStorage.phone = "0911911911";
+      await this.connectWithStrapi();
+    }
     store.cates = await actions.getCancerTypes();
   },
 

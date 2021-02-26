@@ -42,16 +42,17 @@
       style="color:black;"
       :style="i % 2 == 0 ? 'background-color: #F5F5F5;' : 'background-color: #E0E0E0;'"
     >
-      <div style="display:grid; grid-template-columns: max-content max-content">
+      <div>
         <b-button size="sm" variant="info" class="mx-2" @click="wirteReport(item)">報告撰寫</b-button>
-        <b-form-checkbox v-model="item.viewItemComment" style="margin-top:2px;" class="ml-1" @change="viewComment(item)" switch>留言</b-form-checkbox>
       </div>
       <div>
-        {{ item.totalMsg || 0 }}
+        <b-form-checkbox v-model="item.viewItemComment" style="margin-top:2px;" class="ml-1" @change="viewComment(item)" switch>
+          {{ item.totalMsg || 0 }}
+        </b-form-checkbox>
       </div>
 
-      <div :style="item.docUnreadMsg > 0 ? 'color:black;' : 'color:black;'">{{ 0 }}</div>
-      <div :style="item.cusUnreadMsg > 0 ? 'color:black;' : 'color:black;'">{{ 0 }}</div>
+      <div>{{ item.lineClientDisplayName || "暫無資料" }}</div>
+      <div>{{ 0 }}</div>
       <div>{{ $formatPrice(item.paidAmount) }}</div>
       <div>{{ $formatStatus(item.orderStatus) }}</div>
       <div>{{ $twDate(item.orderDate) }}</div>
@@ -114,7 +115,7 @@ import queryString from "qs";
 
 const headers = [
   { name: "留言數量", key: "totalMsg", sortDesc: null },
-  { name: "醫生未讀留言", key: "docUnreadMsg", sortDesc: null },
+  { name: "客戶姓名", key: "lineClientDisplayName", sortDesc: null },
   { name: "客戶未讀留言", key: "cusUnreadMsg", sortDesc: null },
   { name: "支付金額", key: "paidAmount", sortDesc: null },
   { name: "處理狀態", key: "orderStatus", sortDesc: null },
@@ -363,7 +364,7 @@ export default {
 }
 .dtc-grid-header {
   display: grid;
-  grid-template-columns: 170px repeat(4, 100px) 120px 180px repeat(4, 120px) 1fr;
+  grid-template-columns: 100px repeat(4, 100px) 120px 180px repeat(4, 120px) 1fr;
 
   text-align: center;
   padding-right: 0px;

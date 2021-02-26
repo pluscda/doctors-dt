@@ -30,7 +30,8 @@ export default {
 
   async mounted() {
     const qs = location.href.split("?")[1];
-    const parsed = queryString.parse(qs);
+
+    const parsed = qs ? queryString.parse(qs) : "";
     if (!parsed) {
       return;
     } else {

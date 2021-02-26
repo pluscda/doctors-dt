@@ -18,7 +18,7 @@ const init = {
   orderStatus,
   editItem:'',
   MIN_NON_CANCER_NUM: 34,
-  lineProfile:{},
+  lineProfile:{userId:"121212132232323", email:"abc@ag.com", displayName: "DTC Tester"},
   lineUrl: "https://liff.line.me/1655679414-AdYmjyMx?"
 };
 export let store = Vue.observable({

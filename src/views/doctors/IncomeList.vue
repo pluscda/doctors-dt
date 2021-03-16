@@ -1,5 +1,5 @@
 <template>
-  <section class="dtc-main-section">
+  <section class="dtc-main-section mb-4">
     <header class="ask-header">收支明細</header>
     <div class="dtc-search pl-2">
       <b-select v-model="year" :options="years"></b-select>
@@ -7,7 +7,7 @@
       <b-select v-model="doctor" :options="doctors"></b-select>
     </div>
 
-    <header class="my-header">
+    <header class="my-header mt-2">
       <h2>{{ year }} 年 {{ month }} 月名醫會館所得合計明細</h2>
     </header>
 
@@ -76,7 +76,7 @@ export default {
       years,
       months,
       year,
-      month: 3,
+      month: moment().month() + 1,
       orderBy: [],
       Code: "",
       Text: "",
@@ -89,7 +89,7 @@ export default {
       items: [],
       currentPageNum: 1,
       rowCount: 0,
-      pagingRowPerPage: 10,
+      pagingRowPerPage: 50,
       search: false,
       rows,
       totalCountStr: "",
@@ -219,34 +219,13 @@ export default {
     },
     async getData(id) {
       let qs = sessionStorage.isAdmin ? "" : "doctorPhone=" + sessionStorage.phone;
-
       qs += "&_limit=" + this.pagingRowPerPage;
-      if (this.orderBy.length) {
-        qs += "&_sort=" + this.orderBy.join(",");
-      }
-      if (this.currentPageNum > 1) {
-        qs += `&_start=` + (this.currentPageNum - 1) * this.pagingRowPerPage;
-      }
-      // filters by user
-      if (this.status) {
-        qs += "&orderStatus=" + this.status;
-      } else {
-        qs += "&orderStatus=waiting&orderStatus=process&orderStatus=exception";
-      }
-
-      if (this.cate) {
-        qs += "&inqueryCate=" + this.cate;
-      } else {
-        qs += "&inqueryCate_gt=" + (store.MIN_NON_CANCER_NUM - 1);
-      }
-
-      if (this.phone) {
-        qs += "&clientLinePhone=" + this.phone;
-      }
-
-      if (id) {
-        qs = "id=" + id;
-      }
+      const startTime = moment(`${this.year}-${this.month}-01`).format("YYYY-MM-DD");
+      const endTime = moment(`${this.year}-${this.month}-01`)
+        .endOf("month")
+        .add(1, "days")
+        .format("YYYY-MM-DD");
+      qs += `&orderDate_gte=${startTime}&orderDate_lt=${endTime}`;
 
       const { items, count } = await actions.getOrders(qs);
       this.items = items;

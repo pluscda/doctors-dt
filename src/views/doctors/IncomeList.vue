@@ -5,7 +5,15 @@
       <b-select v-model="year" :options="years"></b-select>
       <b-select v-model="month" :options="months"></b-select>
     </div>
-    <h2 class="title">名醫會館 {{ year }} 年 {{ month }} 月</h2>
+
+    <header class="my-header">
+      <h2>{{ year }} 年 {{ month }} 月名醫會館收支明細</h2>
+    </header>
+
+    <header class="my-header">
+      <h2>陳朝明(醫師)</h2>
+    </header>
+
     <header class="dtc-report">
       <div style="font-weight:500" v-for="item in titles" :key="item">{{ item }}</div>
     </header>
@@ -255,8 +263,18 @@ export default {
   position: relative;
   min-height: calc(100vh - 75px);
 }
+.my-header {
+  width: calc(120px + 190px + 160px + 3 * 120px + 2px);
+  display: block;
+  text-align: center;
+  font-weight: 500;
+  height: 40px;
+  line-height: 40px;
+  margin: 0 auto;
+  border: 1px solid black;
+  border-bottom: 0px;
+}
 .dtc-report {
-  display: black;
   width: max-content;
   margin: 0 auto;
   display: grid;

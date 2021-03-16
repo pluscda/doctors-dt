@@ -34,7 +34,7 @@
       <main style="grid-column: 1/ 6;text-align:center; border-right:1px solid black; line-height:40px; ">
         總計
       </main>
-      <main style="text-align:center;  line-height:40px; ">
+      <main style="text-align:center;  line-height:40px; font-size:12px;">
         {{ grossIncome }}
       </main>
     </footer>
@@ -101,6 +101,13 @@ export default {
   },
   components: {},
   computed: {
+    grossIncome() {
+      if (!this.items.length) return "";
+      const total = this.items.reduce((accumulator, { paidAmount }) => {
+        return (accumulator += paidAmount * this.discount);
+      }, 0);
+      return "NT $" + this.$formatPrice(parseInt(total));
+    },
     myEditItem() {
       return store.editItem;
     },

@@ -2,9 +2,15 @@
   <section class="dtc-main-section mb-4">
     <header class="ask-header">收支明細</header>
     <div class="dtc-search pl-2">
-      <b-select v-model="year" :options="years"></b-select>
-      <b-select v-model="month" :options="months"></b-select>
-      <b-select v-model="doctor" :options="doctors"></b-select>
+      <b-input-group prepend="年">
+        <b-select v-model="year" :options="years"></b-select>
+      </b-input-group>
+      <b-input-group prepend="月">
+        <b-select v-model="month" :options="months"></b-select>
+      </b-input-group>
+      <b-input-group prepend="選擇醫生">
+        <b-select v-model="phone" :options="doctors"></b-select>
+      </b-input-group>
     </div>
 
     <header class="my-header mt-2">
@@ -12,7 +18,7 @@
     </header>
 
     <header class="my-header">
-      <h2>陳朝明(醫師)</h2>
+      <h2>{{ (phone && doctors.find((s) => phone == s.value).text) || "全部醫院醫生" }}</h2>
     </header>
 
     <header class="dtc-report">
@@ -47,13 +53,14 @@ import { store, actions } from "@/store/global.js";
 import moment from "dayjs";
 import queryString from "qs";
 
+const allValues = { value: null, text: "全部醫院醫生" };
 const titles = ["訂單編號", "客戶下單日期", "客戶病狀", "支付金額", "乘以", "實際所得"];
 
 const zero = "T00:00:00.000Z";
 const rows = [10, 20, 50];
 let year = new Date().getFullYear();
-const years = new Array(2).fill().map((s, i) => ({ value: year - i, text: year - i + "年" }));
-const months = new Array(12).fill().map((s, i) => ({ value: i + 1, text: i + 1 + "月" }));
+const years = new Array(2).fill().map((s, i) => ({ value: year - i, text: year - i }));
+const months = new Array(12).fill().map((s, i) => ({ value: i + 1, text: i + 1 }));
 export default {
   name: "incomeList",
   data() {
@@ -75,7 +82,7 @@ export default {
       items: [],
       currentPageNum: 1,
       rowCount: 0,
-      pagingRowPerPage: 50,
+      pagingRowPerPage: 1110,
       search: false,
       rows,
       totalCountStr: "",
@@ -83,7 +90,7 @@ export default {
       toggleComment: false,
       cate: 0,
       status: 0,
-      phone: "",
+      phone: null,
       doctors: [],
     };
   },
@@ -197,14 +204,16 @@ export default {
       this.getData();
     },
     async getDDL() {
-      const { items: docs, count } = await actions.getDoctors("_limit=590");
+      const { items: docs } = await actions.getDoctors("_limit=590");
       this.doctors = docs.map((s) => ({
         value: s.phone,
         text: `${s.name} (${s.hospital})`,
       }));
+      this.doctors.unshift(allValues);
     },
-    async getData() {
+    async getData(phone) {
       let qs = sessionStorage.isAdmin ? "" : "doctorPhone=" + sessionStorage.phone;
+      phone ? (qs = "doctorPhone=" + phone) : "";
       qs += "&_limit=" + this.pagingRowPerPage;
       const startTime = moment(`${this.year}-${this.month}-01`).format("YYYY-MM-DD");
       const endTime = moment(`${this.year}-${this.month}-01`)
@@ -229,6 +238,9 @@ export default {
     },
     year() {
       this.getData();
+    },
+    phone(v) {
+      this.getData(v);
     },
   },
 };
@@ -313,8 +325,10 @@ export default {
 .dtc-search {
   position: relative;
   display: grid;
+  width: calc(120px + 190px + 160px + 3 * 120px + 2px);
   max-height: 40px;
-  margin-bottom: 12px;
+  margin: 0 auto;
+  margin-bottom: 20px;
   grid-template-columns: repeat(34, max-content);
   grid-gap: 1rem;
 }

@@ -18,8 +18,8 @@
       <div style="font-weight:500" v-for="item in titles" :key="item">{{ item }}</div>
     </header>
     <main class="dtc-report dtc-main" style="border-top:0" v-for="(item, i) in items" :key="i">
-      <div>{{ item.orderDate.split("T")[0] }}</div>
       <div>{{ item.id }}</div>
+      <div>{{ item.orderDate.split("T")[0] }}</div>
       <div>
         {{ (item.inqueryCate && allCate.find((s) => s.value == item.inqueryCate) && allCate.find((s) => s.value == item.inqueryCate).text) || item.inqueryCate }}
       </div>
@@ -30,6 +30,14 @@
     <main v-if="!items.length" class="my-header" style="border:1px solid black;border-top:0">
       暫無資料
     </main>
+    <footer v-if="items.length" class="dtc-report" style="border-top:0;">
+      <main style="grid-column: 1/ 6;text-align:center; border-right:1px solid black; line-height:40px; ">
+        總計
+      </main>
+      <main style="text-align:center;  line-height:40px; ">
+        {{ grossIncome }}
+      </main>
+    </footer>
   </section>
 </template>
 
@@ -38,7 +46,7 @@ import { store, actions } from "@/store/global.js";
 import moment from "dayjs";
 import queryString from "qs";
 
-const titles = ["下單日期", "訂單編號", "客戶病狀", "支付金額", "乘以", "實際所得"];
+const titles = ["訂單編號", "客戶下單日期", "客戶病狀", "支付金額", "乘以", "實際所得"];
 const headers = [
   { name: "留言數量", key: "totalMsg", sortDesc: null },
   { name: "客戶姓名", key: "lineClientDisplayName", sortDesc: null },
@@ -261,7 +269,8 @@ export default {
   position: relative;
   min-height: calc(100vh - 75px);
 }
-.my-header {
+.my-header,
+.my-footer {
   width: calc(120px + 190px + 160px + 3 * 120px + 2px);
   display: block;
   text-align: center;
@@ -272,11 +281,12 @@ export default {
   border: 1px solid black;
   border-bottom: 0px;
 }
+
 .dtc-report {
   width: max-content;
   margin: 0 auto;
   display: grid;
-  grid-template-columns: 120px 190px 160px repeat(3, 120px);
+  grid-template-columns: 190px 120px 160px repeat(3, 120px);
   height: 40px;
   border: 1px solid black;
   text-align: center;

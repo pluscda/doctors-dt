@@ -49,7 +49,7 @@ import queryString from "qs";
 
 const titles = ["訂單編號", "客戶下單日期", "客戶病狀", "支付金額", "乘以", "實際所得"];
 
-const zero = "T00:00:00";
+const zero = "T00:00:00.000Z";
 const rows = [10, 20, 50];
 let year = new Date().getFullYear();
 const years = new Array(2).fill().map((s, i) => ({ value: year - i, text: year - i + "年" }));
@@ -203,7 +203,7 @@ export default {
         text: `${s.name} (${s.hospital})`,
       }));
     },
-    async getData(id) {
+    async getData() {
       let qs = sessionStorage.isAdmin ? "" : "doctorPhone=" + sessionStorage.phone;
       qs += "&_limit=" + this.pagingRowPerPage;
       const startTime = moment(`${this.year}-${this.month}-01`).format("YYYY-MM-DD");
@@ -211,7 +211,7 @@ export default {
         .endOf("month")
         .add(1, "days")
         .format("YYYY-MM-DD");
-      qs += `&orderDate_gte=${startTime}&orderDate_lt=${endTime}`;
+      qs += `&orderDate_gte=${startTime}T00:00:00.000Z&orderDate_lt=${endTime}T00:00:00.000Z`;
 
       const { items, count } = await actions.getOrders(qs);
       this.items = items;
@@ -220,13 +220,8 @@ export default {
     },
   },
   async mounted() {
-    const str = location.href.split("?")[1];
-    const { id } = queryString.parse(str);
-    this.getData(id);
+    this.getData();
     this.getDDL();
-  },
-  async created() {
-    store.cates = await actions.getCancerTypes();
   },
   watch: {
     month() {

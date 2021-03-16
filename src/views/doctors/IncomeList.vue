@@ -27,10 +27,8 @@
       <div>{{ discount }}</div>
       <div>{{ $formatPrice(item.paidAmount * discount) }}</div>
     </main>
-    <main v-if="!items.length" class="dtc-grid-header main-dtc-body ml-1">
-      <div style="grid-column: 1 / -1;padding: 20px 0px;font-size:24px;color:black;">
-        暫無資料
-      </div>
+    <main v-if="!items.length" class="my-header" style="border:1px solid black;border-top:0">
+      暫無資料
     </main>
   </section>
 </template>

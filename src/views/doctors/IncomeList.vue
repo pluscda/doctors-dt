@@ -4,10 +4,11 @@
     <div class="dtc-search pl-2">
       <b-select v-model="year" :options="years"></b-select>
       <b-select v-model="month" :options="months"></b-select>
+      <b-select v-model="doctor" :options="doctors"></b-select>
     </div>
 
     <header class="my-header">
-      <h2>{{ year }} 年 {{ month }} 月名醫會館收支明細</h2>
+      <h2>{{ year }} 年 {{ month }} 月名醫會館所得合計明細</h2>
     </header>
 
     <header class="my-header">
@@ -32,7 +33,7 @@
     </main>
     <footer v-if="items.length" class="dtc-report" style="border-top:0;">
       <main style="grid-column: 1/ 6;text-align:center; border-right:1px solid black; line-height:40px; ">
-        總計
+        總實際所得合計
       </main>
       <main style="text-align:center;  line-height:40px; font-size:12px;">
         {{ grossIncome }}
@@ -97,6 +98,7 @@ export default {
       cate: 0,
       status: 0,
       phone: "",
+      doctors: [],
     };
   },
   components: {},
@@ -208,6 +210,13 @@ export default {
       this.search = false;
       this.getData();
     },
+    async getDDL() {
+      const { items: docs, count } = await actions.getDoctors("_limit=590");
+      this.doctors = docs.map((s) => ({
+        value: s.phone,
+        text: `${s.name} (${s.hospital})`,
+      }));
+    },
     async getData(id) {
       let qs = sessionStorage.isAdmin ? "" : "doctorPhone=" + sessionStorage.phone;
 
@@ -249,6 +258,7 @@ export default {
     const str = location.href.split("?")[1];
     const { id } = queryString.parse(str);
     this.getData(id);
+    this.getDDL();
   },
   async created() {
     store.cates = await actions.getCancerTypes();

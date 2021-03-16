@@ -8,7 +8,7 @@
           <b-nav-item @click="$router.push('/waitlist')">診斷報告</b-nav-item>
           <b-nav-item @click="$router.push('/asklist')">線上諮詢</b-nav-item>
           <b-nav-item @click="$router.push('/historylist')">歷史報告</b-nav-item>
-          <b-nav-item @click="$router.push('/incomelist')">收支明細</b-nav-item>
+          <b-nav-item @click="$router.push('/incomelist')">所得明細</b-nav-item>
         </b-navbar-nav>
       </b-collapse>
       <b-navbar-nav class="ml-auto">

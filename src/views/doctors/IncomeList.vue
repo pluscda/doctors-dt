@@ -20,20 +20,21 @@
     <header class="my-header">
       <h2>{{ (phone && doctors.find((s) => phone == s.value).text) || "全部醫院醫生" }}</h2>
     </header>
-
-    <header class="dtc-report">
-      <div style="font-weight:500" v-for="item in titles" :key="item">{{ item }}</div>
-    </header>
-    <main class="dtc-report dtc-main" style="border-top:0" v-for="(item, i) in items" :key="i">
-      <div>{{ item.id }}</div>
-      <div>{{ item.orderDate.split("T")[0] }}</div>
-      <div>
-        {{ (item.inqueryCate && allCate.find((s) => s.value == item.inqueryCate) && allCate.find((s) => s.value == item.inqueryCate).text) || item.inqueryCate }}
-      </div>
-      <div>{{ $formatPrice(item.paidAmount) }}</div>
-      <div>{{ discount }}</div>
-      <div>{{ $formatPrice(item.paidAmount * discount) }}</div>
-    </main>
+    <section>
+      <header class="dtc-report">
+        <div style="font-weight:500" v-for="item in titles" :key="item">{{ item }}</div>
+      </header>
+      <main class="dtc-report dtc-main" style="border-top:0" v-for="(item, i) in items" :key="i">
+        <div>{{ item.id }}</div>
+        <div>{{ item.orderDate.split("T")[0] }}</div>
+        <div>
+          {{ (item.inqueryCate && allCate.find((s) => s.value == item.inqueryCate) && allCate.find((s) => s.value == item.inqueryCate).text) || item.inqueryCate }}
+        </div>
+        <div>{{ $formatPrice(item.paidAmount) }}</div>
+        <div>{{ discount }}</div>
+        <div>{{ $formatPrice(item.paidAmount * discount) }}</div>
+      </main>
+    </section>
     <main v-if="!items.length" class="my-header" style="border:1px solid black;border-top:0">
       暫無資料
     </main>
@@ -93,6 +94,7 @@ export default {
       status: 0,
       phone: null,
       doctors: [],
+      adminRows: [],
     };
   },
   components: {},
@@ -240,7 +242,7 @@ export default {
         s[0].doctoreLongName = this.doctors.find((t) => t.value == s[0].doctorPhone).text;
         arr.push(s[0]);
       });
-      console.log(arr);
+      this.adminRows = arr;
 
       this.rowCount = count;
       this.totalCountStr = `共${count} 筆`;

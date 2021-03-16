@@ -48,19 +48,6 @@ import moment from "dayjs";
 import queryString from "qs";
 
 const titles = ["訂單編號", "客戶下單日期", "客戶病狀", "支付金額", "乘以", "實際所得"];
-const headers = [
-  { name: "留言數量", key: "totalMsg", sortDesc: null },
-  { name: "客戶姓名", key: "lineClientDisplayName", sortDesc: null },
-  { name: "客戶信箱", key: "clientEmail", sortDesc: null },
-  { name: "支付金額", key: "paidAmount", sortDesc: null },
-  { name: "處理狀態", key: "orderStatus", sortDesc: null },
-  { name: "下單日期", key: "orderDate", sortDesc: null },
-  { name: "客戶病狀", key: "inqueryCate", sortDesc: null },
-  { name: "客戶電話", key: "clientLinePhone", sortDesc: null },
-  { name: "收到快遞", key: "hardCopyReceived", sortDesc: null },
-  { name: "寄回快遞", key: "copySendBack", sortDesc: null },
-  { name: "醫生收到快遞", key: "docHasCopy", sortDesc: null },
-];
 
 const zero = "T00:00:00";
 const rows = [10, 20, 50];
@@ -85,7 +72,6 @@ export default {
       number: "",
       name: "",
       id: "",
-      headers,
       items: [],
       currentPageNum: 1,
       rowCount: 0,
@@ -243,15 +229,11 @@ export default {
     store.cates = await actions.getCancerTypes();
   },
   watch: {
-    currentPageNum(v) {
-      this.currentPageNum = v;
-      this.getData().catch((e) => {});
+    month() {
+      this.getData();
     },
-    pagingRowPerPage(v) {
-      this.getData().catch((e) => {});
-    },
-    myEditItem() {
-      this.getData().catch((e) => {});
+    year() {
+      this.getData();
     },
   },
 };

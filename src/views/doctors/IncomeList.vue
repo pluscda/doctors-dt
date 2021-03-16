@@ -53,7 +53,7 @@ import { store, actions } from "@/store/global.js";
 import moment from "dayjs";
 import queryString from "qs";
 
-const allValues = { value: null, text: "全部醫院醫生" };
+const allValues = { value: null, text: "全部醫院醫生", discount: 0.85 };
 const titles = ["訂單編號", "客戶下單日期", "客戶病狀", "支付金額", "乘以", "實際所得"];
 
 const zero = "T00:00:00.000Z";
@@ -208,6 +208,7 @@ export default {
       this.doctors = docs.map((s) => ({
         value: s.phone,
         text: `${s.name} (${s.hospital})`,
+        discount: s.discount,
       }));
       this.doctors.unshift(allValues);
     },
@@ -240,6 +241,8 @@ export default {
       this.getData();
     },
     phone(v) {
+      // const n = this.doctors.find((s) => s.phone == v).discount;
+      // Number(n) > 0 ? (this.discount = +n) : (this.discount = 1);
       this.getData(v);
     },
   },

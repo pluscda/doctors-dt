@@ -52,6 +52,7 @@
 import { store, actions } from "@/store/global.js";
 import moment from "dayjs";
 import queryString from "qs";
+import { groupWith } from "ramda";
 
 const allValues = { value: null, text: "全部醫院醫生", discount: 0.85 };
 const titles = ["訂單編號", "客戶下單日期", "客戶病狀", "支付金額", "乘以", "實際所得"];
@@ -82,7 +83,7 @@ export default {
       items: [],
       currentPageNum: 1,
       rowCount: 0,
-      pagingRowPerPage: 1110,
+      pagingRowPerPage: 11180,
       search: false,
       rows,
       totalCountStr: "",
@@ -222,16 +223,32 @@ export default {
         .add(1, "days")
         .format("YYYY-MM-DD");
       qs += `&orderDate_gte=${startTime}T00:00:00.000Z&orderDate_lt=${endTime}T00:00:00.000Z`;
-
       const { items, count } = await actions.getOrders(qs);
       this.items = items;
+      let groupIncome = groupWith((a, b) => a.doctorPhone == b.doctorPhone, items);
+      // console.log(groupIncome);
+      const arr = [];
+      groupIncome.forEach((s) => {
+        s[0].paidCount = 1;
+        if (s.length > 1) {
+          const t = s.reduce((acc, { paidAmount }) => {
+            return (acc += paidAmount);
+          }, 0);
+          s[0].paidAmount = t;
+          s[0].paidCount = s.length;
+        }
+        s[0].doctoreLongName = this.doctors.find((t) => t.value == s[0].doctorPhone).text;
+        arr.push(s[0]);
+      });
+      console.log(arr);
+
       this.rowCount = count;
       this.totalCountStr = `共${count} 筆`;
     },
   },
   async mounted() {
+    await this.getDDL();
     this.getData();
-    this.getDDL();
   },
   watch: {
     month() {

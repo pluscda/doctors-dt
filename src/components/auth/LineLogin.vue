@@ -20,6 +20,10 @@ export default {
       }
       const qs = "id=" + id;
       const { items } = await actions.getOrders(qs);
+      if (!items || !items.length) {
+        this.$router.push("/home");
+        return;
+      }
       if (items[0].inqueryCate >= store.MIN_NON_CANCER_NUM) {
         setTimeout(() => this.$router.push("/asklist?id=" + id), 100);
       } else {

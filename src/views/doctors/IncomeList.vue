@@ -67,7 +67,6 @@
 <script>
 import { store, actions } from "@/store/global.js";
 import moment from "dayjs";
-import queryString from "qs";
 import * as R from "ramda";
 
 const allValues = { value: null, text: "全部醫院醫生", discount: 0.85 };
@@ -124,9 +123,6 @@ export default {
       }, 0);
       return "NT $" + this.$formatPrice(parseInt(total));
     },
-    myEditItem() {
-      return store.editItem;
-    },
     normalCates() {
       let arr = store.cates
         .filter((s) => +s.cid > 33)
@@ -143,87 +139,8 @@ export default {
         text: s.name,
       }));
     },
-    orderStatus() {
-      let arr = [...store.orderStatus].slice(0, 2);
-      arr.push({ value: "exception", text: "逾時未處理完" });
-      arr.unshift({ value: 0, text: "全部" });
-      return arr;
-    },
   },
   methods: {
-    wirteReport(item) {
-      store.editItem = { ...item };
-      this.$router.push("orderdetail");
-    },
-    hideTextarea(item) {
-      item.addNewComment = item.addNewDoctorComment = "";
-      this.items = [...this.items];
-    },
-    async addNewDoctorComment(item) {
-      const obj = {};
-      obj.docComment = item.addedComment;
-      //const str = moment().format("YYYY-MM-DD HH:mm");
-      obj.commentAt = new Date().toISOString();
-      obj.rating = 0;
-      obj.userComment = "";
-      obj.read = false;
-      item.message.unshift(obj);
-      try {
-        await actions.updateOrder(item);
-        item.addedComment = "";
-        item.addNewComment = "";
-        this.items = [...this.items];
-        this.$bvToast.toast(`新增留言成功`, {
-          title: "系統資訊",
-          autoHideDelay: 5000,
-          variant: "success",
-        });
-        setTimeout(this.getData(), 200);
-        const lineId = item.orderPhoneNum?.length > 10 ? item.orderPhoneNum : "U2a9bc2736efe3c6a0d361fef34efdb83";
-        const obj2 = { id: lineId };
-        item.realName ? "" : (item.realName = "DTC tester");
-        let url = store.lineUrl + "orderid=" + item.id;
-        obj2.msg = `${item.realName}醫師留言:\n ${obj.docComment}\n\n${url}`;
-        actions.lineMsg(obj2);
-      } catch (e) {
-        alert("client :" + e);
-      }
-    },
-
-    viewComment(item) {
-      requestAnimationFrame(() => {
-        item.viewComment ? (item.viewComment = false) : (item.viewComment = true);
-        item.addNewComment = item.viewComment;
-        this.items = [...this.items];
-      });
-    },
-    sort(item) {
-      if (item.sortDesc) {
-        item.sortDesc = null;
-      } else if (false === item.sortDesc) {
-        item.sortDesc = true;
-      } else if (null === item.sortDesc) {
-        item.sortDesc = false;
-      }
-      this.orderBy = [];
-      this.headers.forEach((s) => {
-        if (s.sortDesc !== null) {
-          this.orderBy.push(s.sortDesc ? `${s.key}:desc` : `${s.key}`);
-        }
-      });
-      this.getData();
-    },
-    searchDb() {
-      this.search = true;
-      this.getData();
-    },
-    async clearSearch() {
-      this.status = 0;
-      this.cate = 0;
-      this.phone = "";
-      this.search = false;
-      this.getData();
-    },
     async getDDL() {
       const { items: docs } = await actions.getDoctors("_limit=590");
       this.doctors = docs.map((s) => ({
@@ -249,7 +166,6 @@ export default {
       const { items, count } = await actions.getOrders(qs);
       this.items = items;
       let groupIncome = R.groupWith((a, b) => a.doctorPhone == b.doctorPhone, items);
-      // console.log(groupIncome);
       const arr = [];
       groupIncome.forEach((s) => {
         s[0].paidCount = 1;

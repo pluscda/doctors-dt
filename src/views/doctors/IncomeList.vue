@@ -8,7 +8,7 @@
       <b-input-group prepend="月">
         <b-select v-model="month" :options="months"></b-select>
       </b-input-group>
-      <b-input-group prepend="選擇醫生" v-if="phone == ADMIN_PHONE || !phone">
+      <b-input-group prepend="選擇醫生" v-if="phone == ADMIN_PHONE">
         <b-select v-model="phone" :options="doctors"></b-select>
       </b-input-group>
     </div>
@@ -69,7 +69,7 @@ import { store, actions } from "@/store/global.js";
 import moment from "dayjs";
 import * as R from "ramda";
 
-const allValues = { value: null, text: "全部醫院醫生", discount: 0.85 };
+const allValues = { value: null, text: "全部醫院醫生" };
 const titles = ["訂單編號", "客戶下單日期", "客戶病狀", "支付金額", "乘以", "實際所得"];
 const adminTitles = ["序號", "醫生", "客戶訂單數", "總收入", "乘以", "實際所得"];
 const zero = "T00:00:00.000Z";
@@ -82,7 +82,6 @@ export default {
   data() {
     return {
       adminTitles,
-      discount: 0.85,
       titles,
       years,
       months,

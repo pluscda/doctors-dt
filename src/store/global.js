@@ -9,6 +9,7 @@ const orderStatus = ["waiting","process", "finish","exception"].map((s,i) =>( {
 
 const init = {
   isLogin: false,
+  ADMIN_PHONE: "0911911911",
   fireUid:'',
   PASSWORD,
   activeTab: 0,

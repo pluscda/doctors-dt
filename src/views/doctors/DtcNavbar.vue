@@ -44,9 +44,8 @@ export default {
   components: {},
   methods: {
     async switch2Admin() {
-      const ADMIN_PHONE = "0911911911";
       sessionStorage.isAdmin = true;
-      sessionStorage.phone = ADMIN_PHONE;
+      sessionStorage.phone = store.ADMIN_PHONE;
     },
     async logout() {},
   },

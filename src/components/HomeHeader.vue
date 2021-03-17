@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import { store, mutations } from "@/store/global.js";
+import { store } from "@/store/global.js";
 export default {
   name: "homeSearchTitle",
   data() {

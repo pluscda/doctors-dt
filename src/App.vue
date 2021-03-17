@@ -74,6 +74,7 @@ export default {
   async mounted() {
     const https = location.href.includes("https");
     if (!https) {
+      // at dev mode; change to other phone when needed; the phone must exist in DB for one doctor's phone
       sessionStorage.phone = "U806ad99ce58ec0b8ea4a2652f21b3299";
       store.lineProfile.userId = sessionStorage.phone;
       await this.connectWithStrapi();

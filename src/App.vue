@@ -10,9 +10,10 @@ import { store, mutations, actions } from "@/store/global.js";
 import DtcNavBar from "./views/doctors/DtcNavbar";
 
 /*
- The entry point @ PhoneLogin.vue . It will get qurystring info from Line App's link
- if one try to acess the page without using the Link App to lauch this vue app,
+ The entry point @ LineLogin.vue . It will get qurystring info from Line App's link
+ if one tries to acess the page without using the Link App to lauch this vue app,
  one needs to clicks "Welcome" in header part. Click "e", will become admin role.
+ Note: need to switch the page in order to see the change on admin role.
 */
 export default {
   name: "app",

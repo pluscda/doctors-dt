@@ -1,6 +1,6 @@
 <template>
   <section class="dtc-login" :style="isLogin ? '' : 'justify-content: center;'">
-    <PhoneLogin></PhoneLogin>
+    <LineLogin></LineLogin>
     <div class="version">軟體版本號: {{ versionTime }}</div>
     <footer class="provides-login" hidden>
       <b-button @click="toGithub" variant="warning">Github Login</b-button>
@@ -11,7 +11,7 @@
 
 <script>
 import { store, mutations, actions } from "@/store/global.js";
-import PhoneLogin from "@/components/auth/PhoneLogin.vue";
+import LineLogin from "@/components/auth/LineLogin.vue";
 
 const titles = ["預約紀錄(6)", "提問(5)", "意見反饋(1)", "我的收藏(2)", "系統設置"];
 
@@ -38,7 +38,7 @@ export default {
     },
   },
   components: {
-    PhoneLogin,
+    LineLogin,
   },
   methods: {
     toGithub() {

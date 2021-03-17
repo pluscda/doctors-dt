@@ -40,7 +40,7 @@
         <div style="font-weight:500" v-for="item in adminTitles" :key="item">{{ item }}</div>
       </header>
       <main class="dtc-report dtc-main" style="border-top:0" v-for="(item, i) in adminRows" :key="i">
-        <div>{{ item.id }}</div>
+        <div>{{ i + 1 }}</div>
         <div>{{ item.doctoreLongName }}</div>
         <div>
           {{ item.paidCount }}
@@ -72,7 +72,7 @@ import * as R from "ramda";
 
 const allValues = { value: null, text: "全部醫院醫生", discount: 0.85 };
 const titles = ["訂單編號", "客戶下單日期", "客戶病狀", "支付金額", "乘以", "實際所得"];
-const adminTitles = ["訂單編號", "醫生", "客戶訂單數", "總收入", "乘以", "實際所得"];
+const adminTitles = ["序號", "醫生", "客戶訂單數", "總收入", "乘以", "實際所得"];
 
 const zero = "T00:00:00.000Z";
 const rows = [10, 20, 50];

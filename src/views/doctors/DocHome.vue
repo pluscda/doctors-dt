@@ -41,13 +41,8 @@
       </aside>
       <Workload :year="row2_2" :month="row2_2_1"></Workload>
     </main>
-    <main>
-      <aside>
-        <b-select v-model="row2_3" :options="years"></b-select>
-        <b-select v-model="row2_3_1" :options="months"></b-select>
-        <h6 class="mt-2 ml-3">線上留言未讀數</h6>
-      </aside>
-      <Delay :year="row2_3" :month="row2_3_1"></Delay>
+    <main style="display:grid;place-item:center;text-align:center;line-height:300px;font-size:20px;">
+      <div>暫無資料</div>
     </main>
   </section>
 </template>

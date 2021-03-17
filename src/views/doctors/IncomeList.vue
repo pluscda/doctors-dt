@@ -32,7 +32,7 @@
         </div>
         <div>{{ $formatPrice(item.paidAmount) }}</div>
         <div>{{ item.discount || "0.85" }}</div>
-        <div>{{ $formatPrice(item.paidAmount * (item.discount ? item.discount : discount)) }}</div>
+        <div>{{ $formatPrice(item.paidAmount * (item.discount ? +item.discount : discount)) }}</div>
       </main>
     </section>
     <section v-else>
@@ -47,7 +47,7 @@
         </div>
         <div>{{ $formatPrice(item.paidAmount) }}</div>
         <div>{{ item.discount || "0.85" }}</div>
-        <div>{{ $formatPrice(item.paidAmount * (item.discount ? item.discount : discount)) }}</div>
+        <div>{{ $formatPrice(item.paidAmount * (item.discount ? +item.discount : discount)) }}</div>
       </main>
     </section>
     <main v-if="!items.length" class="my-header" style="border:1px solid black;border-top:0">
@@ -118,7 +118,7 @@ export default {
     grossIncome() {
       if (!this.items.length) return "";
       const total = this.items.reduce((accumulator, { paidAmount, discount }) => {
-        const t = discount ? discount : this.discount;
+        const t = discount ? +discount : this.discount;
         return (accumulator += paidAmount * t);
       }, 0);
       return "NT $" + this.$formatPrice(parseInt(total));
@@ -146,7 +146,7 @@ export default {
       this.doctors = docs.map((s) => ({
         value: s.phone,
         text: `${s.name} (${s.hospital})`,
-        discount: s.discount,
+        discount: +s.discount,
       }));
       this.doctors.unshift(allValues);
     },

@@ -20,7 +20,7 @@
     <header class="my-header">
       <h2>{{ (phone && doctors.find((s) => phone == s.value).text) || "全部醫院醫生" }}</h2>
     </header>
-    <section>
+    <section v-if="phone">
       <header class="dtc-report">
         <div style="font-weight:500" v-for="item in titles" :key="item">{{ item }}</div>
       </header>
@@ -32,6 +32,21 @@
         </div>
         <div>{{ $formatPrice(item.paidAmount) }}</div>
         <div>{{ discount }}</div>
+        <div>{{ $formatPrice(item.paidAmount * discount) }}</div>
+      </main>
+    </section>
+    <section v-else>
+      <header class="dtc-report">
+        <div style="font-weight:500" v-for="item in adminTitles" :key="item">{{ item }}</div>
+      </header>
+      <main class="dtc-report dtc-main" style="border-top:0" v-for="(item, i) in adminRows" :key="i">
+        <div>{{ item.id }}</div>
+        <div>{{ item.doctoreLongName }}</div>
+        <div>
+          {{ item.paidCount }}
+        </div>
+        <div>{{ $formatPrice(item.paidAmount) }}</div>
+        <div>{{ item.discount || "0.85" }}</div>
         <div>{{ $formatPrice(item.paidAmount * discount) }}</div>
       </main>
     </section>
@@ -53,10 +68,12 @@
 import { store, actions } from "@/store/global.js";
 import moment from "dayjs";
 import queryString from "qs";
+import * as R from "ramda";
 import { groupWith } from "ramda";
 
 const allValues = { value: null, text: "全部醫院醫生", discount: 0.85 };
 const titles = ["訂單編號", "客戶下單日期", "客戶病狀", "支付金額", "乘以", "實際所得"];
+const adminTitles = ["訂單編號", "醫生", "客戶訂單數", "總收入", "乘以", "實際所得"];
 
 const zero = "T00:00:00.000Z";
 const rows = [10, 20, 50];
@@ -67,6 +84,7 @@ export default {
   name: "incomeList",
   data() {
     return {
+      adminTitles,
       discount: 0.85,
       titles,
       years,
@@ -219,6 +237,7 @@ export default {
       let qs = sessionStorage.isAdmin ? "" : "doctorPhone=" + sessionStorage.phone;
       phone ? (qs = "doctorPhone=" + phone) : "";
       qs += "&_limit=" + this.pagingRowPerPage;
+      qs += "&_sort=doctorPhone:ASC";
       const startTime = moment(`${this.year}-${this.month}-01`).format("YYYY-MM-DD");
       const endTime = moment(`${this.year}-${this.month}-01`)
         .endOf("month")
@@ -242,7 +261,8 @@ export default {
         s[0].doctoreLongName = this.doctors.find((t) => t.value == s[0].doctorPhone).text;
         arr.push(s[0]);
       });
-      this.adminRows = arr;
+      const byIncome = R.descend(R.prop("paidAmount"));
+      this.adminRows = R.sort(byIncome, arr);
 
       this.rowCount = count;
       this.totalCountStr = `共${count} 筆`;
@@ -278,7 +298,7 @@ export default {
 }
 .my-header,
 .my-footer {
-  width: calc(120px + 190px + 160px + 3 * 120px + 2px);
+  width: calc(190px + 280px + 160px + 3 * 120px + 2px);
   display: block;
   text-align: center;
   font-weight: 500;
@@ -293,7 +313,7 @@ export default {
   width: max-content;
   margin: 0 auto;
   display: grid;
-  grid-template-columns: 190px 120px 160px repeat(3, 120px);
+  grid-template-columns: 190px 280px 160px repeat(3, 120px);
   height: 40px;
   border: 1px solid black;
   text-align: center;

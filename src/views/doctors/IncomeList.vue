@@ -1,6 +1,6 @@
 <template>
   <section class="dtc-main-section mb-4">
-    <header class="ask-header">收支明細</header>
+    <header class="ask-header">所得明細</header>
     <div class="dtc-search pl-2">
       <b-input-group prepend="年">
         <b-select v-model="year" :options="years"></b-select>

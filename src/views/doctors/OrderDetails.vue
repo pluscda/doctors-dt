@@ -100,7 +100,7 @@ export default {
       personId,
       birthday,
       height,
-      isAdmin: sessionStorage.isAdmin ? true : false,
+      isAdmin: sessionStorage.phone == store.ADMIN_PHONE,
     };
   },
   components: {},

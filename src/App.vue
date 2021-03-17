@@ -10,7 +10,7 @@ import { store, mutations, actions } from "@/store/global.js";
 import DtcNavBar from "./views/doctors/DtcNavbar";
 
 /*
- The entry point @ PhoneLogin. It will get qurystring info from Line App's link
+ The entry point @ PhoneLogin.vue . It will get qurystring info from Line App's link
  if one try to acess the page without using the Link App to lauch this vue app,
  one needs to clicks "Welcome" in header part. Click "e", will become admin role.
 */

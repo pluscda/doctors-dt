@@ -31,8 +31,8 @@
           {{ (item.inqueryCate && allCate.find((s) => s.value == item.inqueryCate) && allCate.find((s) => s.value == item.inqueryCate).text) || item.inqueryCate }}
         </div>
         <div>{{ $formatPrice(item.paidAmount) }}</div>
-        <div>{{ discount }}</div>
-        <div>{{ $formatPrice(item.paidAmount * discount) }}</div>
+        <div>{{ item.discount || "0.85" }}</div>
+        <div>{{ $formatPrice(item.paidAmount * (item.discount ? item.discount : discount)) }}</div>
       </main>
     </section>
     <section v-else>
@@ -47,7 +47,7 @@
         </div>
         <div>{{ $formatPrice(item.paidAmount) }}</div>
         <div>{{ item.discount || "0.85" }}</div>
-        <div>{{ $formatPrice(item.paidAmount * discount) }}</div>
+        <div>{{ $formatPrice(item.paidAmount * (item.discount ? item.discount : discount)) }}</div>
       </main>
     </section>
     <main v-if="!items.length" class="my-header" style="border:1px solid black;border-top:0">
@@ -69,7 +69,6 @@ import { store, actions } from "@/store/global.js";
 import moment from "dayjs";
 import queryString from "qs";
 import * as R from "ramda";
-import { groupWith } from "ramda";
 
 const allValues = { value: null, text: "全部醫院醫生", discount: 0.85 };
 const titles = ["訂單編號", "客戶下單日期", "客戶病狀", "支付金額", "乘以", "實際所得"];
@@ -119,8 +118,9 @@ export default {
   computed: {
     grossIncome() {
       if (!this.items.length) return "";
-      const total = this.items.reduce((accumulator, { paidAmount }) => {
-        return (accumulator += paidAmount * this.discount);
+      const total = this.items.reduce((accumulator, { paidAmount, discount }) => {
+        const t = discount ? discount : this.discount;
+        return (accumulator += paidAmount * t);
       }, 0);
       return "NT $" + this.$formatPrice(parseInt(total));
     },
@@ -234,6 +234,8 @@ export default {
       this.doctors.unshift(allValues);
     },
     async getData(phone) {
+      this.adminRows = [];
+      this.items = [];
       let qs = sessionStorage.isAdmin ? "" : "doctorPhone=" + sessionStorage.phone;
       phone ? (qs = "doctorPhone=" + phone) : "";
       qs += "&_limit=" + this.pagingRowPerPage;
@@ -246,7 +248,7 @@ export default {
       qs += `&orderDate_gte=${startTime}T00:00:00.000Z&orderDate_lt=${endTime}T00:00:00.000Z`;
       const { items, count } = await actions.getOrders(qs);
       this.items = items;
-      let groupIncome = groupWith((a, b) => a.doctorPhone == b.doctorPhone, items);
+      let groupIncome = R.groupWith((a, b) => a.doctorPhone == b.doctorPhone, items);
       // console.log(groupIncome);
       const arr = [];
       groupIncome.forEach((s) => {
@@ -280,8 +282,6 @@ export default {
       this.getData();
     },
     phone(v) {
-      // const n = this.doctors.find((s) => s.phone == v).discount;
-      // Number(n) > 0 ? (this.discount = +n) : (this.discount = 1);
       this.getData(v);
     },
   },

@@ -42,7 +42,12 @@
       <Workload :year="row2_2" :month="row2_2_1"></Workload>
     </main>
     <main style="display:grid;place-item:center;text-align:center;line-height:300px;font-size:20px;">
-      <div>暫無資料</div>
+      <aside>
+        <b-select v-model="row2_3" :options="years"></b-select>
+        <b-select v-model="row2_3_1" :options="months"></b-select>
+        <h6 class="mt-2 ml-3">線上留言未讀數</h6>
+      </aside>
+      <Delay :year="row2_3" :month="row2_3_1"></Delay>
     </main>
   </section>
 </template>
@@ -86,8 +91,8 @@ export default {
       row2_1_1: 3,
       row2_2: year,
       row2_2_1: 3,
-      row2_3: year - 1,
-      row2_3_1: 7,
+      row2_3: year,
+      row2_3_1: 3,
     };
   },
   components: {

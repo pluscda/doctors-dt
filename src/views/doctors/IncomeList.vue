@@ -8,7 +8,7 @@
       <b-input-group prepend="月">
         <b-select v-model="month" :options="months"></b-select>
       </b-input-group>
-      <b-input-group prepend="選擇醫生" v-if="phone == ADMIN_PHONE">
+      <b-input-group prepend="選擇醫生" v-show="isAdmin">
         <b-select v-model="phone" :options="doctors"></b-select>
       </b-input-group>
     </div>
@@ -109,7 +109,7 @@ export default {
       phone: isNaN(sessionStorage.phone) ? sessionStorage.phone : null,
       doctors: [],
       adminRows: [],
-      ADMIN_PHONE: "0911911911",
+      isAdmin: sessionStorage.isAdmin,
     };
   },
   components: {},

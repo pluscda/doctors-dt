@@ -52,16 +52,19 @@ export default {
       let qs = "phone=" + sessionStorage.phone;
       qs += "&date=" + this.year + "-" + (this.month < 10 ? "0" + this.month : this.month);
       let items = await actions.getUnreadMsgStats(qs);
-      this.total = items && items.length ? items[0].docMsg + items[0].customerMsg : 0;
-      if (this.total) this.drawReport([items[0].docMsg, items[0].customerMsg], ["醫生未讀", "客戶未讀"]);
-      else this.drawReport([0, 0], ["醫生未讀", "客戶未讀"]);
+
+      const c1 = items[0]?.count1 > 0 ? items[0].count1 : 0;
+      const c2 = items[1]?.count2 > 0 ? items[1].count2 : 0;
+      this.total = c1 + c2;
+      if (this.total) this.drawReport([c1, c2], ["診斷數量", "線上諮詢數量"]);
+      else this.drawReport([0, 0], ["診斷數量", "線上諮詢數量"]);
     },
     drawReport(data, labels) {
       this.chartData = {
         labels,
         datasets: [
           {
-            label: `線上留言未讀數總數(共${this.total}筆)`,
+            label: `總數(共${this.total}筆)`,
             backgroundColor: "#dc3545",
             data,
           },

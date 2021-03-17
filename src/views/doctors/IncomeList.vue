@@ -31,8 +31,8 @@
           {{ (item.inqueryCate && allCate.find((s) => s.value == item.inqueryCate) && allCate.find((s) => s.value == item.inqueryCate).text) || item.inqueryCate }}
         </div>
         <div>{{ $formatPrice(item.paidAmount) }}</div>
-        <div>{{ item.discount || "0.85" }}</div>
-        <div>{{ $formatPrice(item.paidAmount * (item.discount ? +item.discount : discount)) }}</div>
+        <div>{{ item.discount }}</div>
+        <div>{{ $formatPrice(item.paidAmount * +item.discount) }}</div>
       </main>
     </section>
     <section v-else>
@@ -46,8 +46,8 @@
           {{ item.paidCount }}
         </div>
         <div>{{ $formatPrice(item.paidAmount) }}</div>
-        <div>{{ item.discount || "0.85" }}</div>
-        <div>{{ $formatPrice(item.paidAmount * (item.discount ? +item.discount : discount)) }}</div>
+        <div>{{ item.discount }}</div>
+        <div>{{ $formatPrice(item.paidAmount * +item.discount) }}</div>
       </main>
     </section>
     <main v-if="!items.length" class="my-header" style="border:1px solid black;border-top:0">
@@ -118,7 +118,7 @@ export default {
     grossIncome() {
       if (!this.items.length) return "";
       const total = this.items.reduce((accumulator, { paidAmount, discount }) => {
-        const t = discount ? +discount : this.discount;
+        const t = +discount;
         return (accumulator += paidAmount * t);
       }, 0);
       return "NT $" + this.$formatPrice(parseInt(total));
@@ -169,6 +169,7 @@ export default {
       const arr = [];
       groupIncome.forEach((s) => {
         s[0].paidCount = 1;
+        s[0].discount = this.doctors.find((t) => t.value == s[0].doctorPhone).discount;
         if (s.length > 1) {
           const t = s.reduce((acc, { paidAmount }) => {
             return (acc += paidAmount);
@@ -181,9 +182,6 @@ export default {
       });
       const byIncome = R.descend(R.prop("paidAmount"));
       this.adminRows = R.sort(byIncome, arr);
-
-      this.rowCount = count;
-      this.totalCountStr = `共${count} 筆`;
     },
   },
   async mounted() {

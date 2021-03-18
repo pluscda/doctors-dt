@@ -50,6 +50,7 @@ export default {
       sessionStorage.phone = store.ADMIN_PHONE;
       this.title = "會館管理者";
       this.$router.push("incomelist");
+      setTimeout(() => location.reload(true), 200);
     },
     async logout() {},
   },

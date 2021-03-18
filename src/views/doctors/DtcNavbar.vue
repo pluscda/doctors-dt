@@ -46,7 +46,7 @@ export default {
     async switch2Admin() {
       sessionStorage.isAdmin = true;
       sessionStorage.phone = store.ADMIN_PHONE;
-      location.reload(true);
+      this.$router.push("incomelist");
     },
     async logout() {},
   },

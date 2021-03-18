@@ -25,7 +25,7 @@
         <div style="font-weight:500" v-for="item in titles" :key="item">{{ item }}</div>
       </header>
       <main class="dtc-report dtc-main" style="border-top:0" v-for="(item, i) in items" :key="i">
-        <div>{{ item.id }}</div>
+        <div style="color:var(--primary);cursor:pointer;" @click="showDetail(item)">{{ item.id }}</div>
         <div>{{ item.orderDate.split("T")[0] }}</div>
         <div>
           {{ (item.inqueryCate && allCate.find((s) => s.value == item.inqueryCate) && allCate.find((s) => s.value == item.inqueryCate).text) || item.inqueryCate }}
@@ -140,6 +140,13 @@ export default {
     },
   },
   methods: {
+    async showDetail(item) {
+      if (item.inqueryCate >= store.MIN_NON_CANCER_NUM) {
+        setTimeout(() => this.$router.push("/asklist?id=" + item.id), 0);
+      } else {
+        setTimeout(() => this.$router.push("/waitlist?id=" + item.id), 0);
+      }
+    },
     async getDDL() {
       const { items: docs } = await actions.getDoctors("_limit=590");
       this.doctors = docs.map((s) => ({

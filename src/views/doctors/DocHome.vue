@@ -62,7 +62,7 @@ import Delay from "@/components/home/Delay";
 import Person from "@/components/home/Person";
 import Loading from "@/components/home/Loading";
 import { store, mutations } from "@/store/global.js";
-
+import moment from "dayjs";
 Chart.defaults.global.defaultFontStyle = "bold";
 Chart.defaults.global.defaultFontColor = "#343a40";
 Chart.defaults.global.defaultFontFamily = "Microsoft JhengHei";
@@ -82,17 +82,17 @@ export default {
       months,
       years,
       row1_1: year,
-      row1_1_1: 3,
+      row1_1_1: moment().month() + 1,
       row1_2: year,
-      row1_2_1: 3,
+      row1_2_1: moment().month() + 1,
       row1_3: year,
-      row1_3_1: 3,
+      row1_3_1: moment().month() + 1,
       row2_1: year,
-      row2_1_1: 3,
+      row2_1_1: moment().month() + 1,
       row2_2: year,
-      row2_2_1: 3,
+      row2_2_1: moment().month() + 1,
       row2_3: year,
-      row2_3_1: 3,
+      row2_3_1: moment().month() + 1,
     };
   },
   components: {

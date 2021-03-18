@@ -258,12 +258,6 @@ export default {
       if (this.currentPageNum > 1) {
         qs += `&_start=` + (this.currentPageNum - 1) * this.pagingRowPerPage;
       }
-      // // filters by user
-      // if (this.status) {
-      //   qs += "&orderStatus=" + this.status;
-      // } else {
-      //   qs += "&orderStatus=finish&orderStatus=exception";
-      // }
 
       if (this.cate) {
         qs += "&inqueryCate=" + this.cate;

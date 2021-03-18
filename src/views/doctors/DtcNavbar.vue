@@ -1,7 +1,7 @@
 <template>
   <div style="position:sticky;top:0;z-index:3;">
     <b-navbar toggleable="lg" type="dark" class="dtc-bg">
-      <b-navbar-brand @click="$router.push('/home')" style="max-width:200px;cursor:pointer;"><i class="fas fa-sign-in-alt mr-2"></i> 名醫會館(醫生端)</b-navbar-brand>
+      <b-navbar-brand @click="$router.push('/home')" style="max-width:200px;cursor:pointer;"><i class="fas fa-sign-in-alt mr-2"></i> {{ title }}</b-navbar-brand>
       <b-collapse id="nav-collapse" is-nav>
         <b-navbar-nav>
           <b-nav-item @click="$router.push('/home')">首頁</b-nav-item>
@@ -32,7 +32,9 @@ import { store } from "@/store/global.js";
 export default {
   name: "navbardoc",
   data() {
-    return {};
+    return {
+      title: "名醫會館(醫生端)",
+    };
   },
   computed: {
     myInfo() {
@@ -46,6 +48,7 @@ export default {
     async switch2Admin() {
       sessionStorage.isAdmin = true;
       sessionStorage.phone = store.ADMIN_PHONE;
+      this.title = "會館管理者";
       this.$router.push("incomelist");
     },
     async logout() {},

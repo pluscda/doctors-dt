@@ -6,16 +6,9 @@ import moment from "dayjs"
 import App from './App.vue'
 import router from './router'
 import i18n from './i18n'
-import './plugins/vant.js'
 import ChartDataLabels from "chartjs-plugin-datalabels";
 import './registerServiceWorker'
-import VueToast from "vue-toast-notification";
-// Import one of available themes
-import "vue-toast-notification/dist/theme-default.css";
 
-
-
-Vue.use(VueToast, { position: "top" });
 
 Vue.config.productionTip = false
 import VueMousetrap from 'vue-mousetrap'

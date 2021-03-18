@@ -41,7 +41,7 @@
       </header>
       <main class="dtc-report dtc-main" style="border-top:0" v-for="(item, i) in adminRows" :key="i">
         <div>{{ i + 1 }}</div>
-        <div>{{ item.doctoreLongName }}</div>
+        <div style="color:var(--primary);cursor:pointer;" @click="phone = item.doctorId">{{ item.doctoreLongName }}</div>
         <div>
           {{ item.paidCount }}
         </div>
@@ -176,7 +176,9 @@ export default {
           s[0].paidAmount = t;
           s[0].paidCount = s.length;
         }
-        s[0].doctoreLongName = this.doctors.find((t) => t.value == s[0].doctorPhone).text;
+        const { value, text } = this.doctors.find((t) => t.value == s[0].doctorPhone);
+        s[0].doctoreLongName = text;
+        s[0].doctorId = value;
         arr.push(s[0]);
       });
       const byIncome = R.descend(R.prop("paidAmount"));

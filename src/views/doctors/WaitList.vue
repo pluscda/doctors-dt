@@ -56,7 +56,7 @@
       <div>{{ $formatStatus(item.orderStatus) }}</div>
       <div>{{ $twDate(item.orderDate) }}</div>
       <div>{{ (item.inqueryCate && allCate.find((s) => s.value == item.inqueryCate) && allCate.find((s) => s.value == item.inqueryCate).text) || item.inqueryCate }}</div>
-      <div>{{ item.clientLinePhone ? clientLinePhone : "暫無資料" }}</div>
+      <div>{{ item.clientLinePhone ? item.clientLinePhone : "暫無資料" }}</div>
       <div>{{ item.hardCopyReceived ? $twDate(item.hardCopyReceived).split(" ")[0] : "否" }}</div>
       <div>{{ item.copySendBack ? $twDate(item.copySendBack).split(" ")[0] : "否" }}</div>
       <div>{{ item.docHasCopy ? $twDate(item.docHasCopy).split(" ")[0] : "否" }}</div>
